@@ -1,6 +1,4 @@
 import { useState } from "react";
-// import Logo from "../../images/logo.png";
-// import LogoDark from "../../images/logo-dark.png";
 import { ReactComponent as BrandLogo } from "../../assets/images/logo.svg";
 import { Alert, Form, Spinner } from "reactstrap";
 import { useForm } from "react-hook-form";

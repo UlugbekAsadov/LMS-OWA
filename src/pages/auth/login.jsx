@@ -63,7 +63,7 @@ const Login = () => {
         <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
           <BlockHead>
             <BlockContent>
-              <BlockTitle tag="h4">Login</BlockTitle>
+              <BlockTitle tag="h4">Kirish</BlockTitle>
               <BlockDes>
                 <p>
                   Shartnoma tizimiga faqat ro’yxatdan o’tgan foydalanuvchilar
@@ -153,7 +153,7 @@ const Login = () => {
                 {loginMutation.isLoading ? (
                   <Spinner size="sm" color="light" />
                 ) : (
-                  "Sign in"
+                  "Kirish"
                 )}
               </Button>
             </div>

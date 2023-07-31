@@ -7,7 +7,7 @@ const AuthFooter = () => {
         <Row className="g-3">
           <div className="text-center">
             <p className="text-soft">
-              Tizim
+              Tizim {" "}
               <a
                 href="https://owa.uz/"
                 target="_blank"

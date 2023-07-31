@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Router } from "./router/router.jsx";
 
+import "./assets/scss/dashlite.scss";
+import "./assets/scss/style-email.scss";
+
 const client = new QueryClient({
   defaultOptions: { queries: { staleTime: 5000 } },
 });

@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 export const ProtectedRoute = ({ hasAccessRoles, children }) => {
   const userRole = "BASIC";
 
-  const userToken = localStorage.getItem("user-token");
+  const userToken = localStorage.getItem("u_at");
 
   if (!userToken || userToken === "undefined") {
-    return window.location.replace("/login");
+    return window.location.replace("/auth-login");
   }
 
   const hasAccess = hasAccessRoles.find((role) => role === userRole);
@@ -20,5 +20,5 @@ export const ProtectedRoute = ({ hasAccessRoles, children }) => {
 
 ProtectedRoute.propTypes = {
   children: PropTypes.node,
-  hasAccessRoles: PropTypes.arrayOf("string"),
+  hasAccessRoles: PropTypes.array,
 };

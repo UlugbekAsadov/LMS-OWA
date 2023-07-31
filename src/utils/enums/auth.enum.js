@@ -1,1 +1,11 @@
 export const ROLES = ["SUPER_ADMIN", "OWNER", "ADMIN"];
+
+export const ERROR_MESSAGES = {
+  INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+};
+
+export const ERROR_MESSAGE_TRANSLATIONS = {
+  [ERROR_MESSAGES.INVALID_CREDENTIALS]: "Parol yoki Telefon nomer notog'ri",
+  [ERROR_MESSAGES.VALIDATION_ERROR]: "Telefon raqam notog'ri formatda",
+};

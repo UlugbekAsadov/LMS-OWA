@@ -6,7 +6,9 @@ export const ProtectedRoute = ({ hasAccessRoles, children }) => {
   const userToken = localStorage.getItem("u_at");
 
   if (!userToken || userToken === "undefined") {
-    return window.location.replace("/auth-login");
+    return window.location.replace(
+      `/auth-login?callbackUri=${window.location.href}`
+    );
   }
 
   const hasAccess = hasAccessRoles.find((role) => role === userRole);

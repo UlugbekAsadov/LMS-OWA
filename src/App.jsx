@@ -1,7 +1,16 @@
+import { Outlet } from "react-router-dom";
+import ThemeProvider from "./context/theme.context";
+import { HomepageLayout } from "./layout/homepage-layout/homepage-layout";
 import "./styles/css/global.css";
 
 function App() {
-  return <h1>Initial</h1>;
+  return (
+    <ThemeProvider>
+      <HomepageLayout>
+        <Outlet />
+      </HomepageLayout>
+    </ThemeProvider>
+  );
 }
 
 export default App;

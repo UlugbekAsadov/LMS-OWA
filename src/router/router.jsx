@@ -15,7 +15,12 @@ export const Router = () => {
               <App />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="basic-contract" element={<>Basic Contracts</>} />
+          <Route path="grand-contract" element={<>Grand Contracts</>} />
+          <Route path="courses-list" element={<>courses-list</>} />
+          <Route path="contracts-type-list" element={<>contracts-type-list</>} />
+        </Route>
 
         <Route path="/" element={<Layout />}>
           {/* <Route path="auth-success" element={<Success />}></Route>

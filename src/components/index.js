@@ -3,3 +3,8 @@ export * from "./button/button";
 export * from "./icon/icon";
 export * from "./preview/preview";
 export * from "./grid/grid";
+export * from "./footer/footer";
+export * from "./header/header";
+export * from "./sidebar/sidebar";
+export * from "./user/user";
+export * from "./links/links"

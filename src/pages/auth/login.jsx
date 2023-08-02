@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ReactComponent as BrandLogo } from "../../assets/images/logo.svg";
 import { Alert, Form, Spinner } from "reactstrap";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { InputMask } from "primereact/inputmask";
 import {
   Block,
@@ -14,7 +14,7 @@ import {
   PreviewCard,
 } from "../../components";
 import Button from "../../components/button/button";
-import AuthFooter from "./auth-footer";
+import AuthFooter from "../components/auth-footer";
 import { useMutation } from "react-query";
 import { loginMutationFn } from "../../react-query/mutations";
 import { ERROR_MESSAGE_TRANSLATIONS } from "../../utils/enums/auth.enum";
@@ -22,7 +22,6 @@ import { ERROR_MESSAGE_TRANSLATIONS } from "../../utils/enums/auth.enum";
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [errorValidation, setErrorValidation] = useState(null);
-  const navigate = useNavigate();
 
   const loginMutation = useMutation({
     mutationKey: ["user"],
@@ -36,7 +35,8 @@ const Login = () => {
     }
 
     localStorage.setItem("u_at", res.data.token);
-    navigate("/");
+    const callbackUri = window.location.href.split("=")[1];
+    window.location.replace(callbackUri || window.location.origin);
   };
 
   const onFormSubmit = async (formData) => {

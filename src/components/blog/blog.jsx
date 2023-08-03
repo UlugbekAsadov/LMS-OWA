@@ -79,3 +79,31 @@ BlockTitle.propTypes = {
   children: PropTypes.node,
   tag: PropTypes.string,
 };
+
+export const BlockBetween = ({ className, ...props }) => {
+  return (
+    <div className={`nk-block-between ${className || ""}`}>
+      {props.children}
+    </div>
+  );
+};
+
+BlockBetween.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};
+
+export const BlockHeadContent = ({ className, ...props }) => {
+  return (
+    <div
+      className={[`nk-block-head-content${className ? " " + className : ""}`]}
+    >
+      {props.children}
+    </div>
+  );
+};
+
+BlockHeadContent.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};

@@ -310,3 +310,29 @@ export const citiesMock = {
     { value: "TEMEZ", label: "Termiz" },
   ],
 };
+
+export const representativeMock = [
+  {
+    value: "FATHER",
+    label: "Otasi",
+  },
+  {
+    value: "MOHTER",
+    label: "Onasi",
+  },
+];
+
+export const coursesMock = [
+  {
+    value: "FRONTEND",
+    label: "Frontend",
+    price: 300000,
+    duration: 5,
+  },
+  {
+    value: "BACKEND",
+    label: "Backend",
+    price: 400000,
+    duration: 6,
+  },
+];

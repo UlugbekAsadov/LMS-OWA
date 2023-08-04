@@ -133,6 +133,6 @@ export { TablePagination };
 TablePagination.propTypes = {
   itemPerPage: PropTypes.number,
   totalItems: PropTypes.number,
-  paginate: PropTypes.number,
+  paginate: PropTypes.func,
   currentPage: PropTypes.number,
 };

@@ -7,12 +7,15 @@ import { Badge, Button } from "reactstrap";
 import { Icon } from "../../components/icon/icon";
 import { TablePagination } from "../../components/pagination/pagination";
 import { Table } from "../../components/table/table";
+import BasicContractModal from "../../components/modals/basic-conract-modal/basic-contract-modal";
 
 const BasicContracts = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  
+
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
   const currentItems = contractsMock.slice(indexOfFirstItem, indexOfLastItem);
@@ -87,6 +90,7 @@ const BasicContracts = () => {
         pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
         btnTitle={"Yangi shartnoma"}
         btnIcon={"plus"}
+        onClickButton={setIsModalOpen.bind(null, true)}
       />
 
       <Table
@@ -100,6 +104,11 @@ const BasicContracts = () => {
             currentPage={currentPage}
           />
         }
+      />
+
+      <BasicContractModal
+        isOpen={isModalOpen}
+        onClose={setIsModalOpen.bind(null, false)}
       />
     </Content>
   );

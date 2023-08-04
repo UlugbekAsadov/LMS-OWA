@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
 
 const FutureProfessionsContract = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -87,7 +86,7 @@ const FutureProfessionsContract = () => {
         pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
         btnTitle={"Yangi shartnoma"}
         btnIcon={"plus"}
-        headerButtonAction={setIsModalOpen.bind(null, true)}
+        headerButtonAction={() => {}}
       />
 
       <Table
@@ -102,7 +101,7 @@ const FutureProfessionsContract = () => {
         tableBody={tableBody}
         tableHeader={tableHeader}
       />
-      
+
       {/* <FutureProfessionsModal
         isOpen={isModalOpen}
         onClose={setIsModalOpen.bind(null, false)}

@@ -13,14 +13,14 @@ const PageHeader = ({
   pageTitle,
   pageDescription,
   btnTitle,
-btnIcon ,
+  btnIcon,
   onClickButton = () => {},
 }) => {
   return (
     <BlockHead size="sm">
       <BlockBetween>
         <BlockHeadContent>
-          <BlockTitle page>{pageTitle}</BlockTitle>
+          <BlockTitle>{pageTitle}</BlockTitle>
           <BlockDes className="text-soft">{pageDescription}</BlockDes>
         </BlockHeadContent>
         <BlockHeadContent>

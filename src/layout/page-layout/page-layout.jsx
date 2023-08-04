@@ -1,52 +1,30 @@
-import { Button } from "reactstrap";
-import {
-  Block,
-  BlockBetween,
-  BlockDes,
-  BlockHead,
-  BlockHeadContent,
-  BlockTitle,
-} from "../../components/blog/blog";
-import { Icon } from "../../components/icon/icon";
-import { Content } from "./content";
 import PropTypes from "prop-types";
+import { Head } from "../head/head.layout";
 
-const PageLayout = ({
-  children,
-  pageTitle,
-  pageDescription,
-  btnName = "Yaratish",
-  iconName = "plus",
-  onClickButton = () => {},
-}) => {
+export const Content = ({ ...props }) => {
   return (
-    <Content>
-      <BlockHead size="sm">
-        <BlockBetween>
-          <BlockHeadContent>
-            <BlockTitle page>{pageTitle}</BlockTitle>
-            <BlockDes className="text-soft">{pageDescription}</BlockDes>
-          </BlockHeadContent>
-          <BlockHeadContent>
-            <Button color="primary" onClick={onClickButton}>
-              <Icon name={iconName}></Icon>
-              <span>{btnName}</span>
-            </Button>
-          </BlockHeadContent>
-        </BlockBetween>
-      </BlockHead>
-      <Block>{children}</Block>
-    </Content>
+    <>
+      <Head title={props.title} />
+      <div className="nk-content">
+        <div className="container-fluid">
+          <div className="nk-content-inner">
+            <div className="nk-content-body">
+              {!props.page ? props.children : null}
+              {props.page === "component" ? (
+                <div className="components-preview wide-md mx-auto">
+                  {props.children}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default PageLayout;
-
-PageLayout.propTypes = {
+Content.propTypes = {
   children: PropTypes.node,
-  pageTitle: PropTypes.string,
-  pageDescription: PropTypes.string,
-  btnName: PropTypes.string,
-  iconName: PropTypes.string,
-  onClickButton: PropTypes.func,
+  page: PropTypes.string,
+  title: PropTypes.string,
 };

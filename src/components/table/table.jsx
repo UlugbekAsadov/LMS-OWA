@@ -9,8 +9,8 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 // import TableEmptyState from "../custom/table-empty-state";
-import { Icon } from "../../../components/icon/icon";
-import { TablePagination } from "../../../components/pagination/pagination";
+import { Icon } from "../icon/icon";
+import { TablePagination } from "../pagination/pagination";
 import PropTypes from "prop-types";
 import TableEmptyState from "./table-empty-state";
 

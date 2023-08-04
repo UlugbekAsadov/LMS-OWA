@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./protected-router";
 import Layout from "../layout/layout-no-sidebar/layout-no-sidebar";
 import Login from "../pages/auth/login";
 import BasicContracts from "../pages/basic-contract/basic-contract";
+import FutureProfessionsContract from "../pages/future-professions-contract/future-professions-contract";
 
 export const Router = () => {
   return (
@@ -18,7 +19,7 @@ export const Router = () => {
           }
         >
           <Route path="basic-contract" element={<BasicContracts />} />
-          <Route path="grand-contract" element={<>Grand Contracts</>} />
+          <Route path="grand-contract" element={<FutureProfessionsContract />} />
           <Route path="courses-list" element={<>courses-list</>} />
           <Route path="contracts-type-list" element={<>contracts-type-list</>} />
         </Route>

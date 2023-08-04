@@ -1,17 +1,19 @@
-import PageLayout from "../../layout/page-layout/page-layout";
+import PageHeader from "../../components/page-header/page-header";
 import { contractsMock } from "../../utils/mocks";
 import ContractsTable from "../components/table/contracts-table";
+import { Content } from "../../layout/page-layout/page-layout";
 
 const BasicContracts = () => {
   return (
-    <PageLayout
-      pageTitle={"Oddiy shartnomalar"}
-      pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
-      btnName={"Yangi shartnoma"}
-      iconName={"plus"}
-    >
+    <Content title="Oddiy shartnoma">
+      <PageHeader
+        pageTitle={"Oddiy shartnomalar"}
+        pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
+        btnTitle={"Yangi shartnoma"}
+        btnIcon={"plus"}
+      />
       <ContractsTable contractsListData={contractsMock} />
-    </PageLayout>
+    </Content>
   );
 };
 export default BasicContracts;

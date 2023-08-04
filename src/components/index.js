@@ -7,4 +7,5 @@ export * from "./footer/footer";
 export * from "./header/header";
 export * from "./sidebar/sidebar";
 export * from "./user/user";
-export * from "./links/links"
+export * from "./links/links";
+export * from "./table/table";

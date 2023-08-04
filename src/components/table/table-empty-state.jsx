@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { ReactComponent as HelpIcon } from "../../../assets/icons/help-desk.svg";
+import { ReactComponent as HelpIcon } from "../../assets/icons/help-desk.svg";
 
 const TableEmptyState = () => {
   return (

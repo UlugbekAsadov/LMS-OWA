@@ -1,3 +1,17 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.custom__sidebar:hover .brand__logo-sidebar {
+  transition: 0.2s ease-in-out;
+  width: 120px;
+}
+
+.custom__sidebar .brand__logo-sidebar {
+  transition: 0.2s ease-in-out;
+  width: 36px;
+}
+
+.custom__sidebar .brand__logo-sidebar.active {
+  transition: 0.2s ease-in-out;
+  width: 120px;
+}

@@ -1,6 +1,6 @@
-import { useState, createContext, useContext, useEffect } from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
+import { useState, createContext, useContext, useEffect } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const ThemeContext = createContext();
 const ThemeUpdateContext = createContext();
@@ -15,16 +15,15 @@ export function useThemeUpdate() {
 
 const ThemeProvider = ({ ...props }) => {
   const defaultTheme = {
-    main: "default", //other value can be passed "bordered"
-    sidebar: "white", //other value can be passed "light,dark,theme"
+    main: 'default', //other value can be passed "bordered"
+    sidebar: 'white', //other value can be passed "light,dark,theme"
     sidebarCompact: false,
     sidebarVisibility: false,
     sidebarMobile: false,
-    header: "white", //other value can be passed "light,dark,theme"
-    skin: "light", //other value can be passed "dark"
+    header: 'white', //other value can be passed "light,dark,theme"
+    skin: 'light', //other value can be passed "dark"
   };
   const [theme, setTheme] = useState(defaultTheme);
-
   const themeUpdate = {
     uistyle: function (value) {
       setTheme({ ...theme, main: value });
@@ -59,33 +58,33 @@ const ThemeProvider = ({ ...props }) => {
   };
 
   const bodyClass = classNames({
-    "nk-body bg-lighter npc-default has-sidebar no-touch nk-nio-theme": true,
+    'nk-body bg-lighter npc-default has-sidebar no-touch nk-nio-theme': true,
   });
 
   useEffect(() => {
-    const body = document.querySelector("body");
+    const body = document.querySelector('body');
     body.className = bodyClass;
   }, []);
 
   useEffect(() => {
-    const body = document.querySelector("body");
-    if (theme.main === "default") {
-      body.classList.add("ui-default");
-      body.classList.remove("ui-bordered");
+    const body = document.querySelector('body');
+    if (theme.main === 'default') {
+      body.classList.add('ui-default');
+      body.classList.remove('ui-bordered');
     }
-    if (theme.main === "bordered") {
+    if (theme.main === 'bordered') {
       body.classList.add(`ui-bordered`);
-      body.classList.remove("ui-default");
+      body.classList.remove('ui-default');
     }
-    if (theme.skin === "dark") {
+    if (theme.skin === 'dark') {
       body.classList.add(`dark-mode`);
     } else {
-      body.classList.remove("dark-mode");
+      body.classList.remove('dark-mode');
     }
     if (theme.sidebarVisibility === true) {
-      body.classList.add("nav-shown");
+      body.classList.add('nav-shown');
     } else {
-      body.classList.remove("nav-shown");
+      body.classList.remove('nav-shown');
     }
   }, [theme]);
 

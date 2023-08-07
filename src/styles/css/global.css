@@ -1,3 +1,21 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.custom__sidebar:hover .brand__logo-sidebar {
+  transition: 0.2s ease-in-out;
+  width: 120px;
+}
+
+.custom__sidebar .brand__logo-sidebar {
+  transition: 0.2s ease-in-out;
+  width: 36px;
+}
+
+.custom__sidebar .brand__logo-sidebar.active {
+  transition: 0.2s ease-in-out;
+  width: 120px;
+}
+.nk-menu-item .nk-menu-link.active {
+  color: #9769ff !important;
+  background: #ebeef2;
+}

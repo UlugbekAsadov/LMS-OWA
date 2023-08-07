@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { ReactComponent as BrandLogo } from "../../assets/images/logo.svg";
-import { Alert, Form, Spinner } from "reactstrap";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { InputMask } from "primereact/inputmask";
+import { useState } from 'react';
+import { ReactComponent as BrandLogo } from '../../assets/icons/logo.svg';
+import { Alert, Form, Spinner } from 'reactstrap';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { InputMask } from 'primereact/inputmask';
 import {
   Block,
   BlockContent,
@@ -12,19 +12,19 @@ import {
   BlockTitle,
   Icon,
   PreviewCard,
-} from "../../components";
-import Button from "../../components/button/button";
-import AuthFooter from "../components/auth-footer";
-import { useMutation } from "react-query";
-import { loginMutationFn } from "../../react-query/mutations";
-import { ERROR_MESSAGE_TRANSLATIONS } from "../../utils/enums/auth.enum";
+} from '../../components';
+import Button from '../../components/button/button';
+import AuthFooter from '../components/auth-footer';
+import { useMutation } from 'react-query';
+import { loginMutationFn } from '../../react-query/mutations';
+import { ERROR_MESSAGE_TRANSLATIONS } from '../../utils/enums/auth.enum';
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [errorValidation, setErrorValidation] = useState(null);
 
   const loginMutation = useMutation({
-    mutationKey: ["user"],
+    mutationKey: ['user'],
     mutationFn: (formData) => loginMutationFn(formData),
     onSuccess: (res) => onSuccessFn(res),
   });
@@ -34,14 +34,14 @@ const Login = () => {
       return setErrorValidation(ERROR_MESSAGE_TRANSLATIONS[res.error.message]);
     }
 
-    localStorage.setItem("u_at", res.data.token);
-    const callbackUri = window.location.href.split("=")[1];
+    localStorage.setItem('u_at', res.data.token);
+    const callbackUri = window.location.href.split('=')[1];
     window.location.replace(callbackUri || window.location.origin);
   };
 
   const onFormSubmit = async (formData) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
-    formData.phone = formData.phone.replace(regex, "$1$2$3$4");
+    formData.phone = formData.phone.replace(regex, '$1$2$3$4');
     loginMutation.mutateAsync(formData);
   };
 
@@ -49,7 +49,12 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      phone: '991234567',
+      password: '1234567',
+    },
+  });
 
   return (
     <>
@@ -65,10 +70,7 @@ const Login = () => {
             <BlockContent>
               <BlockTitle tag="h4">Kirish</BlockTitle>
               <BlockDes>
-                <p>
-                  Shartnoma tizimiga faqat ro’yxatdan o’tgan foydalanuvchilar
-                  kirishi mumkin
-                </p>
+                <p>Shartnoma tizimiga faqat ro’yxatdan o’tgan foydalanuvchilar kirishi mumkin</p>
               </BlockDes>
             </BlockContent>
           </BlockHead>
@@ -93,16 +95,14 @@ const Login = () => {
                   </div>
                   <InputMask
                     id="phone"
-                    {...register("phone", {
-                      required: "This field is required",
+                    {...register('phone', {
+                      required: 'This field is required',
                     })}
                     className="form-control-lg form-control"
                     mask="(99) 999-99-99"
                     placeholder="(99) 999-99-99"
                   />
-                  {errors.name && (
-                    <span className="invalid">{errors.name.message}</span>
-                  )}
+                  {errors.name && <span className="invalid">{errors.name.message}</span>}
                 </div>
               </div>
             </div>
@@ -116,45 +116,31 @@ const Login = () => {
                 <span
                   onClick={() => setIsPasswordVisible((prevVal) => !prevVal)}
                   className={`form-icon lg form-icon-right passcode-switch cursor-pointer ${
-                    isPasswordVisible ? "is-hidden" : "is-shown"
+                    isPasswordVisible ? 'is-hidden' : 'is-shown'
                   }`}
                 >
                   <Icon name="eye" className="passcode-icon icon-show"></Icon>
 
-                  <Icon
-                    name="eye-off"
-                    className="passcode-icon icon-hide"
-                  ></Icon>
+                  <Icon name="eye-off" className="passcode-icon icon-hide"></Icon>
                 </span>
                 <input
                   autoComplete="new-password"
-                  type={isPasswordVisible ? "text" : "password"}
+                  type={isPasswordVisible ? 'text' : 'password'}
                   id="password"
-                  {...register("password", {
-                    required: "This field is required",
+                  {...register('password', {
+                    required: 'This field is required',
                   })}
                   placeholder="Parolingizni kiriting"
                   className={`form-control-lg form-control ${
-                    isPasswordVisible ? "is-hidden" : "is-shown"
+                    isPasswordVisible ? 'is-hidden' : 'is-shown'
                   }`}
                 />
-                {errors.passcode && (
-                  <span className="invalid">{errors.passcode.message}</span>
-                )}
+                {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
               </div>
             </div>
             <div className="form-group">
-              <Button
-                size="lg"
-                className="btn-block"
-                type="submit"
-                color="primary"
-              >
-                {loginMutation.isLoading ? (
-                  <Spinner size="sm" color="light" />
-                ) : (
-                  "Kirish"
-                )}
+              <Button size="lg" className="btn-block" type="submit" color="primary">
+                {loginMutation.isLoading ? <Spinner size="sm" color="light" /> : 'Kirish'}
               </Button>
             </div>
           </Form>

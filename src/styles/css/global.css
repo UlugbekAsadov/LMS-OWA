@@ -15,3 +15,7 @@
   transition: 0.2s ease-in-out;
   width: 120px;
 }
+.nk-menu-item .nk-menu-link.active {
+  color: #9769ff !important;
+  background: #ebeef2;
+}

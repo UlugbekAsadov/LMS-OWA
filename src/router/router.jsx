@@ -6,6 +6,7 @@ import Login from "../pages/auth/login";
 import BasicContracts from "../pages/basic-contract/basic-contract";
 import FutureProfessionsContract from "../pages/future-professions-contract/future-professions-contract";
 import CoursesList from "../pages/courses/courses-list.jsx";
+import ContractsTypeList from "../pages/courses/contracts-type-list.jsx";
 
 export const Router = () => {
   return (
@@ -22,7 +23,7 @@ export const Router = () => {
           <Route path="basic-contract" element={<BasicContracts />} />
             <Route path="grand-contract" element={<FutureProfessionsContract/>}/>
             <Route path="courses-list" element={<CoursesList/>}/>
-            <Route path="contracts-type-list" element={<>contracts-type-list</>}/>
+            <Route path="contracts-type-list" element={<ContractsTypeList/>}/>
         </Route>
 
         <Route path="/" element={<Layout />}>

@@ -6,7 +6,7 @@ import Login from "../pages/auth/login";
 import BasicContracts from "../pages/basic-contract/basic-contract";
 import FutureProfessionsContract from "../pages/future-professions-contract/future-professions-contract";
 import CoursesList from "../pages/courses/courses-list.jsx";
-import ContractsTypeList from "../pages/courses/contracts-type-list.jsx";
+import ContractsTypeList from "../pages/contracts/contracts-type-list.jsx";
 
 export const Router = () => {
   return (

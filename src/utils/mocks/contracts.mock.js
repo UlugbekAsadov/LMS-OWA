@@ -618,6 +618,114 @@ export const tableDataList = [
     status: "Complete",
   },
 ];
+export const tableDataContractType = [
+  {
+    id: 1,
+    name: "Gavhar Niyozova",
+    courses: "KK"
+  },
+  {
+    id: 2,
+    name: "Ashley Lawson",
+    courses: "KK"
+  },
+  {
+    id: 3,
+    name: "Joe Larson",
+    courses: "KK"
+  },
+  {
+    id: 4,
+    name: "Jane Montgomery",
+    courses: "KK"
+  },
+  {
+    id: 5,
+    name: "Frances Burns",
+    courses: "KK"
+  },
+  {
+    id: 6,
+    name: "Alan Butler",
+    courses: "KK"
+  },
+  {
+    id: 7,
+    name: "Victoria Lynch",
+    courses: "KK"
+  },
+  {
+    id: 8,
+    name: "Patrick Newman",
+    courses: "KK"
+  },
+  {
+    id: 9,
+    name: "Billiard Homes",
+    courses: "KK"
+  },
+  {
+    id: 10,
+    name: "Ashley Anderson",
+    courses: "KK"
+  },
+  {
+    id: 11,
+    name: "Jim Larson",
+    courses: "KK"
+  },
+  {
+    id: 12,
+    name: "Jane Gomez",
+    courses: "KK"
+  },
+  {
+    id: 13,
+    name: "Frances Airens",
+    courses: "KK"
+  },
+  {
+    id: 14,
+    name: "James Butler",
+    courses: "KK"
+  },
+  {
+    id: 15,
+    name: "Jack Simmons",
+    courses: "KK"
+  },
+  {
+    id: 16,
+    name: "Gavhar Niyozova",
+    courses: "KK"
+  },
+  {
+    id: 17,
+    name: "Ashley Lawson",
+    courses: "KK"
+  },
+  {
+    id: 18,
+    name: "Joe Larson",
+    courses: "KK"
+  },
+  {
+    id: 19,
+    name: "Jane Montgomery",
+    courses: "KK"
+  },
+  {
+    id: 20,
+    name: "Frances Burns",
+    courses: "KK"
+  },
+  {
+    id: 21,
+    name: "Alan Butler",
+    courses: "KK"
+  }
+];
+
 export const coursesMock = [
   {
     value: "FRONTEND",

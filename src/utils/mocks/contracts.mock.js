@@ -322,7 +322,7 @@ export const representativeMock = [
   },
 ];
 
-export const tableDataList = [
+export const tableDataListMock = [
   {
     id: 1,
     orderId: "KK-0001",
@@ -618,7 +618,115 @@ export const tableDataList = [
     status: "Complete",
   },
 ];
-export const tableDataContractType = [
+
+export const educationCentersListMock = [
+  {
+    id: 1,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 2,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 3,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 4,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 5,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 6,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 7,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 8,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 9,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 10,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 11,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 12,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 13,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 14,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 15,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 16,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 17,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 18,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 19,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 20,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+  {
+    id: 21,
+    name: "Open web academy",
+    phone: "+998 90 716 75 50"
+  },
+];
+export const tableDataContractTypeMock = [
   {
     id: 1,
     name: "Gavhar Niyozova",
@@ -740,3 +848,4 @@ export const coursesMock = [
     duration: 6,
   },
 ];
+

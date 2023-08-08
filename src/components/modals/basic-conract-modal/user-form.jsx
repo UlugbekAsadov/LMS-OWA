@@ -2,10 +2,11 @@ import { forwardRef, useEffect, useState } from "react";
 import { Label, Row, Spinner } from "reactstrap";
 import DatePicker from "react-datepicker";
 import { Col } from "reactstrap";
-import { citiesMock, provinceMock } from "../../../utils/mocks";
 import { Icon } from "../../icon/icon";
 import RSelect from "../../react-select/react-select";
 import PropTypes from "prop-types";
+import { useQuery } from "react-query";
+import { getCitiesQuery, getRegionsQuery } from "../../../react-query/queries";
 // eslint-disable-next-line react/display-name
 const ExampleCustomInput = forwardRef(({ value, onClick, onChange }, ref) => (
   <div onClick={onClick} ref={ref}>
@@ -33,10 +34,40 @@ const UserForm = ({ isAutomatic, data }) => {
     new Date("01/01/2010")
   );
   const [selectedProvince, setSelectedProvince] = useState(null);
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
   const [selectedCity, setSelectedCity] = useState(null);
   const [isFetchingPINFL, setIsFetchingPINFL] = useState(false);
   const [hasError, setHasError] = useState(true);
   const [pinflValue, setPinflValue] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const regionsQuery = useQuery({
+    queryKey: "regions",
+    queryFn: () => getRegionsQuery(),
+    onSuccess: (data) => {
+      const provinces = data.map((region) => {
+        return {
+          value: region.name_lt,
+          id: region.region_id,
+          label: region.name_lt,
+        };
+      });
+
+      setProvinces(provinces);
+    },
+  });
+
+  const citiesQuery = useQuery({
+    queryKey: "cities",
+    queryFn: () => getCitiesQuery(selectedProvince?.id || 1),
+    onSuccess: (data) => {
+      const cities = data.map((cities) => {
+        return { value: cities.name_lt, id: cities.id, label: cities.name_lt };
+      });
+
+      setCities(cities);
+    },
+  });
 
   const getPNFLData = () => {
     setIsFetchingPINFL(true);
@@ -63,6 +94,10 @@ const UserForm = ({ isAutomatic, data }) => {
       getPNFLData();
     }
   }, [pinflValue]);
+
+  useEffect(() => {
+    citiesQuery.refetch();
+  }, [selectedProvince]);
 
   return (
     <Row className="gy-2">
@@ -245,7 +280,7 @@ const UserForm = ({ isAutomatic, data }) => {
             <div className="form-group">
               <label className="form-label">Select Default</label>
               <RSelect
-                options={provinceMock}
+                options={provinces}
                 value={selectedProvince}
                 onChange={handleChangeProvince}
                 isDisabled={isAutomatic}
@@ -257,7 +292,7 @@ const UserForm = ({ isAutomatic, data }) => {
             <div className="form-group">
               <label className="form-label">Select Default</label>
               <RSelect
-                options={citiesMock[selectedProvince?.value]}
+                options={cities}
                 value={selectedCity}
                 onChange={handleChangeCity}
                 isDisabled={isAutomatic}

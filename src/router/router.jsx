@@ -14,7 +14,7 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/auth-login" element={<Login />} />
-
+{/* 
         <Route
           path="/"
           element={
@@ -34,7 +34,7 @@ export const Router = () => {
           />
           <Route path="courses-list" element={<CoursesList />} />
           <Route path="contracts-type-list" element={<ContractsTypeList />} />
-        </Route>
+        </Route> */}
 
         {/* 
         <Route path="/" element={<Layout />}>

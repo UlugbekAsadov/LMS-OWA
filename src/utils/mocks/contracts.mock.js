@@ -834,6 +834,135 @@ export const tableDataContractTypeMock = [
   }
 ];
 
+export const staffsMok = [
+  {
+    id: 1,
+    name: "Gavhar Niyozova",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 2,
+    name: "Ashley Lawson",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 3,
+    name: "Joe Larson",
+    status: "CEO",
+    phone: "+998 90 716 75 50 ",
+  },
+  {
+    id: 4,
+    name: "Jane Montgomery",
+    status: "CEOd",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 5,
+    name: "Frances Burns",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 6,
+    name: "Alan Butler",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 7,
+    name: "Victoria Lynch",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 8,
+    name: "Patrick Newman",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 9,
+    name: "Billiard Homes",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 10,
+    name: "Ashley Anderson",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 11,
+    name: "Jim Larson",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 12,
+    name: "Jane Gomez",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 13,
+    name: "Frances Airens",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 14,
+    name: "James Butler",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 15,
+    name: "Jack Simmons",
+    status: "CEOd",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 16,
+    name: "Gavhar Niyozova",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 17,
+    name: "Ashley Lawson",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 18,
+    name: "Joe Larson",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 19,
+    name: "Jane Montgomery",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 20,
+    name: "Frances Burns",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+  {
+    id: 21,
+    name: "Alan Butler",
+    status: "CEO",
+    phone: "+998 90 716 75 50",
+  },
+]
+
 export const coursesMock = [
   {
     value: "FRONTEND",

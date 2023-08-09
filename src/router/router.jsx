@@ -1,6 +1,6 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "../App";
-import {ProtectedRoute} from "./protected-router";
+import { ProtectedRoute } from "./protected-router";
 import Layout from "../layout/layout-no-sidebar/layout-no-sidebar";
 import Login from "../pages/auth/login";
 import BasicContracts from "../pages/basic-contract/basic-contract";
@@ -13,6 +13,8 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="auth-login" element={<Login />} />
+
         <Route
           path="/"
           element={
@@ -22,17 +24,22 @@ export const Router = () => {
           }
         >
           <Route path="basic-contract" element={<BasicContracts />} />
-            <Route path="educational-center" element={<EducationalCentersPage/>}/>
-            <Route path="grand-contract" element={<FutureProfessionsContract/>}/>
-            <Route path="courses-list" element={<CoursesList/>}/>
-            <Route path="contracts-type-list" element={<ContractsTypeList/>}/>
+          <Route
+            path="educational-center"
+            element={<EducationalCentersPage />}
+          />
+          <Route
+            path="grand-contract"
+            element={<FutureProfessionsContract />}
+          />
+          <Route path="courses-list" element={<CoursesList />} />
+          <Route path="contracts-type-list" element={<ContractsTypeList />} />
         </Route>
 
         <Route path="/" element={<Layout />}>
           {/* <Route path="auth-success" element={<Success />}></Route>
           <Route path="auth-reset" element={<ForgotPassword />}></Route>
           <Route path="auth-register" element={<Register />}></Route> */}
-          <Route path="auth-login" element={<Login />}></Route>
 
           {/* <Route path="errors">
             <Route path="404-modern" element={<Error404Modern />}></Route>

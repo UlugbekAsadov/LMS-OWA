@@ -8,33 +8,35 @@ import FutureProfessionsContract from "../pages/future-professions-contract/futu
 import CoursesList from "../pages/courses/courses-list.jsx";
 import ContractsTypeList from "../pages/contracts/contracts-type-list.jsx";
 import EducationalCentersPage from "../pages/educational-centers/educational-centers-page.jsx";
+import StaffsPage from "../pages/educational-centers/staffs/staffs-page.jsx";
 
 export const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute hasAccessRoles={["BASIC"]}>
-              <App />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="basic-contract" element={<BasicContracts />} />
-            <Route path="educational-center" element={<EducationalCentersPage/>}/>
-            <Route path="grand-contract" element={<FutureProfessionsContract/>}/>
-            <Route path="courses-list" element={<CoursesList/>}/>
-            <Route path="contracts-type-list" element={<ContractsTypeList/>}/>
-        </Route>
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <ProtectedRoute hasAccessRoles={["BASIC"]}>
+                        <App/>
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="basic-contract" element={<BasicContracts/>}/>
+                <Route path="educational-center" element={<EducationalCentersPage/>}/>
+                <Route path="staffs-list" element={<StaffsPage/>}/>
+                <Route path="grand-contract" element={<FutureProfessionsContract/>}/>
+                <Route path="courses-list" element={<CoursesList/>}/>
+                <Route path="contracts-type-list" element={<ContractsTypeList/>}/>
+            </Route>
 
-        <Route path="/" element={<Layout />}>
-          {/* <Route path="auth-success" element={<Success />}></Route>
+            <Route path="/" element={<Layout/>}>
+                {/* <Route path="auth-success" element={<Success />}></Route>
           <Route path="auth-reset" element={<ForgotPassword />}></Route>
           <Route path="auth-register" element={<Register />}></Route> */}
-          <Route path="auth-login" element={<Login />}></Route>
+                <Route path="auth-login" element={<Login/>}></Route>
 
-          {/* <Route path="errors">
+                {/* <Route path="errors">
             <Route path="404-modern" element={<Error404Modern />}></Route>
             <Route path="404-classic" element={<Error404Classic />}></Route>
             <Route path="504-modern" element={<Error504Modern />}></Route>

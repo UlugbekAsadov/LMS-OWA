@@ -45,7 +45,9 @@ const EducationalCentersPage = () => {
                 </td>
                 <td className="tb-odr-action">
                     <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-                        <Icon className={'cursor-pointer'} name="user-circle"/>
+                        <Link className={'text-base'} to={'/staffs-list'}>
+                            <Icon className={'cursor-pointer'} name="user-circle"/>
+                        </Link>
                         <span className="p-2">
                             <Icon className={'cursor-pointer'} name="trash"/>
                         </span>
@@ -60,7 +62,8 @@ const EducationalCentersPage = () => {
             </tr>)
     });
 
-    return (<Content title="O'quv markazlar">
+    return (
+        <Content title="O'quv markazlar">
             <PageHeader
                 pageTitle={"O'quv markazlar"}
                 btnTitle={"O’quv markaz qoshish"}
@@ -79,6 +82,7 @@ const EducationalCentersPage = () => {
                 tableBody={currentItems.length ? tableBody : null}
                 tableHeader={tableHeader}
             />
-        </Content>)
+        </Content>
+    )
 }
 export default EducationalCentersPage

@@ -36,19 +36,20 @@ export const Router = () => {
           <Route path="contracts-type-list" element={<ContractsTypeList />} />
         </Route>
 
+        {/* 
         <Route path="/" element={<Layout />}>
-          {/* <Route path="auth-success" element={<Success />}></Route>
+          <Route path="auth-success" element={<Success />}></Route>
           <Route path="auth-reset" element={<ForgotPassword />}></Route>
-          <Route path="auth-register" element={<Register />}></Route> */}
-
-          {/* <Route path="errors">
+          <Route path="auth-register" element={<Register />}></Route> 
+           <Route path="errors">
             <Route path="404-modern" element={<Error404Modern />}></Route>
             <Route path="404-classic" element={<Error404Classic />}></Route>
             <Route path="504-modern" element={<Error504Modern />}></Route>
             <Route path="504-classic" element={<Error504Classic />}></Route>
           </Route>
-          <Route path="*" element={<Error404Modern />}></Route> */}
+          <Route path="*" element={<Error404Modern />}></Route> 
         </Route>
+          */}
       </Routes>
     </BrowserRouter>
   );

@@ -14,7 +14,9 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/auth-login" element={<Login />} />
-{/* 
+        <Route path="/login" element={<Login />} />
+        <Route path="/22" element={<>22</>} />
+        {/* 
         <Route
           path="/"
           element={

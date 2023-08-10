@@ -1,20 +1,30 @@
 import PageHeader from "../../components/page-header/page-header.jsx";
 import {Icon, Table} from "../../components/index.js";
 import {TablePagination} from "../../components/pagination/pagination.jsx";
-import {tableDataContractTypeMock} from "../../utils/mocks/index.js";
 import {Content} from "../../layout/page-layout/page-layout.jsx";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import {Button} from "reactstrap";
+import {useQuery} from "react-query";
+import {getHotCategoriesQuery} from "../../react-query/query/index.js";
 
 const ContractsTypeList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage] = useState(20);
+
+    const {data} = useQuery({
+        queryFn: () => getHotCategoriesQuery(),
+        queryKey: ['contractsType']
+    })
+
+    console.log(data)
+
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const indexOfLastItem = currentPage * itemPerPage;
     const indexOfFirstItem = indexOfLastItem - itemPerPage;
-    const currentItems = tableDataContractTypeMock.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
 
     const tableHeader = (
@@ -45,7 +55,7 @@ const ContractsTypeList = () => {
                 </td>
                 <td className="tb-odr-amount">
                     <span className="tb-odr-total">
-                      <span className="amount">{item.courses}</span>
+                      <span className="amount">{item.short_letter}</span>
                     </span>
                 </td>
                 <td className="tb-odr-action">
@@ -79,7 +89,7 @@ const ContractsTypeList = () => {
                 pagination={
                     <TablePagination
                         itemPerPage={itemPerPage}
-                        totalItems={tableDataContractTypeMock.length}
+                        totalItems={data.length}
                         paginate={paginate}
                         currentPage={currentPage}
                     />

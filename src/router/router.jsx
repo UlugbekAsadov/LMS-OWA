@@ -7,6 +7,7 @@ import BasicContracts from "../pages/basic-contract/basic-contract";
 import FutureProfessionsContract from "../pages/future-professions-contract/future-professions-contract";
 import CoursesList from "../pages/courses/courses-list.jsx";
 import ContractsTypeList from "../pages/contracts/contracts-type-list.jsx";
+import { USER_ROLES } from "../utils/enums";
 
 export const Router = () => {
   return (
@@ -15,12 +16,12 @@ export const Router = () => {
         <Route
           path="/"
           element={
-            <ProtectedRoute hasAccessRoles={['BASIC']}>
+            <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN, USER_ROLES.OWNER, USER_ROLES.SUPER_ADMIN]}>
               <App />
             </ProtectedRoute>
           }
         >
-          <Route path="basic-contract" element={<BasicContracts />} />
+          <Route path="basic-contracts" element={<BasicContracts />} />
           <Route
             path="grand-contract"
             element={<FutureProfessionsContract />}

@@ -8,6 +8,8 @@ import FutureProfessionsContract from "../pages/future-professions-contract/futu
 import CoursesList from "../pages/courses/courses-list.jsx";
 import ContractsTypeList from "../pages/contracts/contracts-type-list.jsx";
 import { USER_ROLES } from "../utils/enums";
+import EducationalCentersPage from "../pages/educational-centers/educational-centers-page";
+import StaffsPage from "../pages/educational-centers/staffs/staffs-page";
 
 export const Router = () => {
   return (
@@ -16,16 +18,21 @@ export const Router = () => {
         <Route
           path="/"
           element={
-            <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN, USER_ROLES.OWNER, USER_ROLES.SUPER_ADMIN]}>
+            <ProtectedRoute
+              hasAccessRoles={[
+                USER_ROLES.ADMIN,
+                USER_ROLES.OWNER,
+                USER_ROLES.SUPER_ADMIN,
+              ]}
+            >
               <App />
             </ProtectedRoute>
           }
         >
-          <Route path="basic-contracts" element={<BasicContracts />} />
-          <Route
-            path="grand-contract"
-            element={<FutureProfessionsContract />}
-          />
+          <Route path="basic-contract" element={<BasicContracts />} />
+          <Route path="educational-center" element={<EducationalCentersPage />}/>
+          <Route path="staffs-list" element={<StaffsPage />} />
+          <Route path="grand-contract" element={<FutureProfessionsContract />} />
           <Route path="courses-list" element={<CoursesList />} />
           <Route path="contracts-type-list" element={<ContractsTypeList />} />
         </Route>

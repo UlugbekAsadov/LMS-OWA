@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import App from '../App';
-import { ProtectedRoute } from './protected-router';
+import {ProtectedRoute} from './protected-router';
 import Layout from '../layout/layout-no-sidebar/layout-no-sidebar';
 import Login from '../pages/auth/login';
 import BasicContracts from '../pages/basic-contract/basic-contract';

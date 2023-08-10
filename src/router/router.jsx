@@ -29,7 +29,7 @@ export const Router = () => {
             </ProtectedRoute>
           }
         >
-          <Route path="basic-contract" element={<BasicContracts />} />
+          <Route path="basic-contracts" element={<BasicContracts />} />
           <Route path="educational-center" element={<EducationalCentersPage />}/>
           <Route path="staffs-list" element={<StaffsPage />} />
           <Route path="grand-contract" element={<FutureProfessionsContract />} />

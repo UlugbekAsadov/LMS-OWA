@@ -31,7 +31,7 @@ export const menuMock = [
     subMenu: [
       {
         text: "Oddiy shartnomalar",
-        link: "/basic-contract",
+        link: "/basic-contracts",
       },
       {
         text: "Kelajak kasblari",

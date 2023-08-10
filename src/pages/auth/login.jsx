@@ -1,23 +1,15 @@
-import { useState } from 'react';
-import { ReactComponent as BrandLogo } from '../../assets/icons/logo.svg';
-import { Alert, Form, Spinner } from 'reactstrap';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { InputMask } from 'primereact/inputmask';
-import {
-  Block,
-  BlockContent,
-  BlockDes,
-  BlockHead,
-  BlockTitle,
-  Icon,
-  PreviewCard,
-} from '../../components';
+import {useState} from 'react';
+import {ReactComponent as BrandLogo} from '../../assets/icons/logo.svg';
+import {Alert, Form, Spinner} from 'reactstrap';
+import {useForm} from 'react-hook-form';
+import {Link} from 'react-router-dom';
+import {InputMask} from 'primereact/inputmask';
+import {Block, BlockContent, BlockDes, BlockHead, BlockTitle, Icon, PreviewCard,} from '../../components';
 import Button from '../../components/button/button';
-import AuthFooter from '../components/auth-footer';
-import { useMutation } from 'react-query';
-import { loginMutationFn } from '../../react-query/mutations';
-import { ERROR_MESSAGE_TRANSLATIONS } from '../../utils/enums/auth.enum';
+import AuthFooter from '../../pages/components/auth-footer.jsx';
+import {useMutation} from 'react-query';
+import {loginMutationFn} from '../../react-query/mutations';
+import {ERROR_MESSAGE_TRANSLATIONS} from '../../utils/enums/auth.enum';
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

@@ -1,4 +1,5 @@
-import { Row } from "../../components";
+import { Row } from '../../components';
+
 
 const AuthFooter = () => {
   return (
@@ -7,15 +8,10 @@ const AuthFooter = () => {
         <Row className="g-3">
           <div className="text-center">
             <p className="text-soft">
-              Tizim {" "}
-              <a
-                href="https://owa.uz/"
-                target="_blank"
-                rel="noreferrer"
-                className="text-soft"
-              >
+              Tizim{' '}
+              <a href="https://owa.uz/" target="_blank" rel="noreferrer" className="text-soft">
                 <u>OPEN WEB</u>
-              </a>{" "}
+              </a>{' '}
               kompaniyasi tomonidan ishlab chiqilgan
             </p>
           </div>

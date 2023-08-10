@@ -6,7 +6,6 @@ import classNames from "classnames";
 import { Icon } from "../icon/icon";
 import { Link, NavLink } from "react-router-dom";
 import { useQuery } from "react-query";
-import { USER_ROLES } from "../../utils/enums";
 
 const MenuHeading = ({ heading }) => {
   return (
@@ -344,7 +343,6 @@ export const Menu = ({ sidebarToggle, mobileView }) => {
   const [data, setMenuData] = useState(menuMock);
   const user = useQuery({ queryKey: ["user"] });
 
-  console.log(user);
   useEffect(() => {
     data.forEach((item, index) => {
       if (item.panel) {

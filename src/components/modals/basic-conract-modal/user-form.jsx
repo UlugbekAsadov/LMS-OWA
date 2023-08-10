@@ -6,7 +6,14 @@ import { Icon } from "../../icon/icon";
 import RSelect from "../../react-select/react-select";
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
-import { getCitiesQuery, getRegionsQuery } from "../../../react-query/queries";
+import {
+  getCitiesQuery,
+  getPINFLQuery,
+  // getPINFLQuery,
+  getRegionsQuery,
+} from "../../../react-query/queries";
+import { useBasicContracts } from "../../../context";
+import { convertDate } from "../../../utils/functions";
 // eslint-disable-next-line react/display-name
 const ExampleCustomInput = forwardRef(({ value, onClick, onChange }, ref) => (
   <div onClick={onClick} ref={ref}>
@@ -39,9 +46,18 @@ const UserForm = ({ isAutomatic, data }) => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [isFetchingPINFL, setIsFetchingPINFL] = useState(false);
   const [hasError, setHasError] = useState(true);
-  const [pinflValue, setPinflValue] = useState("");
-  // eslint-disable-next-line no-unused-vars
-  const regionsQuery = useQuery({
+  const { register, watch, setValue } = useBasicContracts();
+
+  const pinflValue = watch("pin");
+
+  const { refetch } = useQuery({
+    queryKey: ["PINFL"],
+    queryFn: () => getPINFLQuery(pinflValue),
+    enabled: false,
+    onSuccess: () => setIsFetchingPINFL(false),
+  });
+
+  useQuery({
     queryKey: "regions",
     queryFn: () => getRegionsQuery(),
     onSuccess: (data) => {
@@ -71,12 +87,7 @@ const UserForm = ({ isAutomatic, data }) => {
 
   const getPNFLData = () => {
     setIsFetchingPINFL(true);
-
-    // API goes here
-
-    setTimeout(() => {
-      setIsFetchingPINFL(false);
-    }, 1000);
+    refetch();
   };
 
   const handleChangeProvince = (value) => {
@@ -99,6 +110,22 @@ const UserForm = ({ isAutomatic, data }) => {
     citiesQuery.refetch();
   }, [selectedProvince]);
 
+  useEffect(() => {
+    setValue("birthday", convertDate(bornDate));
+  }, [bornDate, setValue]);
+
+  useEffect(() => {
+    setValue("document_given_date", convertDate(passportExpireDate));
+  }, [passportExpireDate, setValue]);
+
+  useEffect(() => {
+    setValue("region_id", selectedProvince?.id);
+  }, [selectedProvince, setValue]);
+
+  useEffect(() => {
+    setValue("district_id", selectedCity?.id);
+  }, [selectedCity, setValue]);
+
   return (
     <Row className="gy-2">
       <Col sm="12">
@@ -111,8 +138,7 @@ const UserForm = ({ isAutomatic, data }) => {
               className={`form-control ${hasError ? "error" : null}`}
               type="text"
               id="default-0"
-              value={pinflValue}
-              onChange={(e) => setPinflValue(e.target.value)}
+              {...register("pin", { required: true })}
               placeholder="Jismoniy shaxsning shaxsiy identifikatsion raqami"
               maxLength="14"
               onKeyPress={(event) => {
@@ -149,6 +175,7 @@ const UserForm = ({ isAutomatic, data }) => {
                   placeholder="AB"
                   maxLength="2"
                   disabled={isAutomatic}
+                  {...register("document_serial", { required: true })}
                 />
               </div>
             </div>
@@ -164,6 +191,7 @@ const UserForm = ({ isAutomatic, data }) => {
                   type="text"
                   id="default-0"
                   placeholder="1234567"
+                  {...register("document_number", { required: true })}
                   disabled={isAutomatic}
                   maxLength="7"
                   onKeyPress={(event) => {
@@ -206,6 +234,7 @@ const UserForm = ({ isAutomatic, data }) => {
                   type="text"
                   id="default-0"
                   placeholder="Berilgan joyi"
+                  {...register("document_given", { required: true })}
                 />
               </div>
             </div>
@@ -236,6 +265,7 @@ const UserForm = ({ isAutomatic, data }) => {
                 <input
                   className="form-control"
                   disabled={isAutomatic}
+                  {...register("first_name", { required: true })}
                   type="text"
                   id="default-0"
                   placeholder="Ismi"
@@ -252,6 +282,7 @@ const UserForm = ({ isAutomatic, data }) => {
                 <input
                   disabled={isAutomatic}
                   className="form-control"
+                  {...register("last_name", { required: true })}
                   type="text"
                   id="default-0"
                   placeholder="Familiya"
@@ -267,6 +298,7 @@ const UserForm = ({ isAutomatic, data }) => {
               <div className="form-control-wrap">
                 <input
                   className="form-control"
+                  {...register("middle_name", { required: true })}
                   type="text"
                   id="default-0"
                   placeholder="Otasining ismi"
@@ -311,6 +343,7 @@ const UserForm = ({ isAutomatic, data }) => {
                   type="text"
                   id="default-0"
                   placeholder="Yashash manzili"
+                  {...register("address", { required: true })}
                 />
               </div>
             </div>

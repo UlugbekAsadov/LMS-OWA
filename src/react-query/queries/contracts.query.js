@@ -5,3 +5,6 @@ export const getRegionsQuery = async () =>
 
 export const getCitiesQuery = (regionId) =>
   api(`/places/districts/${regionId}`).then((data) => data.data);
+
+export const getPINFLQuery = (pinfl) =>
+  api(`/contract/additional/${pinfl}`).then((data) => data);

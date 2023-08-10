@@ -30,9 +30,19 @@ export const Router = () => {
           }
         >
           <Route path="basic-contracts" element={<BasicContracts />} />
-          <Route path="educational-center" element={<EducationalCentersPage />}/>
+          <Route
+            path="educational-center"
+            element={
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
+                <EducationalCentersPage />{" "}
+              </ProtectedRoute>
+            }
+          />
           <Route path="staffs-list" element={<StaffsPage />} />
-          <Route path="grand-contract" element={<FutureProfessionsContract />} />
+          <Route
+            path="grand-contract"
+            element={<FutureProfessionsContract />}
+          />
           <Route path="courses-list" element={<CoursesList />} />
           <Route path="contracts-type-list" element={<ContractsTypeList />} />
         </Route>

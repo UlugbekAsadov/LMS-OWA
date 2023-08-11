@@ -1,20 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "reactstrap";
 import Button from "../../button/button";
-import { coursesMock } from "../../../utils/mocks";
 import { Col, Row } from "../../grid/grid";
 import RSelect from "../../react-select/react-select";
+import { useQuery } from "react-query";
+import { getCoursesQuery } from "../../../react-query/queries/courses.query";
+import { useBasicContracts } from "../../../context";
 
 const CourseForm = () => {
-  const [selectedCourse, setSelectedCourse] = useState(coursesMock[0]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const { setValue } = useBasicContracts();
+  useQuery({
+    queryKey: "courses",
+    queryFn: () => getCoursesQuery(),
+    onSuccess: (data) => {
+      const courses = data.map((course) => {
+        return {
+          value: course.id,
+          label: course.name,
+          price: course.price,
+          duration: course.month,
+        };
+      });
+
+      setCourses(courses);
+    },
+  });
+
+  useEffect(() => {
+    setValue("course_id", selectedCourse?.value);
+  }, [selectedCourse, setValue]);
 
   return (
     <Row className="gy-4">
       <Col sm="12">
         <div className="form-group">
-          <label className="form-label">O’quvchiga vakil kim bo’ladi?</label>
+          <label className="form-label">Kursni tanlang</label>
           <RSelect
-            options={coursesMock}
+            options={courses}
             value={selectedCourse}
             onChange={setSelectedCourse}
           />
@@ -28,7 +52,7 @@ const CourseForm = () => {
           </Label>
           <div className="form-control-wrap">
             <input
-              value={selectedCourse.price}
+              value={selectedCourse?.price}
               className="form-control"
               type="text"
               id="default-0"
@@ -45,7 +69,7 @@ const CourseForm = () => {
           </Label>
           <div className="form-control-wrap">
             <input
-              value={selectedCourse.duration}
+              value={selectedCourse?.duration}
               className="form-control"
               type="text"
               id="default-0"

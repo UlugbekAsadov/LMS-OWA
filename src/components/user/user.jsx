@@ -1,17 +1,21 @@
-import { useState } from 'react';
-import { DropdownToggle, DropdownMenu, Dropdown } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
-import { Icon } from '../icon/icon';
-import { LinkList } from '../links/links';
+import { useState } from "react";
+import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import { Icon } from "../icon/icon";
+import { LinkList } from "../links/links";
+import { useQuery } from "react-query";
 
 export const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
   const navigate = useNavigate();
+  const user = useQuery({
+    queryKey: ["user"],
+  });
 
   const handleLogOut = () => {
-    localStorage.removeItem('u_at');
-    navigate('/auth-login');
+    localStorage.removeItem("u_at");
+    navigate("/auth-login");
   };
 
   return (
@@ -31,7 +35,9 @@ export const User = () => {
             </span>
           </div>
           <div className="user-info d-none d-md-block">
-            <div className="user-name dropdown-indicator">Abu Bin Ishityak</div>
+            <div className="user-name dropdown-indicator">
+              {user?.data.fullName} ({user?.data.role})
+            </div>
           </div>
         </div>
       </DropdownToggle>

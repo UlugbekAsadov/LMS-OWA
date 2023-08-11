@@ -1,7 +1,18 @@
 import PropTypes from "prop-types";
+import { useQuery } from "react-query";
+import { getUserQuery } from "../react-query/queries";
 
 export const ProtectedRoute = ({ hasAccessRoles, children }) => {
-  const userRole = "BASIC";
+  const { data, isLoading } = useQuery({
+    queryFn: () => getUserQuery(),
+    queryKey: "user",
+  });
+
+  if (isLoading) {
+    return <>LOADING</>;
+  }
+
+  const userRole = data.role;
 
   const userToken = localStorage.getItem("u_at");
 

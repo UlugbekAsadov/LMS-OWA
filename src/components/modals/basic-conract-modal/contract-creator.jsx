@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Col, Row } from "reactstrap";
 import { Icon } from "../../icon/icon";
 import UserForm from "./user-form";
+import { useBasicContracts } from "../../../context";
 
 const RADIOS = [
   {
@@ -16,7 +17,13 @@ const RADIOS = [
 
 const ContractCreator = () => {
   const [checkedRadio, setCheckedRadio] = useState(1);
+  const { setValue } = useBasicContracts();
   const isAutomaticFill = checkedRadio === 1;
+
+  useEffect(() => {
+    setValue("is_auto_filled", isAutomaticFill);
+  }, [isAutomaticFill, setValue]);
+
   const renderRadios = RADIOS.map((radio) => (
     <Col md="5" sm="3" key={radio.id}>
       <div className="preview-block">

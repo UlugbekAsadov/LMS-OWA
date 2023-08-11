@@ -10,11 +10,11 @@ import {
 import { useState } from "react";
 import classNames from "classnames";
 import ContractCreator from "./contract-creator";
-import { useForm } from "react-hook-form";
 import { Icon } from "../../icon/icon";
 import PropTypes from "prop-types";
 import StudentForm from "./student-form";
 import CourseForm from "./course-form";
+import { useBasicContracts } from "../../../context";
 
 const TABS = [
   {
@@ -46,13 +46,9 @@ const TAB_CONTENTS = [
   },
 ];
 
-const DEFAULT_FORM_VALUES = {};
-
 const BasicContractModal = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState(1);
-  const { handleSubmit } = useForm({
-    defaultValues: DEFAULT_FORM_VALUES,
-  });
+  const { handleSubmit, errors } = useBasicContracts();
 
   const setModalActive = (modalNumber) => {
     setActiveTab(modalNumber);
@@ -78,7 +74,7 @@ const BasicContractModal = ({ isOpen, onClose }) => {
   ));
 
   const handleSubmitForm = (values) => {
-    console.log(values);
+    console.log({ values, errors });
   };
 
   return (

@@ -68,6 +68,7 @@ const EducationalCentersPage = () => {
                 pageTitle={"O'quv markazlar"}
                 btnTitle={"O’quv markaz qoshish"}
                 btnIcon={"plus"}
+                isButtonVisible
                 headerButtonAction={() => {
                 }}
             />

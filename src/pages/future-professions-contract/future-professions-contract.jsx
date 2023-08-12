@@ -84,11 +84,13 @@ const FutureProfessionsContract = () => {
   return (
     <Content title="Kelajak Kasblari shartnoma">
       <PageHeader
-        pageTitle={"Kelajak kasblari shartnoma"}
-        pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
-        btnTitle={"Yangi shartnoma"}
-        btnIcon={"plus"}
-        headerButtonAction={() => {}}
+          pageTitle={"Kelajak kasblari shartnoma"}
+          pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
+          btnTitle={"Yangi shartnoma"}
+          btnIcon={"plus"}
+          isButtonVisible
+          headerButtonAction={() => {
+          }}
       />
 
       <Table

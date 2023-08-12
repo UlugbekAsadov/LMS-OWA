@@ -1,4 +1,4 @@
-import {BlockHeadContent, Icon, PreviewCard} from "../../../components/index.js";
+import {BlockHeadContent, Icon, PreviewCard} from "../../../../components/index.js";
 import {Editor} from "@tinymce/tinymce-react";
 import {Button, Col} from "reactstrap";
 import {useRef} from "react";

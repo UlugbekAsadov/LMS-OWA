@@ -91,6 +91,7 @@ const BasicContracts = () => {
         pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
         btnTitle={"Yangi shartnoma"}
         btnIcon={"plus"}
+        isButtonVisible
         onClickButton={setIsModalOpen.bind(null, true)}
       />
 

@@ -74,6 +74,7 @@ const CoursesList = () => {
                 pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
                 btnTitle={"Kurs qo’shish"}
                 btnIcon={"plus"}
+                isButtonVisible
                 headerButtonAction={() => {
                 }}
             />

@@ -56,9 +56,9 @@ export const Router = () => {
           />
         </Route>
 
-        <Route path="/auth-login" />
-        <Route path="/no-access" element={<Error403Classic />}></Route>
-        <Route path="/server-error" element={<Error500Classic />}></Route>
+        <Route path="/auth-login" element={<Login />} />
+        <Route path="/no-access" element={<Error403Classic />} />
+        <Route path="/server-error" element={<Error500Classic />} />
         <Route path="*" element={<Error404Classic />} />
       </Routes>
     </BrowserRouter>

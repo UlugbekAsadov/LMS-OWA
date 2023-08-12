@@ -361,7 +361,7 @@ export const Menu = ({ sidebarToggle, mobileView }) => {
   return (
     <ul className="nk-menu">
       {data.map((item, index) => {
-        const hasAccess = item.access.find((role) => role === user.data.role);
+        const hasAccess = item.access.find((role) => role === user.data?.role);
 
         if (!hasAccess) {
           return null;

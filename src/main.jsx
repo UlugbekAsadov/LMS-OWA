@@ -28,9 +28,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={client}>
       <BasicContractsProvider>
-        <ThemeProvider>
-          <HomepageLayout>
-            <BrowserRouter>
+        <BrowserRouter>
+          <ThemeProvider>
+            <HomepageLayout>
               <Routes>
                 <Route path="/" element={<Navigate to="/auth-login" />} />
 
@@ -59,9 +59,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/server-error" element={<Error500Classic />} />
                 <Route path="*" element={<Error404Classic />} />
               </Routes>
-            </BrowserRouter>
-          </HomepageLayout>
-        </ThemeProvider>
+            </HomepageLayout>
+          </ThemeProvider>
+        </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </BasicContractsProvider>
     </QueryClientProvider>

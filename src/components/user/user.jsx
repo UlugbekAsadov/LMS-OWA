@@ -36,7 +36,7 @@ export const User = () => {
           </div>
           <div className="user-info d-none d-md-block">
             <div className="user-name dropdown-indicator">
-              {user?.data.fullName} ({user?.data.role})
+              {user?.data?.fullName} ({user?.data?.role})
             </div>
           </div>
         </div>

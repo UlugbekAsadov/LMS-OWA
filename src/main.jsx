@@ -9,6 +9,7 @@ import './styles/scss/dashlite.scss';
 import './styles/scss/style-email.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './pages/auth/login.jsx';
+import Error403Classic from './pages/error/403-classic.jsx';
 
 const client = new QueryClient({
   defaultOptions: { queries: { staleTime: 5000 } },
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/403" element={<Error403Classic />} />
           </Routes>
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />

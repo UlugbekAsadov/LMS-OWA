@@ -16,7 +16,7 @@ const ContractsTypeList = () => {
         queryFn: () => getHotCategoriesQuery(),
         queryKey: ['contractsType']
     })
-    const jumpPage = () => {
+    const handleClickHeaderButton = () => {
         navigate('add-contracts')
     }
 
@@ -83,7 +83,7 @@ const ContractsTypeList = () => {
                 btnTitle={"Shartnoma qo’shish"}
                 btnIcon={"plus"}
                 isButtonVisible
-                onClickButton={jumpPage}
+                onClickButton={handleClickHeaderButton}
             />
 
             <Table

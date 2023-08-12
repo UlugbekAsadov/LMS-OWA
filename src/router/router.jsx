@@ -20,7 +20,8 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/basic-contracts" />} />
-        <Route
+
+        {/* <Route
           path="/"
           element={
             <ProtectedRoute
@@ -54,7 +55,7 @@ export const Router = () => {
             path="contracts-type-list/add-contract"
             element={<CreateContract />}
           />
-        </Route>
+        </Route> */}
 
         <Route path="/" element={<Layout />}>
           <Route path="auth-login" element={<Login />}></Route>

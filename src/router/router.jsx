@@ -19,7 +19,14 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />}></Route>
+        <Route
+          path="/login"
+          element={
+            <App>
+              <Login />
+            </App>
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

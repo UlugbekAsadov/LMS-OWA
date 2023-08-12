@@ -19,7 +19,7 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/basic-contracts" />} />
+        <Route path="/" element={<Navigate to="/auth-login" />} />
 
         <Route
           element={

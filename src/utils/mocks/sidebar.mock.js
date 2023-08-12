@@ -20,7 +20,7 @@ export const menuMock = [
     text: "Shartnomalar turi",
     link: "/contracts-type-list",
     active: false,
-    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER, USER_ROLES.SUPER_ADMIN],
+    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER],
   },
   {
     icon: "file-docs",

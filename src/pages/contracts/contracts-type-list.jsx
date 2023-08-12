@@ -12,7 +12,7 @@ const ContractsTypeList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage] = useState(20);
     const navigate = useNavigate()
-    const {data} = useQuery({
+    const {isLoading, data} = useQuery({
         queryFn: () => getHotCategoriesQuery(),
         queryKey: ['contractsType']
     })
@@ -96,7 +96,7 @@ const ContractsTypeList = () => {
                     />
                 }
                 tableBody={currentItems?.length ? tableBody : null}
-
+                isLoading={isLoading}
                 tableHeader={tableHeader}
             />
         </Content>

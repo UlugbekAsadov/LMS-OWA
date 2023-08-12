@@ -38,7 +38,6 @@ const BasicContractsProvider = ({ children }) => {
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  console.log(form);
   return (
     <BasicContracts.Provider value={form}>{children}</BasicContracts.Provider>
   );

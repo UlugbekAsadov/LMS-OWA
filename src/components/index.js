@@ -10,3 +10,4 @@ export * from "./user/user";
 export * from "./links/links";
 export * from "./table/table";
 export * from "./react-select/react-select";
+export * from "./loader/loader.jsx"

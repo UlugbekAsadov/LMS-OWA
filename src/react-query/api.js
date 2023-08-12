@@ -13,9 +13,9 @@ export const api = async (url, config) => {
 
 
   if (data.error?.message === ERROR_MESSAGES.JWT_ERROR) {
-    return window.location.replace(
-        `/auth-login?callbackUri=${window.location.href}`
-    );
+    // return window.location.replace(
+    //     `/auth-login?callbackUri=${window.location.href}`
+    // );
   }
 
   return data;

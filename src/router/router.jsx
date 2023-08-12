@@ -42,7 +42,7 @@ export const Router = () => {
                             </ProtectedRoute>
                         }
                     />
-                    <Route path="staffs-list" element={<StaffsPage/>}/>
+                    <Route path="educational-center/staffs-list" element={<StaffsPage/>}/>
                     <Route
                         path="grand-contract"
                         element={<FutureProfessionsContract/>}

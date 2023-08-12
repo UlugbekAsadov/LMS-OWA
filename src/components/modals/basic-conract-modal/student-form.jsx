@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, useState } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 import { Label } from "reactstrap";
 import DatePicker from "react-datepicker";
 import PropTypes from "prop-types";
@@ -6,15 +6,17 @@ import { representativeMock } from "../../../utils/mocks";
 import { Icon } from "../../icon/icon";
 import { Col, Row } from "../../grid/grid";
 import RSelect from "../../react-select/react-select";
+import { useBasicContracts } from "../../../context";
+import { convertDate } from "../../../utils/functions";
 
 const RADIOS = [
   {
     id: 3,
-    title: "Shartnoma tuzuvchining o’zi",
+    title: "Boshqa",
   },
   {
     id: 4,
-    title: "Boshqa",
+    title: "Shartnoma tuzuvchining o’zi",
   },
 ];
 
@@ -45,6 +47,16 @@ const StudentForm = () => {
   const [selectedRepresentativ, setSelectedRepresentativ] = useState(
     representativeMock[0]
   );
+  const { register, setValue, watch } = useBasicContracts();
+  const isRepresentative = checkedRadio === RADIOS[0].id;
+
+  useEffect(() => {
+    setValue("is_representative", isRepresentative);
+  }, [isRepresentative, setValue, watch]);
+
+  useEffect(() => {
+    setValue("student_birthday", convertDate(bornDate));
+  }, [bornDate, setValue]);
 
   const renderRadios = RADIOS.map((radio) => (
     <Col md="5" sm="3" key={radio.id}>
@@ -69,9 +81,9 @@ const StudentForm = () => {
     </Col>
   ));
 
-  const renderForm = useMemo(() => {
+  const renderForm = useCallback(() => {
     switch (checkedRadio) {
-      case 3:
+      case 4:
         return (
           <>
             <Col sm="12">
@@ -102,6 +114,7 @@ const StudentForm = () => {
                     disabled
                     type="text"
                     id="default-0"
+                    {...register("first_name")}
                     placeholder="Ismi"
                   />
                 </div>
@@ -118,6 +131,7 @@ const StudentForm = () => {
                     className="form-control"
                     type="text"
                     id="default-0"
+                    {...register("last_name")}
                     placeholder="Familiya"
                   />
                 </div>
@@ -134,6 +148,7 @@ const StudentForm = () => {
                     type="text"
                     id="default-0"
                     placeholder="Otasining ismi"
+                    {...register("middle_name")}
                     disabled
                   />
                 </div>
@@ -184,6 +199,7 @@ const StudentForm = () => {
                     type="text"
                     id="default-0"
                     placeholder="Ismi"
+                    {...register("student_fname", { required: true })}
                   />
                 </div>
               </div>
@@ -199,6 +215,7 @@ const StudentForm = () => {
                     type="text"
                     id="default-0"
                     placeholder="Familiya"
+                    {...register("student_lname", { required: true })}
                   />
                 </div>
               </div>
@@ -214,6 +231,7 @@ const StudentForm = () => {
                     type="text"
                     id="default-0"
                     placeholder="Otasining ismi"
+                    {...register("student_mname", { required: true })}
                   />
                 </div>
               </div>
@@ -221,12 +239,12 @@ const StudentForm = () => {
           </>
         );
     }
-  }, [checkedRadio, selectedRepresentativ, bornDate]);
+  }, [checkedRadio, selectedRepresentativ, bornDate, register]);
 
   return (
     <div>
       <Row className="gy-4">{renderRadios}</Row>
-      <Row className="gy-2 mt-2">{renderForm}</Row>
+      <Row className="gy-2 mt-2">{renderForm()}</Row>
     </div>
   );
 };

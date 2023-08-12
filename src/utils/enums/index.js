@@ -1,2 +1,2 @@
-export * from "./auth.enum";
+export * from "./error-messages.enum";
 export * from "./user.enum";

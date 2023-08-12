@@ -49,6 +49,8 @@ export const Router = () => {
 
         <Route path="/" element={<Layout />}>
           <Route path="auth-login" element={<Login />}></Route>
+          <Route path="no-access" element={<>No Access</>}></Route>
+          <Route path="server-error" element={<>Server Error</>}></Route>
         </Route>
         <Route path="*" element={<>NOT FOUND</>} />
       </Routes>

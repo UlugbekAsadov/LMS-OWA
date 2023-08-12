@@ -50,7 +50,7 @@ const UserForm = ({ isAutomatic, data }) => {
 
   const pinflValue = watch("pin");
 
-  const { refetch } = useQuery({
+  useQuery({
     queryKey: ["PINFL"],
     queryFn: () => getPINFLQuery(pinflValue),
     enabled: false,
@@ -71,11 +71,14 @@ const UserForm = ({ isAutomatic, data }) => {
 
       setProvinces(provinces);
     },
+
+    enabled: pinflValue.length === 14
   });
 
-  const citiesQuery = useQuery({
-    queryKey: "cities",
-    queryFn: () => getCitiesQuery(selectedProvince?.id || 1),
+
+ useQuery({
+    queryKey: [`cities-${selectedProvince?.id}`],
+    queryFn: () => getCitiesQuery(selectedProvince?.id),
     onSuccess: (data) => {
       const cities = data.map((cities) => {
         return { value: cities.name_lt, id: cities.id, label: cities.name_lt };
@@ -83,12 +86,8 @@ const UserForm = ({ isAutomatic, data }) => {
 
       setCities(cities);
     },
+    enabled: !!selectedProvince
   });
-
-  const getPNFLData = () => {
-    setIsFetchingPINFL(true);
-    refetch();
-  };
 
   const handleChangeProvince = (value) => {
     setSelectedCity(null);
@@ -102,13 +101,10 @@ const UserForm = ({ isAutomatic, data }) => {
   useEffect(() => {
     setHasError(false);
     if (pinflValue.length === 14) {
-      getPNFLData();
+      setIsFetchingPINFL(true);
     }
   }, [pinflValue]);
 
-  useEffect(() => {
-    citiesQuery.refetch();
-  }, [selectedProvince]);
 
   useEffect(() => {
     setValue("birthday", convertDate(bornDate));

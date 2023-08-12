@@ -17,7 +17,7 @@ const ContractsTypeList = () => {
         queryKey: ['contractsType']
     })
     const handleClickHeaderButton = () => {
-        navigate('add-contracts')
+        navigate('add-contract')
     }
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);

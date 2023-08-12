@@ -19,7 +19,7 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/auth-login" element={<Login />}></Route>
+        <Route path="/" element={<Login />}></Route>
       </Routes>
     </BrowserRouter>
   );

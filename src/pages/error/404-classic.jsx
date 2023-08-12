@@ -1,26 +1,23 @@
 import {Link} from "react-router-dom";
-import {Block, BlockContent, Button} from "../../../../demo2 LMS/src/components/Component.js";
+import {Block, BlockContent} from "../../components/index.js";
+import {Button} from "reactstrap";
 
-const Error403Classic = () => {
+const Error404Classic = () => {
     return (
-        <>
-            <Block className="nk-block-middle wide-xs mx-auto">
-                <BlockContent className="nk-error-ld text-center">
-                    <h1 className="nk-error-head">404</h1>
-                    <h3 className="nk-error-title">Oops! Why you’re here?</h3>
-                    <p className="nk-error-text">
-                        We are very sorry for inconvenience. It looks like you’re try to access a page that either has
-                        been deleted
-                        or never existed.
-                    </p>
-                    <Link to={`/`}>
-                        <Button color="primary" size="lg" className="mt-2">
-                            Back To Home
-                        </Button>
-                    </Link>
-                </BlockContent>
-            </Block>
-        </>
+        <Block className="nk-block-middle wide-xs mx-auto">
+            <BlockContent className="nk-error-ld text-center">
+                <h1 className="nk-error-head">404</h1>
+                <h3 className="nk-error-title">Kecharisiz, siz qidirgan sahifa topilmadi.</h3>
+                <p className="nk-error-text">
+                    {"Lekin havotir olmang. Asosiy sahifamizda juda ko'p qiziqarli narsalar mavjud."}
+                </p>
+                <Link to={`/`}>
+                    <Button color="primary" size="lg" className="mt-2">
+                        Bosh sahifaga qaytish
+                    </Button>
+                </Link>
+            </BlockContent>
+        </Block>
     );
 };
-export default Error403Classic;
+export default Error404Classic;

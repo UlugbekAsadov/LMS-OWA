@@ -5,7 +5,7 @@ import LeftPage from "./element-page/left-page.jsx";
 import RightPage from "./element-page/right-page.jsx";
 
 
-const CreateContracts = () => {
+const CreateContract = () => {
     return (
         <Content title="Shartnomalar turi">
             <PageHeader
@@ -19,4 +19,4 @@ const CreateContracts = () => {
             </Row>
         </Content>)
 }
-export default CreateContracts;
+export default CreateContract;

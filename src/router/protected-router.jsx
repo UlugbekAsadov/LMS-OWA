@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
 import { getUserQuery } from "../react-query/queries";
+import {GlobalLoader} from "../pages/global-loader/global-loader.jsx";
 
 export const ProtectedRoute = ({ hasAccessRoles, children }) => {
   const { data, isLoading } = useQuery({
@@ -9,7 +10,7 @@ export const ProtectedRoute = ({ hasAccessRoles, children }) => {
   });
 
   if (isLoading) {
-    return <>LOADING</>;
+    return <GlobalLoader /> ;
   }
 
   const userRole = data.role;

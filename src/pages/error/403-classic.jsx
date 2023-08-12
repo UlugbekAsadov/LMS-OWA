@@ -1,26 +1,25 @@
 import {Link} from "react-router-dom";
-import {Block, BlockContent, Button} from "../../../../demo2 LMS/src/components/Component.js";
+import {Block, BlockContent} from "../../components/index.js";
+import {Button} from "reactstrap";
 
-const Error404Classic = () => {
+const Error403Classic = () => {
     return (
-        <>
-            <Block className="nk-block-middle wide-xs mx-auto">
-                <BlockContent className="nk-error-ld text-center">
-                    <h1 className="nk-error-head">404</h1>
-                    <h3 className="nk-error-title">Oops! Why you’re here?</h3>
-                    <p className="nk-error-text">
-                        We are very sorry for inconvenience. It looks like you’re try to access a page that either has
-                        been deleted
-                        or never existed.
-                    </p>
-                    <Link to={`/`}>
-                        <Button color="primary" size="lg" className="mt-2">
-                            Back To Home
-                        </Button>
-                    </Link>
-                </BlockContent>
-            </Block>
-        </>
+        <Block className="nk-block-middle wide-xs mx-auto">
+            <BlockContent className="nk-error-ld text-center">
+                <h1 className="nk-error-head">403</h1>
+                <h3 className="nk-error-title">Voy! Nega bu yerdasiz?</h3>
+                <p className="nk-error-text">
+                    {`Noqulaylik uchun uzr so'raymiz. Siz oʻsha sahifaga kirishga urinayotganga oʻxshaysiz
+                        o'chirildi
+                        yoki hech qachon mavjud bo'lmagan.`}
+                </p>
+                <Link to={`/`}>
+                    <Button color="primary" size="lg" className="mt-2">
+                        Bosh sahifaga qaytish
+                    </Button>
+                </Link>
+            </BlockContent>
+        </Block>
     );
 };
-export default Error404Classic;
+export default Error403Classic;

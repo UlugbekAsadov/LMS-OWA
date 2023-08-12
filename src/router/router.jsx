@@ -24,11 +24,7 @@ export const Router = () => {
         <Route path="/basic-contracts" element={<BasicContracts />} />
         <Route
           path="/educational-center"
-          element={
-            <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
-              <EducationalCentersPage />{' '}
-            </ProtectedRoute>
-          }
+          element={<EducationalCentersPage />}
         />
         <Route path="/staffs-list" element={<StaffsPage />} />
         <Route path="/grand-contract" element={<FutureProfessionsContract />} />

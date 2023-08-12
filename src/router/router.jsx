@@ -9,6 +9,7 @@ import CoursesList from '../pages/courses/courses-list.jsx';
 import ContractsTypeList from '../pages/contracts/contracts-type-list.jsx';
 import EducationalCentersPage from '../pages/educational-centers/educational-centers-page.jsx';
 import StaffsPage from '../pages/educational-centers/staffs/staffs-page.jsx';
+import CreateContracts from "../pages/contracts/add-contracts/create-contracts.jsx";
 
 export const Router = () => {
   return (
@@ -18,16 +19,17 @@ export const Router = () => {
           path="/"
           element={
             <ProtectedRoute hasAccessRoles={['BASIC']}>
-              <App />
+              <App/>
             </ProtectedRoute>
           }
         >
-          <Route path="basic-contract" element={<BasicContracts />} />
-          <Route path="educational-center" element={<EducationalCentersPage />} />
-          <Route path="staffs-list" element={<StaffsPage />} />
-          <Route path="grand-contract" element={<FutureProfessionsContract />} />
-          <Route path="courses-list" element={<CoursesList />} />
-          <Route path="contracts-type-list" element={<ContractsTypeList />} />
+          <Route path="basic-contract" element={<BasicContracts/>}/>
+          <Route path="educational-center" element={<EducationalCentersPage/>}/>
+          <Route path="staffs-list" element={<StaffsPage/>}/>
+          <Route path="grand-contract" element={<FutureProfessionsContract/>}/>
+          <Route path="courses-list" element={<CoursesList/>}/>
+          <Route path="contracts-type-list" element={<ContractsTypeList/>} />
+          <Route path="contracts-type-list/add-contracts" element={<CreateContracts/>}/>
         </Route>
 
         <Route path="/" element={<Layout />}>

@@ -37,7 +37,7 @@ const Login = () => {
 
     localStorage.setItem('u_at', res.data.token);
     const callbackUri = window.location.href.split('=')[1];
-    // window.location.replace(callbackUri || window.location.origin);
+    window.location.replace(callbackUri || window.location.origin);
   };
 
   const onFormSubmit = async (formData) => {

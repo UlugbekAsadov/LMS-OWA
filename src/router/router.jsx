@@ -21,40 +21,23 @@ export const Router = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/auth-login" />} />
 
+        <Route path="/basic-contracts" element={<BasicContracts />} />
         <Route
+          path="/educational-center"
           element={
-            <ProtectedRoute
-              hasAccessRoles={[
-                USER_ROLES.ADMIN,
-                USER_ROLES.OWNER,
-                USER_ROLES.SUPER_ADMIN,
-              ]}
-            >
-              <App />
+            <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
+              <EducationalCentersPage />{' '}
             </ProtectedRoute>
           }
-        >
-          <Route path="/basic-contracts" element={<BasicContracts />} />
-          <Route
-            path="/educational-center"
-            element={
-              <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
-                <EducationalCentersPage />{' '}
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/staffs-list" element={<StaffsPage />} />
-          <Route
-            path="/grand-contract"
-            element={<FutureProfessionsContract />}
-          />
-          <Route path="/courses-list" element={<CoursesList />} />
-          <Route path="/contracts-type-list" element={<ContractsTypeList />} />
-          <Route
-            path="/contracts-type-list/add-contract"
-            element={<CreateContract />}
-          />
-        </Route>
+        />
+        <Route path="/staffs-list" element={<StaffsPage />} />
+        <Route path="/grand-contract" element={<FutureProfessionsContract />} />
+        <Route path="/courses-list" element={<CoursesList />} />
+        <Route path="/contracts-type-list" element={<ContractsTypeList />} />
+        <Route
+          path="/contracts-type-list/add-contract"
+          element={<CreateContract />}
+        />
 
         <Route path="/auth-login" element={<Login />} />
         <Route path="/no-access" element={<Error403Classic />} />

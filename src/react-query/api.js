@@ -12,16 +12,10 @@ export const api = async (url, config) => {
     .then((data) => data);
 
 
-  if(data?.error){
-    if (data.error?.message === ERROR_MESSAGES.JWT_ERROR) {
-      return window.location.replace(
-          `/auth-login?callbackUri=${window.location.href}`
-      );
-    } else {
-      return window.location.replace(
-          `/server-error`
-      );
-    }
+  if (data.error?.message === ERROR_MESSAGES.JWT_ERROR) {
+    return window.location.replace(
+        `/auth-login?callbackUri=${window.location.href}`
+    );
   }
 
   return data;

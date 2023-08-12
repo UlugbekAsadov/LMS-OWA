@@ -18,7 +18,6 @@ import AuthFooter from '../../pages/components/auth-footer.jsx';
 import { useMutation } from 'react-query';
 import { loginMutationFn } from '../../react-query/mutations';
 import { ERROR_MESSAGE_TRANSLATIONS } from '../../utils/enums/error-messages.enum';
-import { Content } from '../../layout/page-layout/page-layout';
 import { Head } from '../../layout/head/head.layout';
 
 const Login = () => {

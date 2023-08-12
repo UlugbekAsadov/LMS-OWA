@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import App from '../App';
 import { ProtectedRoute } from './protected-router';
 import Layout from '../layout/layout-no-sidebar/layout-no-sidebar';
@@ -19,6 +19,7 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/basic-contracts" />} />
         <Route
           path="/"
           element={

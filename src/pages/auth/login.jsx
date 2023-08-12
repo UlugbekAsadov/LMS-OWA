@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { ReactComponent as BrandLogo } from "../../assets/icons/logo.svg";
-import { Alert, Form, Spinner } from "reactstrap";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { InputMask } from "primereact/inputmask";
+import { useState } from 'react';
+import { ReactComponent as BrandLogo } from '../../assets/icons/logo.svg';
+import { Alert, Form, Spinner } from 'reactstrap';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { InputMask } from 'primereact/inputmask';
 import {
   Block,
   BlockContent,
@@ -12,19 +12,20 @@ import {
   BlockTitle,
   Icon,
   PreviewCard,
-} from "../../components";
-import Button from "../../components/button/button";
-import AuthFooter from "../../pages/components/auth-footer.jsx";
-import { useMutation } from "react-query";
-import { loginMutationFn } from "../../react-query/mutations";
-import { ERROR_MESSAGE_TRANSLATIONS } from "../../utils/enums/error-messages.enum";
+} from '../../components';
+import Button from '../../components/button/button';
+import AuthFooter from '../../pages/components/auth-footer.jsx';
+import { useMutation } from 'react-query';
+import { loginMutationFn } from '../../react-query/mutations';
+import { ERROR_MESSAGE_TRANSLATIONS } from '../../utils/enums/error-messages.enum';
+import { Head } from '../../layout/head/head.layout';
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [errorValidation, setErrorValidation] = useState(null);
 
   const loginMutation = useMutation({
-    mutationKey: ["user"],
+    mutationKey: ['user'],
     mutationFn: (formData) => loginMutationFn(formData),
     onSuccess: (res) => onSuccessFn(res),
   });
@@ -34,14 +35,14 @@ const Login = () => {
       return setErrorValidation(ERROR_MESSAGE_TRANSLATIONS[res.error.message]);
     }
 
-    localStorage.setItem("u_at", res.data.token);
-    const callbackUri = window.location.href.split("=")[1];
+    localStorage.setItem('u_at', res.data.token);
+    const callbackUri = window.location.href.split('=')[1];
     window.location.replace(callbackUri || window.location.origin);
   };
 
   const onFormSubmit = async (formData) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
-    formData.phone = formData.phone.replace(regex, "$1$2$3$4");
+    formData.phone = formData.phone.replace(regex, '$1$2$3$4');
     loginMutation.mutateAsync(formData);
   };
 
@@ -51,13 +52,15 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phone: "991234567",
-      password: "1234567",
+      phone: '991234567',
+      password: '1234567',
     },
   });
 
   return (
     <>
+      <Head title="Login" />
+
       <Block className="nk-block-middle nk-auth-body  wide-xs">
         <div className="brand-logo pb-4 text-center">
           <Link to="/" className="logo-link">
@@ -98,8 +101,8 @@ const Login = () => {
                   </div>
                   <InputMask
                     id="phone"
-                    {...register("phone", {
-                      required: "This field is required",
+                    {...register('phone', {
+                      required: 'This field is required',
                     })}
                     className="form-control-lg form-control"
                     mask="(99) 999-99-99"
@@ -121,7 +124,7 @@ const Login = () => {
                 <span
                   onClick={() => setIsPasswordVisible((prevVal) => !prevVal)}
                   className={`form-icon lg form-icon-right passcode-switch cursor-pointer ${
-                    isPasswordVisible ? "is-hidden" : "is-shown"
+                    isPasswordVisible ? 'is-hidden' : 'is-shown'
                   }`}
                 >
                   <Icon name="eye" className="passcode-icon icon-show"></Icon>
@@ -133,14 +136,14 @@ const Login = () => {
                 </span>
                 <input
                   autoComplete="new-password"
-                  type={isPasswordVisible ? "text" : "password"}
+                  type={isPasswordVisible ? 'text' : 'password'}
                   id="password"
-                  {...register("password", {
-                    required: "This field is required",
+                  {...register('password', {
+                    required: 'This field is required',
                   })}
                   placeholder="Parolingizni kiriting"
                   className={`form-control-lg form-control ${
-                    isPasswordVisible ? "is-hidden" : "is-shown"
+                    isPasswordVisible ? 'is-hidden' : 'is-shown'
                   }`}
                 />
                 {errors.passcode && (
@@ -158,7 +161,7 @@ const Login = () => {
                 {loginMutation.isLoading ? (
                   <Spinner size="sm" color="light" />
                 ) : (
-                  "Kirish"
+                  'Kirish'
                 )}
               </Button>
             </div>

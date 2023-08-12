@@ -3,7 +3,7 @@ import {Icon, Table} from "../../components/index.js";
 import {TablePagination} from "../../components/pagination/pagination.jsx";
 import {Content} from "../../layout/page-layout/page-layout.jsx";
 import {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 import {useQuery} from "react-query";
 import {getHotCategoriesQuery} from "../../react-query/query/index.js";
@@ -11,20 +11,20 @@ import {getHotCategoriesQuery} from "../../react-query/query/index.js";
 const ContractsTypeList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage] = useState(20);
-
+    const navigate = useNavigate()
     const {data} = useQuery({
         queryFn: () => getHotCategoriesQuery(),
         queryKey: ['contractsType']
     })
-
-    console.log(data)
-
+    const jumpPage = () => {
+        navigate('add-contracts')
+    }
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const indexOfLastItem = currentPage * itemPerPage;
     const indexOfFirstItem = indexOfLastItem - itemPerPage;
-    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
 
 
     const tableHeader = (
@@ -35,14 +35,14 @@ const ContractsTypeList = () => {
                 <span className="tb-odr-date d-none d-md-inline-block">Nomlanishi</span>
             </th>
             <th className="tb-odr-amount">
-                <span className="tb-odr-date d-none d-md-inline-block">Qo'shimcha</span>
+                <span className="tb-odr-date d-none d-md-inline-block">{"Qo'shimcha"}</span>
             </th>
             <th className="tb-odr-action">&nbsp;</th>
         </tr>
         </thead>
     );
 
-    const tableBody = currentItems.map((item, index) => {
+    const tableBody = currentItems?.map((item, index) => {
         return (
             <tr className="tb-odr-item" key={item.id}>
                 <td className="tb-odr-info">
@@ -74,6 +74,7 @@ const ContractsTypeList = () => {
             </tr>
         )
     });
+
     return (
         <Content title="Shartnomalar turi">
             <PageHeader
@@ -81,20 +82,20 @@ const ContractsTypeList = () => {
                 pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
                 btnTitle={"Shartnoma qo’shish"}
                 btnIcon={"plus"}
-                headerButtonAction={() => {
-                }}
+                isButtonVisible
+                onClickButton={jumpPage}
             />
 
             <Table
                 pagination={
                     <TablePagination
                         itemPerPage={itemPerPage}
-                        totalItems={data.length}
+                        totalItems={data?.length}
                         paginate={paginate}
                         currentPage={currentPage}
                     />
                 }
-                tableBody={currentItems.length ? tableBody : null}
+                tableBody={currentItems?.length ? tableBody : null}
 
                 tableHeader={tableHeader}
             />

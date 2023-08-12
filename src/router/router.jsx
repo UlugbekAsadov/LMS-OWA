@@ -19,10 +19,9 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth-login" />} />
+        <Route path="/" element={<Navigate to="/basic-contracts" />} />
 
-        {/* <Route
-          path="/"
+        <Route
           element={
             <ProtectedRoute
               hasAccessRoles={[
@@ -35,29 +34,34 @@ export const Router = () => {
             </ProtectedRoute>
           }
         >
-          <Route path="basic-contracts" element={<BasicContracts />} />
+          <Route path="/basic-contracts" element={<BasicContracts />} />
           <Route
-            path="educational-center"
+            path="/educational-center"
             element={
               <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
                 <EducationalCentersPage />{' '}
               </ProtectedRoute>
             }
           />
-          <Route path="staffs-list" element={<StaffsPage />} />
+          <Route path="/staffs-list" element={<StaffsPage />} />
           <Route
-            path="grand-contract"
+            path="/grand-contract"
             element={<FutureProfessionsContract />}
           />
-          <Route path="courses-list" element={<CoursesList />} />
-          <Route path="contracts-type-list" element={<ContractsTypeList />} />
+          <Route path="/courses-list" element={<CoursesList />} />
+          <Route path="/contracts-type-list" element={<ContractsTypeList />} />
           <Route
-            path="contracts-type-list/add-contract"
+            path="/contracts-type-list/add-contract"
             element={<CreateContract />}
           />
-        </Route> */}
+        </Route>
 
-        <Route path="/auth-login" element={<Login />}></Route>
+        <Route element={<Layout />}>
+          <Route path="/auth-login" />
+          <Route path="/no-access" element={<Error403Classic />}></Route>
+          <Route path="/server-error" element={<Error500Classic />}></Route>
+          <Route path="*" element={<Error404Classic />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

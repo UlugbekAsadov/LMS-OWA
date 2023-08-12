@@ -56,12 +56,10 @@ export const Router = () => {
           />
         </Route>
 
-        <Route element={<Layout />}>
-          <Route path="/auth-login" />
-          <Route path="/no-access" element={<Error403Classic />}></Route>
-          <Route path="/server-error" element={<Error500Classic />}></Route>
-          <Route path="*" element={<Error404Classic />} />
-        </Route>
+        <Route path="/auth-login" />
+        <Route path="/no-access" element={<Error403Classic />}></Route>
+        <Route path="/server-error" element={<Error500Classic />}></Route>
+        <Route path="*" element={<Error404Classic />} />
       </Routes>
     </BrowserRouter>
   );

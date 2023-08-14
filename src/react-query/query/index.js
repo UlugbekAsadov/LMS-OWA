@@ -1,1 +1,0 @@
-export * from "./hot-categories.query.js"

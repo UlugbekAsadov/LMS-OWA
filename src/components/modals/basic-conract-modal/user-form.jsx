@@ -156,7 +156,7 @@ const UserForm = ({ isAutomatic, data }) => {
         </div>
       )}
 
-      {Boolean(data) && !isFetchingPINFL && (
+      {!!data && !isFetchingPINFL && (
         <>
           <Col sm="4">
             <div className="form-group ">

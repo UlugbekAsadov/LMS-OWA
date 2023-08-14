@@ -6,9 +6,11 @@ import {Icon, Table} from "../../../components/index.js";
 import {Content} from "../../../layout/page-layout/page-layout.jsx";
 import PageHeader from "../../../components/page-header/page-header.jsx";
 import {TablePagination} from "../../../components/pagination/pagination.jsx";
+import AddStaff from "../../../components/modals/modal-staffe/add-staff.jsx";
 
 
 const StaffsPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage] = useState(20);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -76,8 +78,8 @@ const StaffsPage = () => {
                 pageTitle={"Xodimlar"}
                 btnTitle={"Xodim qoshish"}
                 btnIcon={"plus"}
-                headerButtonAction={() => {
-                }}
+                isButtonVisible={true}
+                onClickButton={setIsModalOpen.bind(null, true)}
             />
 
             <Table
@@ -90,6 +92,7 @@ const StaffsPage = () => {
                 tableBody={currentItems.length ? tableBody : null}
                 tableHeader={tableHeader}
             />
+            <AddStaff isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)}/>
         </Content>
     )
 }

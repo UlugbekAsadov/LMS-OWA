@@ -27,25 +27,25 @@ const EducationalCentersPage = () => {
             </th>
             <th className="tb-odr-action">&nbsp;</th>
         </tr>
-        </thead>);
+    </thead>);
     const tableBody = currentItems.map((item, index) => {
         return (<tr className="tb-odr-item" key={item.id}>
-                <td className="tb-odr-info">
+            <td className="tb-odr-info">
                     <span className="tb-odr-id">
                       <Link to={`/invoice-details/${item.id}`}>
                         {currentPage * 20 + index + 1 - 20}
                       </Link>
                     </span>
-                    <span className="tb-odr-date">{item.name}</span>
-                </td>
-                <td className="tb-odr-amount">
+                <span className="tb-odr-date">{item.name}</span>
+            </td>
+            <td className="tb-odr-amount">
                     <span className="tb-odr-total">
                       <span className="amount">{item.phone}</span>
                     </span>
                 </td>
                 <td className="tb-odr-action">
                     <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-                        <Link className={'text-base'} to={'/staffs-list'}>
+                        <Link className={'text-base'} to={'/educational-center/staffs-list'}>
                             <Icon className={'cursor-pointer'} name="user-circle"/>
                         </Link>
                         <span className="p-2">

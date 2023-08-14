@@ -6,7 +6,7 @@ import {Icon, Table} from "../../../components/index.js";
 import {Content} from "../../../layout/page-layout/page-layout.jsx";
 import PageHeader from "../../../components/page-header/page-header.jsx";
 import {TablePagination} from "../../../components/pagination/pagination.jsx";
-import AddStaffe from "../../../components/modals/modal-staffe/add-staff.jsx";
+import AddStaff from "../../../components/modals/modal-staffe/add-staff.jsx";
 
 
 const StaffsPage = () => {
@@ -92,7 +92,7 @@ const StaffsPage = () => {
                 tableBody={currentItems.length ? tableBody : null}
                 tableHeader={tableHeader}
             />
-            <AddStaffe isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)}/>
+            <AddStaff isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)}/>
         </Content>
     )
 }

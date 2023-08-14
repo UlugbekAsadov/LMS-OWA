@@ -6,7 +6,7 @@ import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 import {useQuery} from "react-query";
-import {getHotCategoriesQuery} from "../../react-query/query/index.js";
+import { getHotCategoriesQuery } from "../../react-query/queries/index.js";
 
 const ContractsTypeList = () => {
     const [currentPage, setCurrentPage] = useState(1);

@@ -13,21 +13,21 @@ export const menuMock = [
     text: "Kurslar",
     link: "/courses-list",
     active: false,
-    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER, USER_ROLES.SUPER_ADMIN],
+    access: [USER_ROLES.ADMIN],
   },
   {
     icon: "panel",
     text: "Shartnomalar turi",
     link: "/contracts-type-list",
     active: false,
-    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER],
+    access: [USER_ROLES.ADMIN],
   },
   {
     icon: "file-docs",
     text: "Shartnomalar",
     link: "/contract",
     active: false,
-    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER, USER_ROLES.SUPER_ADMIN],
+    access: [USER_ROLES.ADMIN],
     subMenu: [
       {
         text: "Oddiy shartnomalar",

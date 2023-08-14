@@ -29,13 +29,7 @@ export const Router = () => {
         <Route
           path="/"
           element={
-            <ProtectedRoute
-              hasAccessRoles={[
-                USER_ROLES.ADMIN,
-                USER_ROLES.OWNER,
-                USER_ROLES.SUPER_ADMIN,
-              ]}
-            >
+            <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
               <App />
             </ProtectedRoute>
           }
@@ -58,7 +52,14 @@ export const Router = () => {
             path="grand-contract"
             element={<FutureProfessionsContract />}
           />
-          <Route path="courses-list" element={<CoursesList />} />
+          <Route
+            path="courses-list"
+            element={
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
+                <CoursesList />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="contracts-type-list/"
             element={

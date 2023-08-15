@@ -8,9 +8,11 @@ import { Button } from "reactstrap";
 import { useQuery } from "react-query";
 import { getCoursesQuery } from "../../react-query/queries/index.js";
 import AddCourseModal from "../../components/modals/courses-modal/add-course-modal.jsx";
+import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 
 const CoursesList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
   const { isLoading, data } = useQuery({
@@ -73,7 +75,7 @@ const CoursesList = () => {
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
             <Icon name="pen" className={"cursor-pointer"} />
-            <span className="p-2">
+            <span className="p-2" onClick={setDeleteModal.bind(null, true )}>
               <Icon className={"cursor-pointer"} name="trash" />
             </span>
           </div>
@@ -97,22 +99,23 @@ const CoursesList = () => {
         onClickButton={setIsModalOpen.bind(null, true)}
       />
 
-          <Table
-            pagination={
-              <TablePagination
-                itemPerPage={itemPerPage}
-                totalItems={data.length}
-                paginate={paginate}
-                currentPage={currentPage}
-              />
-            }
-            tableBody={currentItems.length ? tableBody : null}
-            isLoading={isLoading}
-            tableHeader={tableHeader}
+      <Table
+        pagination={
+          <TablePagination
+            itemPerPage={itemPerPage}
+            totalItems={data.length}
+            paginate={paginate}
+            currentPage={currentPage}
           />
-          <AddCourseModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
-        </Content>
-    )
-}
+        }
+        tableBody={currentItems.length ? tableBody : null}
+        isLoading={isLoading}
+        tableHeader={tableHeader}
+      />
+      <AddCourseModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
+      <ConfirmationModal isOpen={isDeleteModal} onClose={setDeleteModal.bind(null, false)} title={'salom'} confirmButtonTitle={'salom'} cancelButtonTitle={'ssss'}/>
+    </Content>
+  );
+};
 
-export default CoursesList
+export default CoursesList;

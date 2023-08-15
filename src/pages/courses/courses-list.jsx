@@ -94,7 +94,7 @@ const CoursesList = () => {
         btnTitle={"Kurs qo’shish"}
         btnIcon={"plus"}
         isButtonVisible
-        headerButtonAction={() => {}}
+        onClickButton={setIsModalOpen.bind(null, true)}
       />
 
           <Table

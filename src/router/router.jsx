@@ -47,7 +47,7 @@ export const Router = () => {
             }
           >
             <Route index element={<EducationalCentersPage />} />
-            <Route path="staffs-list" element={<StaffsPage />} />
+            <Route path="staffs-list/:bootcampId" element={<StaffsPage />} />
           </Route>
           <Route path="staffs-list" element={<StaffsPage />} />
           <Route

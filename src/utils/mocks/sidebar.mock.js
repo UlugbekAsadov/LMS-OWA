@@ -6,7 +6,7 @@ export const menuMock = [
     text: "O'quv markazlar",
     link: "/educational-center",
     active: false,
-    access: [USER_ROLES.ADMIN],
+    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER],
   },
   {
     icon: "todo",

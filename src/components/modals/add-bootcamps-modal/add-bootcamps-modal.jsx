@@ -1,4 +1,4 @@
-import { Col, Label, Modal, ModalBody, Row } from "reactstrap";
+import { Col, Label, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import PropTypes from "prop-types";
 import { Icon } from "../../icon/icon.jsx";
 import { useEffect, useState } from "react";
@@ -6,13 +6,17 @@ import { useForm } from "react-hook-form";
 import RSelect from "../../react-select/react-select.jsx";
 import Button from "../../button/button.jsx";
 import { InputMask } from "primereact/inputmask";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   getCitiesQuery,
   getRegionsQuery,
 } from "../../../react-query/queries/contracts.query.js";
 import { getBankQuery } from "../../../react-query/queries/bank.query.js";
-import { ERROR_MESSAGES } from "../../../utils/enums/error-messages.enum.js";
+import {
+  ERROR_MESSAGES,
+  ERROR_MESSAGE_TRANSLATIONS,
+} from "../../../utils/enums/error-messages.enum.js";
+import { addBootcampMutationFn } from "../../../react-query/mutations/bootcamp.mutation.js";
 
 const AddBootcampsModal = ({ isOpen, onClose }) => {
   const {
@@ -20,6 +24,7 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     handleSubmit,
     setValue,
     watch,
+    setError,
     formState: { errors },
   } = useForm();
 
@@ -32,19 +37,13 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
   const bank_code = watch("bank_code");
 
   const handleChangeProvince = (value) => {
-    setValue("region", value.value);
+    setValue("region_id", value.value);
     setSelectedProvince(value);
   };
 
   const handleChangeCity = (value) => {
-    setValue("city", value.value);
+    setValue("district_id", value.value);
     setSelectedCity(value);
-  };
-
-  const handleSubmitForm = (values) => {
-    const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
-    values.phone_number = values.phone_number.replace(regex, "$1$2$3$4");
-    console.log({ values, errors });
   };
 
   const bankQuery = useQuery({
@@ -67,7 +66,7 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     onSuccess: (data) => {
       const provinces = data.map((region) => {
         return {
-          value: region.name_lt,
+          value: region.id,
           id: region.region_id,
           label: region.name_lt,
         };
@@ -82,12 +81,26 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     queryFn: () => getCitiesQuery(selectedProvince?.id),
     onSuccess: (data) => {
       const cities = data.map((cities) => {
-        return { value: cities.name_lt, id: cities.id, label: cities.name_lt };
+        return { value: cities.id, id: cities.id, label: cities.name_lt };
       });
 
       setCities(cities);
     },
     enabled: !!selectedProvince,
+  });
+
+  const addBootcampMutation = useMutation({
+    mutationKey: "add-bootcamp-mutation",
+    mutationFn: (config) => addBootcampMutationFn(config),
+    onSuccess: (data) => {
+      if (
+        data?.error?.message === ERROR_MESSAGES.COMPANY_ALREADY_EXISTS_IN_USER
+      ) {
+        return setError("name_brand", {
+          message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+        });
+      }
+    },
   });
 
   useEffect(() => {
@@ -96,6 +109,18 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
       bankQuery.refetch();
     }
   }, [bank_code]);
+
+  const handleSubmitForm = (values) => {
+    const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
+    values.phone = values.phone.replace(regex, "$1$2$3$4");
+    console.log({ values, errors });
+
+    const config = {
+      method: "POST",
+      body: JSON.stringify(values),
+    };
+    addBootcampMutation.mutate(config);
+  };
 
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
@@ -132,7 +157,7 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </div>
           </div>
           <div className="form-group">
-            <Label htmlFor="phone_number" className="form-label fs-6">
+            <Label htmlFor="phone" className="form-label fs-6">
               Telefon raqami
             </Label>
             <div className="form-control-wrap">
@@ -153,29 +178,29 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </div>
           </div>
           <div className="form-group">
-            <Label htmlFor="name_surname" className="form-label fs-6">
+            <Label htmlFor="name_legal" className="form-label fs-6">
               Yuridik nomi
             </Label>
             <div className="form-control-wrap">
               <input
                 className={`form-control form-control-lg ${
-                  errors.first_name && "error"
+                  errors.name_legal && "error"
                 }`}
                 type="text"
-                id="name_surname"
-                {...register("first_name", {
+                id="name_legal"
+                {...register("name_legal", {
                   required: "Yuridik nomini kiriting",
                 })}
               />
-              {errors.first_name && (
-                <span className="invalid">{errors.first_name.message}</span>
+              {errors.name_legal && (
+                <span className="invalid">{errors.name_legal.message}</span>
               )}
             </div>
           </div>
           <Row className="form-group">
             <Col>
               <div className="form-group">
-                <Label htmlFor="name_surname" className="form-label fs-6">
+                <Label htmlFor="bank_code" className="form-label fs-6">
                   Bank kodi
                 </Label>
                 <div className="form-control-wrap">
@@ -184,6 +209,7 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
                       (errors.bank_code || invalidBank) && "error"
                     }`}
                     type="text"
+                    id="bank_code"
                     maxLength={5}
                     {...register("bank_code", {
                       required: "Bank kodini kiriting",
@@ -201,7 +227,9 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </Col>
             <Col>
               <div className="form-group  ">
-                <label className="form-label">Bank</label>
+                <Label htmlFor="bank_name" className="form-label fs-6">
+                  Bank nomi
+                </Label>
                 <input
                   className={`form-control form-control-lg`}
                   type="text"
@@ -209,8 +237,11 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
                   placeholder={
                     bankQuery.isLoading ? "Yuklanmoqda" : "Bank nomi"
                   }
-                  {...register("bank_name")}
+                  {...register("bank_name", { required: "Bank nomi majburiy" })}
                 />
+                {errors.bank_name && (
+                  <span className="invalid">{errors.bank_name.message}</span>
+                )}
               </div>
             </Col>
           </Row>
@@ -239,46 +270,48 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </Col>
             <Col>
               <div className="form-group">
-                <Label htmlFor="name_surname" className="form-label fs-6">
+                <Label htmlFor="bank_account" className="form-label fs-6">
                   Hisob raqami
                 </Label>
                 <div className="form-control-wrap">
                   <input
                     className={`form-control form-control-lg ${
-                      errors.account && "error"
+                      errors.bank_account && "error"
                     }`}
                     type="text"
-                    id="name_surname"
-                    {...register("account", {
+                    id="bank_account"
+                    {...register("bank_account", {
                       required: "Hisob raqamini kiriting",
                     })}
                   />
-                  {errors.account && (
-                    <span className="invalid">{errors.account.message}</span>
+                  {errors.bank_account && (
+                    <span className="invalid">
+                      {errors.bank_account.message}
+                    </span>
                   )}
                 </div>
               </div>
             </Col>
           </Row>
           <div className="form-group">
-            <Label htmlFor="director_name_long" className="form-label fs-6">
+            <Label htmlFor="director_name_full" className="form-label fs-6">
               Direktor ismi (to’liq)
             </Label>
             <div className="form-control-wrap">
               <input
                 className={`form-control form-control-lg ${
-                  errors.director_name_long && "error"
+                  errors.director_name_full && "error"
                 }`}
                 type="text"
                 placeholder="Sigayev Edgar Xushnazarovich"
-                id="director_name_long"
-                {...register("director_name_long", {
+                id="director_name_full"
+                {...register("director_name_full", {
                   required: "Direktor ismini kiriting",
                 })}
               />
-              {errors.director_name_long && (
+              {errors.director_name_full && (
                 <span className="invalid">
-                  {errors.director_name_long.message}
+                  {errors.director_name_full.message}
                 </span>
               )}
             </div>
@@ -331,15 +364,15 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </Col>
           </Row>
           <div className="form-group">
-            <label className="form-label" htmlFor="message">
+            <label className="form-label" htmlFor="note">
               Qo’shimcha ma’lumot
             </label>
             <div className="form-control-wrap">
               <textarea
                 className="form-control form-control-sm"
-                id="message"
+                id="note"
                 placeholder="Misol uchun qanaqadir kelishuv yoki eslatma yozib qo’yish mumkin. Faqat administrator ko’rishi uchun mo’ljallangan bu joy"
-                {...register("message")}
+                {...register("note")}
               />
             </div>
           </div>
@@ -355,7 +388,11 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
               type="submit"
               color="primary"
             >
-              Saqlash
+              {addBootcampMutation.isLoading ? (
+                <Spinner size="sm" color="light" />
+              ) : (
+                "Saqlash"
+              )}
             </Button>
           </Col>
         </form>

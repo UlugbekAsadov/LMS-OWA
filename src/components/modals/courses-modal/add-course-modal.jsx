@@ -7,11 +7,11 @@ import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const NewCoursesModal = ({ isOpen, onClose }) => {
+const AddCourseModal = ({ isOpen, onClose }) => {
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
 
   const [selectedRole, setSelectedRole] = useState(null);
-  const handleChangeRole = (value) => {
+  const handleChangeCourse = (value) => {
     setValue("rol", value.value);
     setSelectedRole(value);
   };
@@ -86,7 +86,7 @@ const NewCoursesModal = ({ isOpen, onClose }) => {
             <RSelect
               options={rolesMock}
               value={selectedRole}
-              onChange={handleChangeRole}
+              onChange={handleChangeCourse}
             />
           </div>
           <Col sm="6" className={"w-100 d-flex align-items-center justify-content-center "}>
@@ -104,8 +104,8 @@ const NewCoursesModal = ({ isOpen, onClose }) => {
     </Modal>
   );
 };
-NewCoursesModal.propTypes = {
+AddCourseModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
 };
-export default NewCoursesModal;
+export default AddCourseModal;

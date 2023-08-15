@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useQuery } from "react-query";
 import { getCoursesQuery } from "../../react-query/queries/index.js";
-import NewCoursesModal from "../../components/modals/courses-modal/new-courses-modal.jsx";
+import AddCourseModal from "../../components/modals/courses-modal/add-course-modal.jsx";
 
 const CoursesList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,7 +110,7 @@ const CoursesList = () => {
             isLoading={isLoading}
             tableHeader={tableHeader}
           />
-          <NewCoursesModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
+          <AddCourseModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
         </Content>
     )
 }

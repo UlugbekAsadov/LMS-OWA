@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useQuery } from "react-query";
 import { getCoursesQuery } from "../../react-query/queries/index.js";
+import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 
 const CoursesList = () => {
+  const [isDeleteModal, setDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
   const { isLoading, data } = useQuery({
@@ -66,7 +68,7 @@ const CoursesList = () => {
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
             <Icon name="pen" className={"cursor-pointer"} />
-            <span className="p-2">
+            <span className="p-2" onClick={setDeleteModal.bind(null, true )}>
               <Icon className={"cursor-pointer"} name="trash" />
             </span>
           </div>
@@ -103,6 +105,7 @@ const CoursesList = () => {
         isLoading={isLoading}
         tableHeader={tableHeader}
       />
+      <ConfirmationModal isOpen={isDeleteModal} onClose={setDeleteModal.bind(null, false)} title={'salom'} confirmButtonTitle={'salom'} cancelButtonTitle={'ssss'}/>
     </Content>
   );
 };

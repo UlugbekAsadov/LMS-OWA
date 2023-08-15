@@ -1,36 +1,35 @@
 import { Col, Label, Modal, ModalBody, Row } from "reactstrap";
 import PropTypes from "prop-types";
 import { Icon } from "../../icon/icon.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import RSelect from "../../react-select/react-select.jsx";
 import Button from "../../button/button.jsx";
-import { rolesMock } from "../../../utils/mocks/index.js";
 import { InputMask } from "primereact/inputmask";
 import { useQuery } from "react-query";
 import {
   getCitiesQuery,
   getRegionsQuery,
 } from "../../../react-query/queries/contracts.query.js";
+import { getBankQuery } from "../../../react-query/queries/bank.query.js";
+import { ERROR_MESSAGES } from "../../../utils/enums/error-messages.enum.js";
 
 const AddBootcampsModal = ({ isOpen, onClose }) => {
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm();
 
-  const [selectedBank, setSelectedBank] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [cities, setCities] = useState([]);
   const [provinces, setProvinces] = useState([]);
+  const [invalidBank, setInvalidBank] = useState(false);
 
-  const handleChangeBank = (value) => {
-    setValue("rol", value.value);
-    setSelectedBank(value);
-  };
+  const bank_code = watch("bank_code");
 
   const handleChangeProvince = (value) => {
     setValue("region", value.value);
@@ -47,6 +46,20 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     values.phone_number = values.phone_number.replace(regex, "$1$2$3$4");
     console.log({ values, errors });
   };
+
+  const bankQuery = useQuery({
+    queryKey: "bank_info",
+    queryFn: () => getBankQuery(bank_code),
+    enabled: false,
+    onSuccess: (data) => {
+      if (data?.error?.message === ERROR_MESSAGES.BANK_NOT_FOUND) {
+        setValue("bank_name", null);
+        return setInvalidBank(true);
+      }
+
+      setValue("bank_name", data.data.bank_name);
+    },
+  });
 
   useQuery({
     queryKey: "regions",
@@ -77,6 +90,13 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     enabled: !!selectedProvince,
   });
 
+  useEffect(() => {
+    setInvalidBank(false);
+    if (bank_code?.length === 5) {
+      bankQuery.refetch();
+    }
+  }, [bank_code]);
+
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
       <ModalBody className={"gap-20"}>
@@ -92,22 +112,22 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </p>
           </div>
           <div className="form-group">
-            <Label htmlFor="name_surname" className="form-label fs-6">
+            <Label htmlFor="name_brand" className="form-label fs-6">
               O’quv markaz nomi (brend)
             </Label>
             <div className="form-control-wrap">
               <input
                 className={`form-control form-control-lg ${
-                  errors.first_name && "error"
+                  errors.name_brand && "error"
                 }`}
                 type="text"
-                id="name_surname"
-                {...register("first_name", {
+                id="name_brand"
+                {...register("name_brand", {
                   required: "O’quv markaz nomini kiriting",
                 })}
               />
-              {errors.first_name && (
-                <span className="invalid">{errors.first_name.message}</span>
+              {errors.name_brand && (
+                <span className="invalid">{errors.name_brand.message}</span>
               )}
             </div>
           </div>
@@ -117,18 +137,18 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             </Label>
             <div className="form-control-wrap">
               <InputMask
-                id="phone_number"
-                {...register("phone_number", {
+                id="phone"
+                {...register("phone", {
                   required: "Telefon raqamni kiriting",
                 })}
                 className={`form-control-lg form-control  ${
-                  errors.first_name && "error"
+                  errors.phone && "error"
                 }`}
                 mask="(99) 999-99-99"
                 placeholder="(99) 999-99-99"
               />
-              {errors.phone_number && (
-                <span className="invalid">{errors.phone_number.message}</span>
+              {errors.phone && (
+                <span className="invalid">{errors.phone.message}</span>
               )}
             </div>
           </div>
@@ -161,15 +181,20 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
                 <div className="form-control-wrap">
                   <input
                     className={`form-control form-control-lg ${
-                      errors.bank_code && "error"
+                      (errors.bank_code || invalidBank) && "error"
                     }`}
                     type="text"
+                    maxLength={5}
                     {...register("bank_code", {
                       required: "Bank kodini kiriting",
+                      maxLength: 5,
                     })}
                   />
                   {errors.bank_code && (
                     <span className="invalid">{errors.bank_code.message}</span>
+                  )}
+                  {invalidBank && (
+                    <span className="invalid">Bank Topilmadi</span>
                   )}
                 </div>
               </div>
@@ -177,10 +202,14 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             <Col>
               <div className="form-group  ">
                 <label className="form-label">Bank</label>
-                <RSelect
-                  options={rolesMock}
-                  value={selectedBank}
-                  onChange={handleChangeBank}
+                <input
+                  className={`form-control form-control-lg`}
+                  type="text"
+                  disabled
+                  placeholder={
+                    bankQuery.isLoading ? "Yuklanmoqda" : "Bank nomi"
+                  }
+                  {...register("bank_name")}
                 />
               </div>
             </Col>

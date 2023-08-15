@@ -1,29 +1,31 @@
-import {Col, Label, Modal, ModalBody} from "reactstrap";
+import { Col, Label, Modal, ModalBody } from "reactstrap";
 import PropTypes from "prop-types";
-import {Icon} from "../../icon/icon.jsx";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
+import { Icon } from "../../icon/icon.jsx";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import RSelect from "../../react-select/react-select.jsx";
 import Button from "../../button/button.jsx";
-import {rolesMock} from "../../../utils/mocks";
-import {InputMask} from "primereact/inputmask";
+import { rolesMock } from "../../../utils/mocks";
+import { InputMask } from "primereact/inputmask";
 
 
-const AddStaff = ({isOpen, onClose}) => {
-    const {register, handleSubmit, setValue, formState: {errors}} = useForm();
+const AddStaff = ({ isOpen, onClose }) => {
+    const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
 
     const [selectedRole, setSelectedRole] = useState(null);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const handleChangeCity = (value) => {
-        setValue('rol', value.value)
+    const handleChangeRole = (value) => {
+        setValue("rol", value.value);
         setSelectedRole(value);
     };
 
     const handleSubmitForm = (values) => {
         const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
-        values.phone_number = values.phone_number.replace(regex, '$1$2$3$4');
-        console.log({values, errors});
+        values.phone_number = values.phone_number.replace(regex, "$1$2$3$4");
+        reset();
+        setSelectedRole(' ')
+        console.log({ values, errors });
     };
     return (
         <Modal isOpen={isOpen} toggle={onClose} size="lg">
@@ -110,9 +112,9 @@ const AddStaff = ({isOpen, onClose}) => {
                     <div className="form-group  ">
                         <label className="form-label">Rol</label>
                         <RSelect
-                            options={rolesMock}
-                            value={selectedRole}
-                            onChange={handleChangeCity}
+                          options={rolesMock}
+                          value={selectedRole}
+                          onChange={handleChangeRole}
                         />
                     </div>
                     <Col sm="6" className={'w-100 d-flex align-items-center justify-content-center '}>

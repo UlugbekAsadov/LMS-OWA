@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useQuery } from "react-query";
 import { getCoursesQuery } from "../../react-query/queries/index.js";
+import NewCoursesModal from "../../components/modals/courses-modal/new-courses-modal.jsx";
 
 const CoursesList = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
   const { isLoading, data } = useQuery({
@@ -79,15 +81,14 @@ const CoursesList = () => {
     });
     return (
         <Content title="Kurslar">
-            <PageHeader
-                pageTitle={"Kurslar"}
-                pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
-                btnTitle={"Kurs qo’shish"}
-                btnIcon={"plus"}
-                isButtonVisible
-                headerButtonAction={() => {
-                }}
-            />
+          <PageHeader
+            pageTitle={"Kurslar"}
+            pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
+            btnTitle={"Kurs qo’shish"}
+            btnIcon={"plus"}
+            isButtonVisible
+            onClickButton={setIsModalOpen.bind(null, true)}
+          />
 
           <Table
             pagination={
@@ -102,7 +103,7 @@ const CoursesList = () => {
             isLoading={isLoading}
             tableHeader={tableHeader}
           />
-
+          <NewCoursesModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
         </Content>
     )
 }

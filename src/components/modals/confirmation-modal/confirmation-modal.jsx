@@ -5,11 +5,11 @@ import { Icon } from "../../icon/icon.jsx";
 export const ConfirmationModal = ({
                                     title,
                                     cancelButtonTitle,
-                                    cancelButtonFn,
                                     confirmButtonTitle,
                                     confirmButtonFn,
                                     isOpen, onClose,
                                   }) => {
+
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
       <ModalBody className={"gap-20"}>
@@ -34,7 +34,7 @@ export const ConfirmationModal = ({
           <Button
             size="lg"
             className="btn-block border-0 w-20 mb-4 bg-danger-dim text-danger"
-            onClick={cancelButtonFn}
+            onClick={onClose}
             color="primary"
           >
             {cancelButtonTitle}

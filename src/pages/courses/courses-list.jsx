@@ -7,9 +7,11 @@ import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useQuery } from "react-query";
 import { getCoursesQuery } from "../../react-query/queries/index.js";
+import AddCourseModal from "../../components/modals/courses-modal/add-course-modal.jsx";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 
 const CoursesList = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModal, setDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
@@ -28,6 +30,7 @@ const CoursesList = () => {
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
   const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
 
+
   const tableHeader = (
     <thead className="tb-odr-head">
       <tr className="tb-odr-item">
@@ -45,6 +48,10 @@ const CoursesList = () => {
       </tr>
     </thead>
   );
+
+  if(isLoading){
+    return
+  }
 
   const tableBody = currentItems.map((item, index) => {
     return (
@@ -89,7 +96,7 @@ const CoursesList = () => {
         btnTitle={"Kurs qo’shish"}
         btnIcon={"plus"}
         isButtonVisible
-        headerButtonAction={() => {}}
+        onClickButton={setIsModalOpen.bind(null, true)}
       />
 
       <Table
@@ -105,6 +112,7 @@ const CoursesList = () => {
         isLoading={isLoading}
         tableHeader={tableHeader}
       />
+      <AddCourseModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
       <ConfirmationModal isOpen={isDeleteModal} onClose={setDeleteModal.bind(null, false)} title={'salom'} confirmButtonTitle={'salom'} cancelButtonTitle={'ssss'}/>
     </Content>
   );

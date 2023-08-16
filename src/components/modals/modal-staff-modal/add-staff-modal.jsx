@@ -41,22 +41,22 @@ const AddStaffModal = ({ isOpen, onClose }) => {
             <p className="fs-7">Quyidagi maydonlarni to’ldirib chiqing</p>
           </div>
           <div className="form-group">
-            <Label htmlFor="name_surname" className="form-label fs-6">
+            <Label htmlFor="name_fullName " className="form-label fs-6">
               Ismi va familiyasi
             </Label>
             <div className="form-control-wrap">
               <input
                 className={`form-control form-control-lg ${
-                  errors.first_name && "error"
+                  errors.name_fullName  && "error"
                 }`}
                 type="text"
-                id="name_surname"
-                {...register("first_name", {
+                id="name_fullName "
+                {...register("name_fullName ", {
                   required: "Ismi yoki familiyani kiriting",
                 })}
               />
-              {errors.first_name && (
-                <span className="invalid">{errors.first_name.message}</span>
+              {errors.name_fullName  && (
+                <span className="invalid">{errors.name_fullName .message}</span>
               )}
             </div>
           </div>

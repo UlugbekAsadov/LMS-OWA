@@ -8,3 +8,6 @@ export const getCitiesQuery = (regionId) =>
 
 export const getPINFLQuery = (pinfl) =>
   api(`/contract/additional/${pinfl}`).then((data) => data);
+
+export const getContractTypesQuery = () =>
+  api("/contractType/get/all").then((data) => data.data);

@@ -1,16 +1,9 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import App from "../App";
 import { ProtectedRoute } from "./protected-router";
 import Layout from "../layout/layout-no-sidebar/layout-no-sidebar";
 import Login from "../pages/auth/login";
-import BasicContracts from "../pages/basic-contract/basic-contract";
-import FutureProfessionsContract from "../pages/future-professions-contract/future-professions-contract";
+import Contract from "../pages/contract/contract";
 import CoursesList from "../pages/courses/courses-list.jsx";
 import ContractsTypeList from "../pages/contracts/contracts-type-list.jsx";
 import { USER_ROLES } from "../utils/enums";
@@ -25,21 +18,18 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/basic-contracts" />} />
         <Route
           path="/"
           element={
-            <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
+            <ProtectedRoute hasAccessRoles={Object.values(USER_ROLES)}>
               <App />
             </ProtectedRoute>
           }
         >
-          <Route path="basic-contracts" element={<BasicContracts />} />
           <Route
             path="educational-center/"
             element={
-              <ProtectedRoute hasAccessRoles={[USER_ROLES.ADMIN]}>
-                {" "}
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.SUPER_ADMIN]}>
                 <Outlet />
               </ProtectedRoute>
             }
@@ -47,10 +37,15 @@ export const Router = () => {
             <Route index element={<EducationalCentersPage />} />
             <Route path="staffs-list" element={<StaffsPage />} />
           </Route>
-          <Route path="staffs-list" element={<StaffsPage />} />
           <Route
-            path="grand-contract"
-            element={<FutureProfessionsContract />}
+            path="contracts/:contractId"
+            element={
+              <ProtectedRoute
+                hasAccessRoles={[USER_ROLES.ADMIN, USER_ROLES.OWNER]}
+              >
+                <Contract />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="courses-list"

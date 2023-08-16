@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { menuMock } from "../../utils/mocks/sidebar.mock";
-// import menu from "./menu-data";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Icon } from "../icon/icon";
 import { Link, NavLink } from "react-router-dom";
 import { useQuery } from "react-query";
+import { useSidebarMenu } from "../../utils/hooks";
 
 const MenuHeading = ({ heading }) => {
   return (
@@ -263,18 +262,19 @@ const PanelItem = ({
   index,
   data,
   setMenuData,
+  menuMockProp,
 }) => {
   const menuItemClass = classNames({
     "nk-menu-item": true,
   });
 
-  if (data === menuMock) {
+  if (data === menuMockProp) {
     return (
       <li className={menuItemClass}>
         <Link
           to={link}
           className="nk-menu-link"
-          onClick={() => setMenuData([menuMock[index]])}
+          onClick={() => setMenuData([menuMockProp[index]])}
         >
           {icon ? (
             <span className="nk-menu-icon">
@@ -304,7 +304,7 @@ const PanelItem = ({
           <Link
             to={`/`}
             className="nk-menu-link"
-            onClick={() => setMenuData(menuMock)}
+            onClick={() => setMenuData(menuMockProp)}
           >
             <span className="nk-menu-icon">
               <Icon name="dashlite-alt" />
@@ -316,7 +316,7 @@ const PanelItem = ({
           <Link
             to={`/`}
             className="nk-menu-link"
-            onClick={() => setMenuData(menuMock)}
+            onClick={() => setMenuData(menuMockProp)}
           >
             <span className="nk-menu-icon">
               <Icon name="layers-fill" />
@@ -337,30 +337,22 @@ PanelItem.propTypes = {
   index: PropTypes.number,
   data: PropTypes.array,
   setMenuData: PropTypes.func,
+  menuMockProp: PropTypes.arr,
 };
 
 export const Menu = ({ sidebarToggle, mobileView }) => {
-  const [data, setMenuData] = useState(menuMock);
+  const { isLoading, sidebar_menu } = useSidebarMenu();
+
+  const [data, setMenuData] = useState(sidebar_menu);
   const user = useQuery({ queryKey: ["user"] });
 
-  useEffect(() => {
-    data.forEach((item, index) => {
-      if (item.panel) {
-        let found = item.subPanel.find(
-          (sPanel) =>
-            import.meta.env.PUBLIC_URL + sPanel.link ===
-            window.location.pathname
-        );
-        if (found) {
-          setMenuData([menuMock[index]]);
-        }
-      }
-    });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  if (isLoading) {
+    return <>Loading</>;
+  }
 
   return (
     <ul className="nk-menu">
-      {data.map((item, index) => {
+      {sidebar_menu.map((item, index) => {
         const hasAccess = item.access.find((role) => role === user.data?.role);
 
         if (!hasAccess) {
@@ -381,6 +373,7 @@ export const Menu = ({ sidebarToggle, mobileView }) => {
             data={data}
             setMenuData={setMenuData}
             sidebarToggle={sidebarToggle}
+            menuMockProp={sidebar_menu}
           />
         ) : (
           <MenuItem

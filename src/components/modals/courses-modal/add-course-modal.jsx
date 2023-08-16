@@ -16,8 +16,6 @@ const AddCourseModal = ({ isOpen, onClose }) => {
     setSelectedRole(value);
   };
   const handleSubmitForm = (values) => {
-    reset()
-    setSelectedRole(' ')
     console.log({ values, errors });
   };
   return (
@@ -34,18 +32,18 @@ const AddCourseModal = ({ isOpen, onClose }) => {
             </p>
           </div>
           <div className="form-group">
-            <Label htmlFor="courses_name" className="form-label fs-6">
+            <Label htmlFor="course_name" className="form-label fs-6">
               Nomi
             </Label>
             <div className="form-control-wrap">
               <input
-                className={`form-control form-control-lg ${errors.courses_name && "error"}`}
+                className={`form-control form-control-lg ${errors.course_name && "error"}`}
                 type="text"
-                id="courses_name"
+                id="course_name"
                 {...register("first_name", { required: "Kurs nomini kiriting" })}
               />
-              {errors.courses_name && (
-                <span className="invalid">{errors.courses_name.message}</span>
+              {errors.course_name && (
+                <span className="invalid">{errors.course_name.message}</span>
               )}
             </div>
           </div>
@@ -57,7 +55,7 @@ const AddCourseModal = ({ isOpen, onClose }) => {
               <input
                 className={`form-control form-control-lg ${errors.price && "error"}`}
                 type="number"
-                id="name_surname"
+                id="price"
                 {...register("price", { required: "Kurs narxini kiriting" })}
               />
               {errors.price && (

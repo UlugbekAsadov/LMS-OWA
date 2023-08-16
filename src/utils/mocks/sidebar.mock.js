@@ -6,7 +6,7 @@ export const menuMock = [
     text: "O'quv markazlar",
     link: "/educational-center",
     active: false,
-    access: [USER_ROLES.ADMIN, USER_ROLES.OWNER],
+    access: [USER_ROLES.SUPER_ADMIN],
   },
   {
     icon: "todo",
@@ -21,22 +21,5 @@ export const menuMock = [
     link: "/contracts-type-list",
     active: false,
     access: [USER_ROLES.ADMIN],
-  },
-  {
-    icon: "file-docs",
-    text: "Shartnomalar",
-    link: "/contract",
-    active: false,
-    access: [USER_ROLES.ADMIN],
-    subMenu: [
-      {
-        text: "Oddiy shartnomalar",
-        link: "/basic-contracts",
-      },
-      {
-        text: "Kelajak kasblari",
-        link: "/grand-contract",
-      },
-    ],
   },
 ];

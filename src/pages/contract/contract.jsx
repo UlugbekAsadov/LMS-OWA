@@ -9,7 +9,7 @@ import {TablePagination} from "../../components/pagination/pagination";
 import {Table} from "../../components/table/table";
 import BasicContractModal from "../../components/modals/basic-conract-modal/basic-contract-modal";
 
-const BasicContracts = () => {
+const Contract = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -115,4 +115,4 @@ const BasicContracts = () => {
     </Content>
   );
 };
-export default BasicContracts;
+export default Contract;

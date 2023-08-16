@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { educationCentersListMock } from "../../utils/mocks/index.js";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { Icon, Table } from "../../components/index.js";
@@ -8,12 +9,14 @@ import { Content } from "../../layout/page-layout/page-layout.jsx";
 import AddBootcampsModal from "../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
 import { useQuery } from "react-query";
 import { getMyBootcampsQueryFn } from "../../react-query/queries/bootcamps.query.js";
+import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 
 const EducationalCentersPage = () => {
+  const [isModalOpen, setIsOpenModal] = useState(false);
+  const [isDeleteModal, setDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const [isModalOpen, setIsOpenModal] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["my-bootcamps"],
@@ -67,8 +70,8 @@ const EducationalCentersPage = () => {
             >
               <Icon className={"cursor-pointer"} name="user-circle" />
             </Link>
-            <span className="p-2">
-              <Icon className={"cursor-pointer"} name="trash" />
+            <span className="p-2" onClick={setDeleteModal.bind(null, true)}>
+                   <Icon className={"cursor-pointer"} name="trash" />
             </span>
             <Icon name="pen" className={"cursor-pointer"} />
           </div>
@@ -108,6 +111,7 @@ const EducationalCentersPage = () => {
         isOpen={isModalOpen}
         onClose={setIsOpenModal.bind(null, false)}
       />
+      <ConfirmationModal isOpen={isDeleteModal} onClose={setDeleteModal.bind(null, false)} title={'salom'} confirmButtonTitle={'salom'} cancelButtonTitle={'ssss'}/>
     </Content>
   );
 };

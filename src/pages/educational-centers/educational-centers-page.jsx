@@ -7,6 +7,8 @@ import PageHeader from "../../components/page-header/page-header.jsx";
 import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
 import AddBootcampsModal from "../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
+import { useQuery } from "react-query";
+import { getMyBootcampsQueryFn } from "../../react-query/queries/bootcamps.query.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 
 const EducationalCentersPage = () => {
@@ -16,13 +18,18 @@ const EducationalCentersPage = () => {
   const [itemPerPage] = useState(20);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["my-bootcamps"],
+    queryFn: () => getMyBootcampsQueryFn(),
+  });
+
+  if (isLoading) {
+    return null;
+  }
+
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = educationCentersListMock.slice(
-    indexOfFirstItem,
-    indexOfLastItem,
-  );
-
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -38,16 +45,17 @@ const EducationalCentersPage = () => {
       </tr>
     </thead>
   );
+
   const tableBody = currentItems.map((item, index) => {
     return (
       <tr className="tb-odr-item" key={item.id}>
         <td className="tb-odr-info">
           <span className="tb-odr-id">
-            <Link to={`/invoice-details/${item.id}`}>
+            <Link to={`/educational-center/staffs-list/${item.id}`}>
               {currentPage * 20 + index + 1 - 20}
             </Link>
           </span>
-          <span className="tb-odr-date">{item.name}</span>
+          <span className="tb-odr-date">{item.name_brand}</span>
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">
@@ -58,7 +66,7 @@ const EducationalCentersPage = () => {
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
             <Link
               className={"text-base"}
-              to={"/educational-center/staffs-list"}
+              to={`/educational-center/staffs-list/${item.id}`}
             >
               <Icon className={"cursor-pointer"} name="user-circle" />
             </Link>
@@ -67,7 +75,7 @@ const EducationalCentersPage = () => {
             </span>
             <Icon name="pen" className={"cursor-pointer"} />
           </div>
-          <Link to={`/invoice-details/${item.id}`}>
+          <Link to={`/educational-center/staffs-list/${item.id}`}>
             <Button className="btn-pd-auto d-sm-none ">
               <Icon name="chevron-right" />
             </Button>
@@ -91,7 +99,7 @@ const EducationalCentersPage = () => {
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={educationCentersListMock.length}
+            totalItems={data.length}
             paginate={paginate}
             currentPage={currentPage}
           />

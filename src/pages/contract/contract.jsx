@@ -1,24 +1,35 @@
 import PageHeader from "../../components/page-header/page-header";
-import { contractsMock } from "../../utils/mocks";
 import { Content } from "../../layout/page-layout/page-layout";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
 import { Icon } from "../../components/icon/icon";
 import { TablePagination } from "../../components/pagination/pagination";
 import { Table } from "../../components/table/table";
 import BasicContractModal from "../../components/modals/basic-conract-modal/basic-contract-modal";
+import { useQuery } from "react-query";
+import { getContractsByIdQueryFn } from "../../react-query/queries/index.js";
 
 const Contract = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { contractId } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const { data = [], isLoading } = useQuery({
+    queryKey: [`contract-data-${contractId}`],
+    queryFn: () => getContractsByIdQueryFn(contractId),
+  });
+
+  if (isLoading) {
+    return null;
+  }
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = contractsMock.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -36,7 +47,7 @@ const Contract = () => {
     </thead>
   );
 
-  const tableBody = currentItems.map((item) => {
+  const tableBody = currentItems?.map((item) => {
     return (
       <tr className="tb-odr-item" key={item.id}>
         <td className="tb-odr-info">
@@ -93,19 +104,20 @@ const Contract = () => {
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={contractsMock.length}
+            totalItems={data?.length}
             paginate={paginate}
             currentPage={currentPage}
           />
         }
-        tableBody={currentItems.length ? tableBody : null}
+        tableBody={currentItems?.length ? tableBody : null}
         tableHeader={tableHeader}
       />
-
-      <BasicContractModal
-        isOpen={isModalOpen}
-        onClose={setIsModalOpen.bind(null, false)}
-      />
+      {isModalOpen && (
+        <BasicContractModal
+          isOpen={isModalOpen}
+          onClose={setIsModalOpen.bind(null, false)}
+        />
+      )}
     </Content>
   );
 };

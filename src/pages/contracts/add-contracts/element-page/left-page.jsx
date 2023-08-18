@@ -32,11 +32,6 @@ const LeftPage = () => {
   });
 
   const handleSubmitForm = async (formData) => {
-    if (editorRef.current) {
-      let html = editorRef.current.getContent();
-      const qs = new URLSearchParams({ html });
-      setValue("template", `${qs.toString()}`);
-    }
     const body = {
       ...formData,
       is_prefix: Boolean(formData.is_prefix === "on"),
@@ -45,7 +40,9 @@ const LeftPage = () => {
       method: "POST",
       body: JSON.stringify(body),
     };
-    await addContract.mutateAsync(config);
+    console.log(config.body);
+
+    // await addContract.mutateAsync(config);
 
     await contractTypes.refetch();
   };
@@ -166,7 +163,15 @@ const LeftPage = () => {
           <BlockHeadContent className={"mb-4"}>
             <Button color={`primary`}>
               <Icon name={"plus"}></Icon>
-              <span>Saqlash</span>
+              <span
+                onClick={() => {
+                  let html = editorRef.current.getContent();
+                  const qs = new URLSearchParams({ html });
+                  setValue("template", `${qs.toString()}`);
+                }}
+              >
+                Saqlash
+              </span>
             </Button>
           </BlockHeadContent>
         </form>

@@ -16,95 +16,104 @@ const ContractsTypeList = () => {
   const navigate = useNavigate();
   const { isLoading, data } = useQuery({
     queryFn: () => getHotCategoriesQuery(),
-        queryKey: ['contractsType']
-    })
-    const handleClickHeaderButton = () => {
-        navigate('add-contract')
-    }
+    queryKey: ["contract-type"],
+  });
+  const handleClickHeaderButton = () => {
+    navigate(`add-contract`);
+  };
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const indexOfLastItem = currentPage * itemPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemPerPage;
-    const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItem = currentPage * itemPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemPerPage;
+  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+  if (isLoading) {
+    return;
+  }
+  const tableHeader = (
+    <thead className="tb-odr-head">
+      <tr className="tb-odr-item">
+        <th className="tb-odr-info">
+          <span className="tb-odr-id">Raqami</span>
+          <span className="tb-odr-date d-none d-md-inline-block">
+            Nomlanishi
+          </span>
+        </th>
+        <th className="tb-odr-amount">
+          <span className="tb-odr-date d-none d-md-inline-block">
+            {"Qo'shimcha"}
+          </span>
+        </th>
+        <th className="tb-odr-action">&nbsp;</th>
+      </tr>
+    </thead>
+  );
 
-
-    const tableHeader = (
-        <thead className="tb-odr-head">
-        <tr className="tb-odr-item">
-            <th className="tb-odr-info">
-                <span className="tb-odr-id">Raqami</span>
-                <span className="tb-odr-date d-none d-md-inline-block">Nomlanishi</span>
-            </th>
-            <th className="tb-odr-amount">
-                <span className="tb-odr-date d-none d-md-inline-block">{"Qo'shimcha"}</span>
-            </th>
-            <th className="tb-odr-action">&nbsp;</th>
-        </tr>
-        </thead>
-    );
-
-    const tableBody = currentItems?.map((item, index) => {
-        return (
-            <tr className="tb-odr-item" key={item.id}>
-                <td className="tb-odr-info">
-                    <span className="tb-odr-id">
-                      <Link to={`/invoice-details/${item.id}`}>
-                        {currentPage * 20 + index + 1 - 20}
-                      </Link>
-                    </span>
-                    <span className="tb-odr-date">{item.name}</span>
-                </td>
-                <td className="tb-odr-amount">
-                    <span className="tb-odr-total">
-                      <span className="amount">{item.short_letter}</span>
-                    </span>
-                </td>
-                <td className="tb-odr-action">
-                    <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-                        <Icon className={'cursor-pointer'} name="pen"/>
-                        <span className="p-2" onClick={setDeleteModal.bind(null, true)}>
-                            <Icon className={'cursor-pointer'} name="trash"/>
-                        </span>
-                    </div>
-                    <Link to={`/invoice-details/${item.id}`}>
-                        <Button className="btn-pd-auto d-sm-none">
-                            <Icon name="chevron-right"></Icon>
-                        </Button>
-                    </Link>
-                </td>
-            </tr>
-        )
-    });
-
+  const tableBody = currentItems?.map((item, index) => {
     return (
-        <Content title="Shartnomalar turi">
-            <PageHeader
-                pageTitle={"Shartnomalar turi"}
-                pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
-                btnTitle={"Shartnoma qo’shish"}
-                btnIcon={"plus"}
-                isButtonVisible
-                onClickButton={handleClickHeaderButton}
-            />
+      <tr className="tb-odr-item" key={item.id}>
+        <td className="tb-odr-info">
+          <span className="tb-odr-id">
+            <Link to={`/invoice-details/${item.id}`}>
+              {currentPage * 20 + index + 1 - 20}
+            </Link>
+          </span>
+          <span className="tb-odr-date">{item.name}</span>
+        </td>
+        <td className="tb-odr-amount">
+          <span className="tb-odr-total">
+            <span className="amount">{item.short_letter}</span>
+          </span>
+        </td>
+        <td className="tb-odr-action">
+          <div className="tb-odr-btns d-none d-sm-inline fs-20px">
+            <Icon className={"cursor-pointer"} name="pen" />
+            <span className="p-2" onClick={setDeleteModal.bind(null, true)}>
+              <Icon className={"cursor-pointer"} name="trash" />
+            </span>
+          </div>
+          <Link to={`/invoice-details/${item.id}`}>
+            <Button className="btn-pd-auto d-sm-none">
+              <Icon name="chevron-right"></Icon>
+            </Button>
+          </Link>
+        </td>
+      </tr>
+    );
+  });
 
-            <Table
-                pagination={
-                    <TablePagination
-                      itemPerPage={itemPerPage}
-                      totalItems={data?.length}
-                      paginate={paginate}
-                      currentPage={currentPage}
-                    />
-                }
-                tableBody={currentItems?.length ? tableBody : null}
-                isLoading={isLoading}
-                tableHeader={tableHeader}
-            />
-          <ConfirmationModal isOpen={isDeleteModal} onClose={setDeleteModal.bind(null, false)} title={"salom"}
-                             confirmButtonTitle={"salom"} cancelButtonTitle={"ssss"} />
+  return (
+    <Content title="Shartnomalar turi">
+      <PageHeader
+        pageTitle={"Shartnomalar turi"}
+        pageDescription={"Joriy shartnomalarni qo'shish va o'zgartirish"}
+        btnTitle={"Shartnoma qo’shish"}
+        btnIcon={"plus"}
+        isButtonVisible
+        onClickButton={handleClickHeaderButton}
+      />
 
-        </Content>
-    )
-}
-export default ContractsTypeList
+      <Table
+        pagination={
+          <TablePagination
+            itemPerPage={itemPerPage}
+            totalItems={data?.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+        }
+        tableBody={currentItems?.length ? tableBody : null}
+        isLoading={isLoading}
+        tableHeader={tableHeader}
+      />
+      <ConfirmationModal
+        isOpen={isDeleteModal}
+        onClose={setDeleteModal.bind(null, false)}
+        title={"salom"}
+        confirmButtonTitle={"salom"}
+        cancelButtonTitle={"ssss"}
+      />
+    </Content>
+  );
+};
+export default ContractsTypeList;

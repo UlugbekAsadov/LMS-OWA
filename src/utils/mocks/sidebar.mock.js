@@ -13,13 +13,13 @@ export const menuMock = [
     text: "Kurslar",
     link: "/courses-list",
     active: false,
-    access: [USER_ROLES.ADMIN],
+    access: [USER_ROLES.COMPANY_STAFF],
   },
   {
     icon: "panel",
     text: "Shartnomalar turi",
     link: "/contracts-type-list",
     active: false,
-    access: [USER_ROLES.ADMIN],
+    access: [USER_ROLES.COMPANY_STAFF],
   },
 ];

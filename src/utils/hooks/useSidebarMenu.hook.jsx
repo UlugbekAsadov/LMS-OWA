@@ -27,7 +27,7 @@ export const useSidebarMenu = () => {
         text: "Shartnomalar",
         link: "/contracts",
         active: false,
-        access: [USER_ROLES.ADMIN, USER_ROLES.OWNER],
+        access: [USER_ROLES.COMPANY_STAFF, USER_ROLES.COMPANY_OWNER],
         subMenu: contractTypes,
       },
     ],

@@ -37,19 +37,7 @@ export const Router = () => {
             <Route index element={<EducationalCentersPage />} />
             <Route path="staffs-list/:bootcampId" element={<StaffsPage />} />
           </Route>
-          <Route
-            path="contracts/:contractId"
-            element={
-              <ProtectedRoute
-                hasAccessRoles={[
-                  USER_ROLES.COMPANY_STAFF,
-                  USER_ROLES.COMPANY_OWNER,
-                ]}
-              >
-                <Contract />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="courses-list"
             element={
@@ -69,6 +57,19 @@ export const Router = () => {
             <Route index element={<ContractsTypeList />} />
             <Route path="add-contract" element={<CreateContract />} />
           </Route>
+          <Route
+            path="contracts/:contractId"
+            element={
+              <ProtectedRoute
+                hasAccessRoles={[
+                  USER_ROLES.COMPANY_STAFF,
+                  USER_ROLES.COMPANY_OWNER,
+                ]}
+              >
+                <Contract />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         <Route path="/" element={<Layout />}>

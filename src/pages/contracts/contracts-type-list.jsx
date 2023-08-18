@@ -2,11 +2,11 @@ import PageHeader from "../../components/page-header/page-header.jsx";
 import { Icon, Table } from "../../components/index.js";
 import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useMutation, useQuery } from "react-query";
-import { getHotCategoriesQuery } from "../../react-query/queries/index.js";
+import { getAllContractTypes } from "../../react-query/queries/index.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 import { deleteContractMutationFn } from "../../react-query/mutations/index.js";
 
@@ -17,7 +17,7 @@ const ContractsTypeList = () => {
   const [itemPerPage] = useState(20);
   const navigate = useNavigate();
   const { isLoading, data, refetch } = useQuery({
-    queryFn: () => getHotCategoriesQuery(),
+    queryFn: () => getAllContractTypes(),
     queryKey: ["contract-type"],
   });
   const deleteContract = useMutation({

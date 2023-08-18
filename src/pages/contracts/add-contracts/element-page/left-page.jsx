@@ -1,6 +1,7 @@
 import {
   BlockHeadContent,
   Icon,
+  Loader,
   PreviewCard,
 } from "../../../../components/index.js";
 import { Editor } from "@tinymce/tinymce-react";
@@ -9,7 +10,7 @@ import { useRef } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import { addContactQuery } from "../../../../react-query/mutations/index.js";
-import { getHotCategoriesQuery } from "../../../../react-query/queries/index.js";
+import { getAllContractTypes } from "../../../../react-query/queries/index.js";
 
 const LeftPage = () => {
   const editorRef = useRef(null);
@@ -22,7 +23,7 @@ const LeftPage = () => {
 
   const contractTypes = useQuery({
     queryKey: "contracts-types",
-    queryFn: () => getHotCategoriesQuery(),
+    queryFn: () => getAllContractTypes(),
     enabled: false,
   });
 
@@ -40,9 +41,8 @@ const LeftPage = () => {
       method: "POST",
       body: JSON.stringify(body),
     };
-    console.log(config.body);
 
-    // await addContract.mutateAsync(config);
+    await addContract.mutateAsync(config);
 
     await contractTypes.refetch();
   };
@@ -128,7 +128,7 @@ const LeftPage = () => {
             <Editor
               apiKey={import.meta.env.VITE_CONFIG_TINYMCI_TOKEN}
               onInit={(evt, editor) => (editorRef.current = editor)}
-              initialValue="Hello, World!"
+              initialValue={"Hello world"}
               init={{
                 menubar: "file edit view format",
                 plugins: [
@@ -160,20 +160,23 @@ const LeftPage = () => {
               </label>
             </div>
           </div>
-          <BlockHeadContent className={"mb-4"}>
-            <Button color={`primary`}>
-              <Icon name={"plus"}></Icon>
-              <span
-                onClick={() => {
-                  let html = editorRef.current.getContent();
-                  const qs = new URLSearchParams({ html });
-                  setValue("template", `${qs.toString()}`);
-                }}
-              >
-                Saqlash
-              </span>
-            </Button>
-          </BlockHeadContent>
+          {!addContract.isLoading ? (
+            <div
+              className={"mb-4"}
+              onClick={() => {
+                let html = editorRef.current.getContent();
+                const qs = new URLSearchParams({ html });
+                setValue("template", `${qs.toString()}`);
+              }}
+            >
+              <Button color={`primary`}>
+                <Icon name={"plus"}></Icon>
+                <span>Saqlash</span>
+              </Button>
+            </div>
+          ) : (
+            <Loader />
+          )}
         </form>
       </PreviewCard>
     </Col>

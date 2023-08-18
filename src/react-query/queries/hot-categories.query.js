@@ -1,3 +1,4 @@
-import {api} from "../api.js";
+import { api } from "../api.js";
 
-export const getHotCategoriesQuery = () => api('/contractType/get/all').then(data => data.data)
+export const getAllContractTypes = () =>
+  api("/contractType/get/all").then((data) => data.data);

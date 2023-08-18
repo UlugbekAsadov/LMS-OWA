@@ -11,3 +11,6 @@ export const getPINFLQuery = (pinfl) =>
 
 export const getContractTypesQuery = () =>
   api("/contractType/get/all").then((data) => data.data);
+
+export const getContractWordList = () =>
+  api("/contractType/values").then((data) => data.data);

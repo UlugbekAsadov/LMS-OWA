@@ -3,25 +3,27 @@ import { Button, Col, Modal, ModalBody } from "reactstrap";
 import { Icon } from "../../icon/icon.jsx";
 
 export const ConfirmationModal = ({
-                                    title,
-                                    cancelButtonTitle,
-                                    confirmButtonTitle,
-                                    confirmButtonFn,
-                                    isOpen, onClose,
-                                  }) => {
-
+  title,
+  cancelButtonTitle,
+  confirmButtonTitle,
+  confirmButtonFn,
+  isOpen,
+  onClose,
+}) => {
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
       <ModalBody className={"gap-20"}>
-         <span className="close cursor-pointer" onClick={onClose}>
-            <Icon name="cross-sm"></Icon>
-          </span>
+        <span className="close cursor-pointer" onClick={onClose}>
+          <Icon name="cross-sm"></Icon>
+        </span>
         <div className="py-4 w-100 d-flex flex-column align-items-center justify-content-center form-group">
           <h2 className="fw-bold  fs-1">{title}</h2>
         </div>
         <Col
           sm="6"
-          className={"w-100 d-flex align-items-center justify-content-center gap-5 "}
+          className={
+            "w-100 d-flex align-items-center justify-content-center gap-5 "
+          }
         >
           <Button
             size="lg"
@@ -33,7 +35,7 @@ export const ConfirmationModal = ({
           </Button>
           <Button
             size="lg"
-            className="btn-block border-0 w-20 mb-4 bg-danger-dim text-danger"
+            className="btn-block border-0 w-25 mb-4 bg-danger-dim text-danger"
             onClick={onClose}
             color="primary"
           >
@@ -53,5 +55,4 @@ ConfirmationModal.propTypes = {
   confirmButtonFn: PropTypes.func,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
-
 };

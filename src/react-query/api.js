@@ -11,10 +11,9 @@ export const api = async (url, config) => {
     .then((res) => res.json())
     .then((data) => data);
 
-
   if (data.error?.message === ERROR_MESSAGES.JWT_ERROR) {
     return window.location.replace(
-        `/auth-login?callbackUri=${window.location.href}`
+      `/auth-login?callbackUri=${window.location.href}`
     );
   }
 

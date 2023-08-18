@@ -6,6 +6,10 @@ import { useState } from "react";
 
 export const useSidebarMenu = () => {
   const [contractTypes, setContractTypes] = useState([]);
+  const userData = useQuery({
+    queryKey: "user"
+  })
+
   const { isLoading } = useQuery({
     queryKey: ["contracts-types"],
     queryFn: () => getContractTypesQuery(),
@@ -16,6 +20,7 @@ export const useSidebarMenu = () => {
 
       setContractTypes(newArr);
     },
+    enabled: userData.data.role !== USER_ROLES.SUPER_ADMIN
   });
 
   return {

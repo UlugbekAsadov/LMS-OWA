@@ -1,7 +1,16 @@
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import { Spinner } from "reactstrap";
 
-const Button = ({ color, size, className, outline, disabled, ...props }) => {
+const Button = ({
+  color,
+  size,
+  className,
+  outline,
+  disabled,
+  isLoading,
+  ...props
+}) => {
   const buttonClass = classNames({
     btn: true,
     [`btn-${color}`]: !outline,
@@ -10,9 +19,10 @@ const Button = ({ color, size, className, outline, disabled, ...props }) => {
     disabled: disabled,
     [`${className}`]: className,
   });
+
   return (
     <button className={buttonClass} {...props}>
-      {props.children}
+      {isLoading ? <Spinner size="sm" color="light" /> : props.children}
     </button>
   );
 };
@@ -25,4 +35,5 @@ Button.propTypes = {
   outline: PropTypes.string,
   disabled: PropTypes.bool,
   children: PropTypes.node,
+  isLoading: PropTypes.bool,
 };

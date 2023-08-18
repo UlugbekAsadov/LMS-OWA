@@ -6,21 +6,37 @@ import PageHeader from "../../components/page-header/page-header.jsx";
 import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
 import AddBootcampsModal from "../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getAllBootcampsQueryFn } from "../../react-query/queries/bootcamps.query.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
+import { deleteBootcampMutationFn } from "../../react-query/mutations/index.js";
 
 const EducationalCentersPage = () => {
   const [isModalOpen, setIsOpenModal] = useState(false);
-  const [isDeleteModal, setDeleteModal] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedBootcamp, setSelectedBootcamp] = useState(null);
   const [itemPerPage] = useState(20);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["my-bootcamps"],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["all-bootcamps"],
     queryFn: () => getAllBootcampsQueryFn(),
   });
+
+  const deleteBootcampMutation = useMutation({
+    mutationKey: ["delete-bootcamp"],
+    mutationFn: () => deleteBootcampMutationFn(selectedBootcamp.id),
+    onSuccess: () => {
+      refetch();
+      setIsDeleteModal(false);
+    },
+  });
+
+  const handleDeleteBootcamp = (bootcamp) => {
+    setSelectedBootcamp(bootcamp);
+    setIsDeleteModal(true);
+  };
 
   if (isLoading) {
     return null;
@@ -69,7 +85,10 @@ const EducationalCentersPage = () => {
             >
               <Icon className={"cursor-pointer"} name="user-circle" />
             </Link>
-            <span className="p-2" onClick={setDeleteModal.bind(null, true)}>
+            <span
+              className="p-2"
+              onClick={handleDeleteBootcamp.bind(null, item)}
+            >
               <Icon className={"cursor-pointer"} name="trash" />
             </span>
             <Icon name="pen" className={"cursor-pointer"} />
@@ -111,11 +130,13 @@ const EducationalCentersPage = () => {
         onClose={setIsOpenModal.bind(null, false)}
       />
       <ConfirmationModal
+        isLoading={deleteBootcampMutation.isLoading}
         isOpen={isDeleteModal}
-        onClose={setDeleteModal.bind(null, false)}
-        title={"salom"}
-        confirmButtonTitle={"salom"}
-        cancelButtonTitle={"ssss"}
+        onClose={setIsDeleteModal.bind(null, false)}
+        confirmButtonFn={deleteBootcampMutation.mutate}
+        title={"O'quv markazni o'chirishni xohlaysizmi?"}
+        confirmButtonTitle={"O'chirish"}
+        cancelButtonTitle={"Bekor qilish"}
       />
     </Content>
   );

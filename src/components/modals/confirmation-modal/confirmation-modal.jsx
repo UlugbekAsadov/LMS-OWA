@@ -58,4 +58,5 @@ ConfirmationModal.propTypes = {
   confirmButtonFn: PropTypes.func,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
+  isLoading: PropTypes.bool,
 };

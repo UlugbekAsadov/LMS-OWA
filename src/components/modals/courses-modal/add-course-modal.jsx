@@ -163,6 +163,11 @@ const AddCourseModal = ({ isOpen, onClose, initialValue }) => {
                 {...register("month", {
                   required: "Kurs davomiyligini kiriting",
                 })}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
               />
               {errors.month && (
                 <span className="invalid">{errors.month.message}</span>

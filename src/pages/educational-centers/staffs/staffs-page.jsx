@@ -1,22 +1,33 @@
 import { useState } from "react";
-import { staffsMok } from "../../../utils/mocks/index.js";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
 import { Icon, Table } from "../../../components/index.js";
 import { Content } from "../../../layout/page-layout/page-layout.jsx";
 import PageHeader from "../../../components/page-header/page-header.jsx";
 import { TablePagination } from "../../../components/pagination/pagination.jsx";
 import AddStaffModal from "../../../components/modals/modal-staff-modal/add-staff-modal.jsx";
+import { useQuery } from "react-query";
+import { getBootcampStaffs } from "../../../react-query/queries/index.js";
 
 const StaffsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
+  const { bootcampId } = useParams();
+
+  const { data, isLoading } = useQuery({
+    queryKey: [`bootcamp-staffs-${bootcampId}`],
+    queryFn: () => getBootcampStaffs(bootcampId),
+  });
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  if (isLoading) {
+    return null;
+  }
 
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = staffsMok.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -85,7 +96,7 @@ const StaffsPage = () => {
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={staffsMok.length}
+            totalItems={data.length}
             paginate={paginate}
             currentPage={currentPage}
           />

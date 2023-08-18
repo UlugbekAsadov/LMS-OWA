@@ -19,3 +19,9 @@
   color: #9769ff !important;
   background: #ebeef2;
 }
+
+.input-validation-error{
+  color: #e85347;
+  font-size: 11px;
+  font-style: italic;
+}

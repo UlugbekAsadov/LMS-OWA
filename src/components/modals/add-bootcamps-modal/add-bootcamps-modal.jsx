@@ -10,13 +10,14 @@ import { useMutation, useQuery } from "react-query";
 import {
   getCitiesQuery,
   getRegionsQuery,
-} from "../../../react-query/queries/contracts.query.js";
-import { getBankQuery } from "../../../react-query/queries/bank.query.js";
+} from "../../../react-query/queries/index.js";
+import { getBankQuery } from "../../../react-query/queries/index.js";
 import {
   ERROR_MESSAGES,
   ERROR_MESSAGE_TRANSLATIONS,
-} from "../../../utils/enums/error-messages.enum.js";
-import { addBootcampMutationFn } from "../../../react-query/mutations/bootcamp.mutation.js";
+} from "../../../utils/enums/index.js";
+import { addBootcampMutationFn } from "../../../react-query/mutations/index.js";
+import { getAllBootcampsQueryFn } from "../../../react-query/queries/index.js";
 
 const AddBootcampsModal = ({ isOpen, onClose }) => {
   const {
@@ -33,17 +34,20 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
   const [cities, setCities] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [invalidBank, setInvalidBank] = useState(false);
-
+  const [isSelectedProvinceEmpty, setIsSelectedProvinceEmpty] = useState(false);
+  const [isSelectedCityEmpty, setIsSelectedCityEmpty] = useState(false);
   const bank_code = watch("bank_code");
 
   const handleChangeProvince = (value) => {
     setValue("region_id", value.value);
     setSelectedProvince(value);
+    setIsSelectedCityEmpty(false);
   };
 
   const handleChangeCity = (value) => {
     setValue("district_id", value.value);
     setSelectedCity(value);
+    setIsSelectedCityEmpty(false);
   };
 
   const bankQuery = useQuery({
@@ -89,17 +93,34 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     enabled: !!selectedProvince,
   });
 
+  const { refetch } = useQuery({
+    queryKey: ["my-bootcamps"],
+    queryFn: () => getAllBootcampsQueryFn(),
+    enabled: false,
+  });
+
   const addBootcampMutation = useMutation({
     mutationKey: "add-bootcamp-mutation",
     mutationFn: (config) => addBootcampMutationFn(config),
     onSuccess: (data) => {
-      if (
-        data?.error?.message === ERROR_MESSAGES.COMPANY_ALREADY_EXISTS_IN_USER
-      ) {
-        return setError("name_brand", {
-          message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
-        });
+      switch (data?.error?.message) {
+        case ERROR_MESSAGES.COMPANY_BRAND_OR_LEGAL_NAME_ALREADY_EXISTS:
+          return setError("name_brand", {
+            message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+          });
+
+        case ERROR_MESSAGES.COMPANY_ALREADY_EXISTS_IN_USER:
+          return setError("name_brand", {
+            message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+          });
+        case ERROR_MESSAGES.COMPANY_PHONE_ALREADY_EXISTS:
+          return setError("phone", {
+            message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+          });
       }
+
+      refetch();
+      onClose();
     },
   });
 
@@ -113,7 +134,17 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
   const handleSubmitForm = (values) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
     values.phone = values.phone.replace(regex, "$1$2$3$4");
-    console.log({ values, errors });
+    if (selectedProvince) {
+      setIsSelectedProvinceEmpty(false);
+    } else {
+      return setIsSelectedProvinceEmpty(true);
+    }
+
+    if (selectedCity) {
+      setIsSelectedCityEmpty(false);
+    } else {
+      return setIsSelectedCityEmpty(true);
+    }
 
     const config = {
       method: "POST",
@@ -215,6 +246,11 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
                       required: "Bank kodini kiriting",
                       maxLength: 5,
                     })}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
                   />
                   {errors.bank_code && (
                     <span className="invalid">{errors.bank_code.message}</span>
@@ -256,11 +292,16 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
                     className={`form-control form-control-lg ${
                       errors.inn && "error"
                     }`}
-                    type="text"
+                    type="number"
                     id="inn"
                     {...register("inn", {
                       required: "INNni kiriting",
                     })}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
                   />
                   {errors.inn && (
                     <span className="invalid">{errors.inn.message}</span>
@@ -278,11 +319,16 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
                     className={`form-control form-control-lg ${
                       errors.bank_account && "error"
                     }`}
-                    type="text"
+                    type="number"
                     id="bank_account"
                     {...register("bank_account", {
                       required: "Hisob raqamini kiriting",
                     })}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
                   />
                   {errors.bank_account && (
                     <span className="invalid">
@@ -342,28 +388,40 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
           <Row className="form-group">
             <Col sm="6">
               <div className="form-group">
-                <label className="form-label">Select Default</label>
+                <label className="form-label">Viloyat</label>
                 <RSelect
                   options={provinces}
                   value={selectedProvince}
                   onChange={handleChangeProvince}
                 />
+                {isSelectedProvinceEmpty && (
+                  <span className="input-validation-error">
+                    Viloyatni tanlang
+                  </span>
+                )}
               </div>
             </Col>
 
             <Col sm="6">
-              <div className="form-group">
-                <label className="form-label">Select Default</label>
-                <RSelect
-                  options={cities}
-                  value={selectedCity}
-                  onChange={handleChangeCity}
-                  isDisabled={!selectedProvince}
-                />
+              <div className="form-group form-control-wrap">
+                <label className="form-label">Shahar/tuman</label>
+                <div className="form-control-wrap">
+                  <RSelect
+                    options={cities}
+                    value={selectedCity}
+                    onChange={handleChangeCity}
+                    isDisabled={!selectedProvince}
+                  />
+                  {isSelectedCityEmpty && (
+                    <span className="input-validation-error">
+                      Shahar/tumanni tanlang
+                    </span>
+                  )}
+                </div>
               </div>
             </Col>
           </Row>
-          <div className="form-group">
+          <div className="form-group form-control-wrap">
             <label className="form-label" htmlFor="note">
               Qo’shimcha ma’lumot
             </label>

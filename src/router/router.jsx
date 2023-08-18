@@ -53,7 +53,7 @@ export const Router = () => {
           <Route
             path="courses-list"
             element={
-              <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_STAFF]}>
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_OWNER]}>
                 <CoursesList />
               </ProtectedRoute>
             }
@@ -61,7 +61,7 @@ export const Router = () => {
           <Route
             path="contracts-type-list/"
             element={
-              <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_STAFF]}>
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_OWNER]}>
                 <Outlet />
               </ProtectedRoute>
             }

@@ -5,20 +5,56 @@ import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getCoursesQuery } from "../../react-query/queries/index.js";
 import AddCourseModal from "../../components/modals/courses-modal/add-course-modal.jsx";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
+import { deleteCourseMutationFn } from "../../react-query/mutations/index.js";
 
 const CoursesList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModal, setDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [deletingCourseId, setDeletingCourseId] = useState(null);
   const [itemPerPage] = useState(20);
-  const { isLoading, data } = useQuery({
+  const [editingCourse, setEditingCourse] = useState(null);
+  const { isLoading, data, refetch } = useQuery({
     queryFn: () => getCoursesQuery(),
     queryKey: ["all-courses-list"],
   });
+
+  const deleteCourseMutation = useMutation({
+    mutationKey: ["delete-course"],
+    mutationFn: () => deleteCourseMutationFn(deletingCourseId),
+  });
+
+  const handleDeleteCourse = async (courseId) => {
+    await deleteCourseMutation.mutateAsync(courseId);
+    await refetch();
+    setDeleteModal(false);
+  };
+
+  const handleClickDeleteButton = (courseId) => {
+    setDeleteModal(true);
+    setDeletingCourseId(courseId);
+  };
+
+  const handleClickEditButton = (course) => {
+    const courseInfo = {
+      id: course.id,
+      name: course.name,
+      month: course.month,
+      price: course.price,
+      is_kk: { label: course.kk_id === 1 ? "Ha" : "Yo'q", value: course.kk_id },
+    };
+    setEditingCourse(courseInfo);
+    setIsModalOpen(true);
+  };
+
+  const handleClickCreateButton = () => {
+    setEditingCourse(null);
+    setIsModalOpen(true);
+  };
 
   if (isLoading) {
     return null;
@@ -29,7 +65,6 @@ const CoursesList = () => {
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
   const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
-
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -49,8 +84,8 @@ const CoursesList = () => {
     </thead>
   );
 
-  if(isLoading){
-    return
+  if (isLoading) {
+    return;
   }
 
   const tableBody = currentItems.map((item, index) => {
@@ -74,8 +109,15 @@ const CoursesList = () => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Icon name="pen" className={"cursor-pointer"} />
-            <span className="p-2" onClick={setDeleteModal.bind(null, true )}>
+            <Icon
+              name="pen"
+              className={"cursor-pointer"}
+              onClick={handleClickEditButton.bind(null, item)}
+            />
+            <span
+              className="p-2"
+              onClick={handleClickDeleteButton.bind(null, item.id)}
+            >
               <Icon className={"cursor-pointer"} name="trash" />
             </span>
           </div>
@@ -96,7 +138,7 @@ const CoursesList = () => {
         btnTitle={"Kurs qo’shish"}
         btnIcon={"plus"}
         isButtonVisible
-        onClickButton={setIsModalOpen.bind(null, true)}
+        onClickButton={handleClickCreateButton}
       />
 
       <Table
@@ -112,8 +154,22 @@ const CoursesList = () => {
         isLoading={isLoading}
         tableHeader={tableHeader}
       />
-      <AddCourseModal isOpen={isModalOpen} onClose={setIsModalOpen.bind(null, false)} />
-      <ConfirmationModal isOpen={isDeleteModal} onClose={setDeleteModal.bind(null, false)} title={'salom'} confirmButtonTitle={'salom'} cancelButtonTitle={'ssss'}/>
+      {isModalOpen && (
+        <AddCourseModal
+          initialValue={editingCourse}
+          isOpen={isModalOpen}
+          onClose={setIsModalOpen.bind(null, false)}
+        />
+      )}
+      <ConfirmationModal
+        confirmButtonFn={handleDeleteCourse}
+        isOpen={isDeleteModal}
+        onClose={setDeleteModal.bind(null, false)}
+        title={"Kursni o'chirishni hoxlaysizmi?"}
+        confirmButtonTitle={"O'chirish"}
+        cancelButtonTitle={"Bekor qilish"}
+        isLoading={deleteCourseMutation.isLoading}
+      />
     </Content>
   );
 };

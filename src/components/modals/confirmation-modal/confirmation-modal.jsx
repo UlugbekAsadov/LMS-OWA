@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import { Button, Col, Modal, ModalBody } from "reactstrap";
+import { Col, Modal, ModalBody } from "reactstrap";
 import { Icon } from "../../icon/icon.jsx";
+import Button from "../../button/button.jsx";
 
 export const ConfirmationModal = ({
   title,
@@ -9,6 +10,7 @@ export const ConfirmationModal = ({
   confirmButtonFn,
   isOpen,
   onClose,
+  isLoading,
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
@@ -30,6 +32,7 @@ export const ConfirmationModal = ({
             className="btn-block w-20 mb-4"
             color="primary"
             onClick={confirmButtonFn}
+            isLoading={isLoading}
           >
             {confirmButtonTitle}
           </Button>

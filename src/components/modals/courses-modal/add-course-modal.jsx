@@ -31,14 +31,13 @@ const AddCourseModal = ({ isOpen, onClose, initialValue }) => {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
     setError,
   } = useForm({
     defaultValues: initialValue,
   });
-  const [selectedCourseType, setSelectedCourseType] = useState(
+  const [selectedContractType, setSelectedContractType] = useState(
     initialValue ? initialValue.is_kk : dropDownList[0]
   );
 
@@ -80,14 +79,13 @@ const AddCourseModal = ({ isOpen, onClose, initialValue }) => {
     },
   });
 
-  const handleChangeCourse = (value) => {
-    setValue("rol", value.value);
-    setSelectedCourseType(value);
+  const handleChangeContractType = (value) => {
+    setSelectedContractType(value);
   };
   const handleSubmitForm = async (values) => {
     const body = {
       ...values,
-      kk_id: selectedCourseType.value,
+      kk_id: selectedContractType.value,
     };
 
     const config = {
@@ -177,8 +175,8 @@ const AddCourseModal = ({ isOpen, onClose, initialValue }) => {
             </label>
             <RSelect
               options={dropDownList}
-              value={selectedCourseType}
-              onChange={handleChangeCourse}
+              value={selectedContractType}
+              onChange={handleChangeContractType}
             />
           </div>
           <Col

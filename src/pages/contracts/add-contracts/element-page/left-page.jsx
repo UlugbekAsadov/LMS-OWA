@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import { addContactQuery } from "../../../../react-query/mutations/index.js";
 import { getAllContractTypes } from "../../../../react-query/queries/index.js";
+import { useNavigate } from "react-router-dom";
 
 const LeftPage = () => {
   const editorRef = useRef(null);
@@ -20,6 +21,7 @@ const LeftPage = () => {
     setValue,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate()
 
   const contractTypes = useQuery({
     queryKey: "contracts-types",
@@ -45,6 +47,7 @@ const LeftPage = () => {
     await addContract.mutateAsync(config);
 
     await contractTypes.refetch();
+    navigate("/contracts-type-list")
   };
 
   return (

@@ -8,7 +8,10 @@ import Button from "../../button/button.jsx";
 import { rolesMock } from "../../../utils/mocks/index.js";
 import { InputMask } from "primereact/inputmask";
 import { useMutation, useQuery } from "react-query";
-import { addStaffToCompanySuperAdminMutationFn } from "../../../react-query/mutations/index.js";
+import {
+  addStaffToCompanySuperAdminMutationFn,
+  editStaffMutationFn,
+} from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
 import {
   ERROR_MESSAGE_TRANSLATIONS,
@@ -16,16 +19,21 @@ import {
 } from "../../../utils/enums/index.js";
 import { getBootcampStaffs } from "../../../react-query/queries/index.js";
 
-const AddStaffModal = ({ isOpen, onClose }) => {
+const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
   const {
     register,
     setError,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: initialValue,
+  });
+
   const roles = rolesMock.slice(1, rolesMock.length);
   const { bootcampId } = useParams();
-  const [selectedRole, setSelectedRole] = useState(roles[0]);
+  const [selectedRole, setSelectedRole] = useState(
+    initialValue ? initialValue.role : roles[0]
+  );
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const { refetch } = useQuery({
@@ -49,6 +57,20 @@ const AddStaffModal = ({ isOpen, onClose }) => {
     },
   });
 
+  const editStaffMutation = useMutation({
+    mutationKey: ["edit-staff"],
+    mutationFn: (config) => editStaffMutationFn(initialValue.id, config),
+    onSuccess: (data) => {
+      if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("phone", {
+          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+        });
+      }
+      refetch();
+      onClose();
+    },
+  });
+
   const handleSubmitForm = (values) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
     values.phone = values.phone.replace(regex, "$1$2$3$4");
@@ -58,11 +80,15 @@ const AddStaffModal = ({ isOpen, onClose }) => {
     };
 
     const config = {
-      method: "POST",
+      method: initialValue ? "PUT" : "POST",
       body: JSON.stringify(body),
     };
 
-    addStaffMutation.mutate(config);
+    if (initialValue) {
+      editStaffMutation.mutate(config);
+    } else {
+      addStaffMutation.mutate(config);
+    }
   };
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
@@ -72,7 +98,10 @@ const AddStaffModal = ({ isOpen, onClose }) => {
             <Icon name="cross-sm"></Icon>
           </span>
           <div className="py-4 w-100 d-flex flex-column align-items-center justify-content-center form-group">
-            <h2 className="fw-bold  fs-3">O’quv markaz uchun xodim qo’shish</h2>
+            <h2 className="fw-bold  fs-3">
+              O’quv markaz uchun xodim{" "}
+              {initialValue ? "tahrirlash" : "qo’shish"}
+            </h2>
             <p className="fs-7">Quyidagi maydonlarni to’ldirib chiqing</p>
           </div>
           <div className="form-group">
@@ -186,5 +215,6 @@ const AddStaffModal = ({ isOpen, onClose }) => {
 AddStaffModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
+  initialValue: PropTypes.object,
 };
 export default AddStaffModal;

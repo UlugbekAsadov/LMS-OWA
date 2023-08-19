@@ -6,19 +6,53 @@ import { Content } from "../../../layout/page-layout/page-layout.jsx";
 import PageHeader from "../../../components/page-header/page-header.jsx";
 import { TablePagination } from "../../../components/pagination/pagination.jsx";
 import AddStaffModal from "../../../components/modals/modal-staff-modal/add-staff-modal.jsx";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getBootcampStaffs } from "../../../react-query/queries/index.js";
+import { rolesMock } from "../../../utils/mocks/index.js";
+import { ConfirmationModal } from "../../../components/modals/confirmation-modal/confirmation-modal.jsx";
 
 const StaffsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
+  const [selectedStaff, setSelectedStaff] = useState(null);
   const { bootcampId } = useParams();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [`bootcamp-staffs-${bootcampId}`],
     queryFn: () => getBootcampStaffs(bootcampId),
   });
+
+  const deleteStaffMutation = useMutation({
+    mutationKey: ["delete-staff"],
+    mutationFn: () => {},
+  });
+
+  const handleClickEditButton = (staff) => {
+    const editingStaff = {
+      ...staff,
+      role: rolesMock.find((role) => role.value === staff.role),
+    };
+    setSelectedStaff(editingStaff);
+    setIsModalOpen(true);
+  };
+
+  const handleClickDeleteButton = (staff) => {
+    setSelectedStaff(staff);
+  };
+
+  const handleClickAddButton = () => {
+    setSelectedStaff(null);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteStaff = () => {
+    deleteStaffMutation.mutate();
+    refetch();
+    setIsDeleteModalOpen(false);
+  };
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (isLoading) {
@@ -44,6 +78,7 @@ const StaffsPage = () => {
       </tr>
     </thead>
   );
+
   const tableBody = currentItems.map((item, index) => {
     return (
       <tr className="tb-odr-item" key={item.id}>
@@ -67,11 +102,19 @@ const StaffsPage = () => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Icon name="pen" className={"cursor-pointer"} />
+            <Icon
+              name="pen"
+              className={"cursor-pointer"}
+              onClick={handleClickEditButton.bind(null, item)}
+            />
             <span className="p-2">
               <Icon name="file-text" className={"cursor-pointer"} />
             </span>
-            <Icon className={"cursor-pointer"} name="trash" />
+            <Icon
+              className={"cursor-pointer"}
+              name="trash"
+              onClick={handleClickDeleteButton.bind(null, item)}
+            />
           </div>
           <Link to={`/invoice-details/${item.id}`}>
             <Button className="btn-pd-auto d-sm-none ">
@@ -89,7 +132,7 @@ const StaffsPage = () => {
         btnTitle={"Xodim qoshish"}
         btnIcon={"plus"}
         isButtonVisible={true}
-        onClickButton={setIsModalOpen.bind(null, true)}
+        onClickButton={handleClickAddButton}
       />
 
       <Table
@@ -106,8 +149,20 @@ const StaffsPage = () => {
       />
       {isModalOpen && (
         <AddStaffModal
+          initialValue={selectedStaff}
           isOpen={isModalOpen}
           onClose={setIsModalOpen.bind(null, false)}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <ConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={setIsDeleteModalOpen.bind(null, false)}
+          isLoading={deleteStaffMutation.isLoading}
+          title={"Xodimni o'chirish"}
+          confirmButtonFn={handleDeleteStaff}
+          confirmButtonTitle={"Tasdiqlash"}
+          cancelButtonTitle={"Bekor qilish"}
         />
       )}
     </Content>

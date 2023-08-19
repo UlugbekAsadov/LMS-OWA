@@ -7,7 +7,7 @@ import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
 import AddBootcampsModal from "../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
 import { useMutation, useQuery } from "react-query";
-import { getAllBootcampsQueryFn } from "../../react-query/queries/bootcamps.query.js";
+import { getAllBootcampsQueryFn } from "../../react-query/queries/index.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 import { deleteBootcampMutationFn } from "../../react-query/mutations/index.js";
 
@@ -36,6 +36,23 @@ const EducationalCentersPage = () => {
   const handleDeleteBootcamp = (bootcamp) => {
     setSelectedBootcamp(bootcamp);
     setIsDeleteModal(true);
+  };
+
+  const handleClickEditButton = (bootcamp) => {
+    const editingBootcampData = {
+      ...bootcamp,
+      province: {
+        value: bootcamp.region.id,
+        id: bootcamp.region.region_id,
+        label: bootcamp.region.name_lt,
+      },
+      city: {
+        value: bootcamp.district.district_id,
+        label: bootcamp.district.name_lt,
+      },
+    };
+    setSelectedBootcamp(editingBootcampData);
+    setIsOpenModal(true);
   };
 
   if (isLoading) {
@@ -91,7 +108,11 @@ const EducationalCentersPage = () => {
             >
               <Icon className={"cursor-pointer"} name="trash" />
             </span>
-            <Icon name="pen" className={"cursor-pointer"} />
+            <Icon
+              name="pen"
+              className={"cursor-pointer"}
+              onClick={handleClickEditButton.bind(null, item)}
+            />
           </div>
           <Link to={`/educational-center/staffs-list/${item.id}`}>
             <Button className="btn-pd-auto d-sm-none ">
@@ -125,10 +146,13 @@ const EducationalCentersPage = () => {
         tableBody={currentItems.length ? tableBody : null}
         tableHeader={tableHeader}
       />
-      <AddBootcampsModal
-        isOpen={isModalOpen}
-        onClose={setIsOpenModal.bind(null, false)}
-      />
+      {isModalOpen && (
+        <AddBootcampsModal
+          initialValue={selectedBootcamp}
+          isOpen={isModalOpen}
+          onClose={setIsOpenModal.bind(null, false)}
+        />
+      )}
       <ConfirmationModal
         isLoading={deleteBootcampMutation.isLoading}
         isOpen={isDeleteModal}

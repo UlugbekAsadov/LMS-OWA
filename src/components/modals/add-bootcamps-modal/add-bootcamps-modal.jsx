@@ -16,10 +16,13 @@ import {
   ERROR_MESSAGES,
   ERROR_MESSAGE_TRANSLATIONS,
 } from "../../../utils/enums/index.js";
-import { addBootcampMutationFn } from "../../../react-query/mutations/index.js";
+import {
+  addBootcampMutationFn,
+  editBootcampMutationFn,
+} from "../../../react-query/mutations/index.js";
 import { getAllBootcampsQueryFn } from "../../../react-query/queries/index.js";
 
-const AddBootcampsModal = ({ isOpen, onClose }) => {
+const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   const {
     register,
     handleSubmit,
@@ -27,10 +30,14 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     watch,
     setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: initialValue,
+  });
 
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(initialValue?.city || null);
+  const [selectedProvince, setSelectedProvince] = useState(
+    initialValue?.province || null
+  );
   const [cities, setCities] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [invalidBank, setInvalidBank] = useState(false);
@@ -90,39 +97,59 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
 
       setCities(cities);
     },
-    enabled: !!selectedProvince,
+    enabled: Boolean(selectedProvince),
   });
 
   const { refetch } = useQuery({
-    queryKey: ["my-bootcamps"],
+    queryKey: ["all-bootcamps"],
     queryFn: () => getAllBootcampsQueryFn(),
     enabled: false,
+  });
+
+  const editBootcampMutation = useMutation({
+    mutationKey: ["edit-bootcamp-mutation"],
+    mutationFn: (config) => editBootcampMutationFn(initialValue.id, config),
+    onSuccess: (data) => {
+      if (!handleErrorOnRequest(data)) {
+        refetch();
+        onClose();
+      }
+    },
   });
 
   const addBootcampMutation = useMutation({
     mutationKey: "add-bootcamp-mutation",
     mutationFn: (config) => addBootcampMutationFn(config),
     onSuccess: (data) => {
-      switch (data?.error?.message) {
-        case ERROR_MESSAGES.COMPANY_BRAND_OR_LEGAL_NAME_ALREADY_EXISTS:
-          return setError("name_brand", {
-            message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
-          });
-
-        case ERROR_MESSAGES.COMPANY_ALREADY_EXISTS_IN_USER:
-          return setError("name_brand", {
-            message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
-          });
-        case ERROR_MESSAGES.COMPANY_PHONE_ALREADY_EXISTS:
-          return setError("phone", {
-            message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
-          });
+      if (!handleErrorOnRequest(data)) {
+        refetch();
+        onClose();
       }
-
-      refetch();
-      onClose();
     },
   });
+
+  const handleErrorOnRequest = (data) => {
+    switch (data?.error?.message) {
+      case ERROR_MESSAGES.COMPANY_BRAND_OR_LEGAL_NAME_ALREADY_EXISTS:
+        setError("name_brand", {
+          message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+        });
+        return true;
+
+      case ERROR_MESSAGES.COMPANY_ALREADY_EXISTS_IN_USER:
+        setError("name_brand", {
+          message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+        });
+        return true;
+      case ERROR_MESSAGES.COMPANY_PHONE_ALREADY_EXISTS:
+        setError("phone", {
+          message: [ERROR_MESSAGE_TRANSLATIONS[data.error.message]],
+        });
+        return true;
+    }
+
+    return false;
+  };
 
   useEffect(() => {
     setInvalidBank(false);
@@ -147,10 +174,15 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
     }
 
     const config = {
-      method: "POST",
+      method: !initialValue ? "PUT" : "POST",
       body: JSON.stringify(values),
     };
-    addBootcampMutation.mutate(config);
+
+    if (!initialValue) {
+      editBootcampMutation.mutate(config);
+    } else {
+      addBootcampMutation.mutate(config);
+    }
   };
 
   return (
@@ -161,7 +193,11 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
             <Icon name="cross-sm"></Icon>
           </span>
           <div className="py-4 w-100 d-flex flex-column align-items-center justify-content-center form-group">
-            <h2 className="fw-bold  fs-3">Yangi ta’lim muassasasi qo’shish</h2>
+            <h2 className="fw-bold  fs-3">
+              {initialValue
+                ? "Ta’lim muassasasini tahrirlash"
+                : "Yangi ta’lim muassasasi qo’shish"}
+            </h2>
             <p className="fs-7 text-center">
               Keyinchalik shartnomada ko’rsatilishi kerak bo’lgan yuridik shaxs
               haqidagi ma’lumotlarni va rekvizitlarni to’ldirib chiqish kerak
@@ -462,5 +498,6 @@ const AddBootcampsModal = ({ isOpen, onClose }) => {
 AddBootcampsModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
+  initialValue: PropTypes.object,
 };
 export default AddBootcampsModal;

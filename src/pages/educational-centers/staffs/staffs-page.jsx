@@ -53,7 +53,7 @@ const StaffsPage = () => {
               {currentPage * 20 + index + 1 - 20}
             </Link>
           </span>
-          <span className="tb-odr-date">{item.name}</span>
+          <span className="tb-odr-date">{item.fullName}</span>
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">
@@ -61,7 +61,7 @@ const StaffsPage = () => {
           </span>
           <span className="tb-odr-status">
             <Badge color={"success"} className="badge-dot">
-              {item.status}
+              {item.role}
             </Badge>
           </span>
         </td>
@@ -104,10 +104,12 @@ const StaffsPage = () => {
         tableBody={currentItems.length ? tableBody : null}
         tableHeader={tableHeader}
       />
-      <AddStaffModal
-        isOpen={isModalOpen}
-        onClose={setIsModalOpen.bind(null, false)}
-      />
+      {isModalOpen && (
+        <AddStaffModal
+          isOpen={isModalOpen}
+          onClose={setIsModalOpen.bind(null, false)}
+        />
+      )}
     </Content>
   );
 };

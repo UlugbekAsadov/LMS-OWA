@@ -1,4 +1,4 @@
-import { Col, Label, Modal, ModalBody, Row, Spinner } from "reactstrap";
+import { Col, Label, Modal, ModalBody, Row } from "reactstrap";
 import PropTypes from "prop-types";
 import { Icon } from "../../icon/icon.jsx";
 import { useEffect, useState } from "react";
@@ -499,12 +499,13 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
               className="btn-block w-20 mb-4"
               type="submit"
               color="primary"
+              isLoading={
+                initialValue
+                  ? editBootcampMutation.isLoading
+                  : addBootcampMutation.isLoading
+              }
             >
-              {addBootcampMutation.isLoading ? (
-                <Spinner size="sm" color="light" />
-              ) : (
-                "Saqlash"
-              )}
+              Saqlash
             </Button>
           </Col>
         </form>

@@ -7,27 +7,62 @@ import RSelect from "../../react-select/react-select.jsx";
 import Button from "../../button/button.jsx";
 import { rolesMock } from "../../../utils/mocks/index.js";
 import { InputMask } from "primereact/inputmask";
+import { useMutation, useQuery } from "react-query";
+import { addStaffToCompanySuperAdminMutationFn } from "../../../react-query/mutations/index.js";
+import { useParams } from "react-router-dom";
+import {
+  ERROR_MESSAGE_TRANSLATIONS,
+  ERROR_MESSAGES,
+} from "../../../utils/enums/index.js";
+import { getBootcampStaffs } from "../../../react-query/queries/index.js";
 
 const AddStaffModal = ({ isOpen, onClose }) => {
   const {
     register,
+    setError,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm();
-
-  const [selectedRole, setSelectedRole] = useState(null);
+  const roles = rolesMock.slice(1, rolesMock.length);
+  const { bootcampId } = useParams();
+  const [selectedRole, setSelectedRole] = useState(roles[0]);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleChangeCity = (value) => {
-    setValue("rol", value.value);
-    setSelectedRole(value);
-  };
+  const { refetch } = useQuery({
+    queryKey: [`bootcamp-staffs-${bootcampId}`],
+    queryFn: () => getBootcampStaffs(bootcampId),
+    enabled: false,
+  });
+
+  const addStaffMutation = useMutation({
+    mutationKey: ["add-staff"],
+    mutationFn: (config) =>
+      addStaffToCompanySuperAdminMutationFn(bootcampId, config),
+    onSuccess: (data) => {
+      if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("phone", {
+          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+        });
+      }
+      refetch();
+      onClose();
+    },
+  });
 
   const handleSubmitForm = (values) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
-    values.phone_number = values.phone_number.replace(regex, "$1$2$3$4");
-    console.log({ values, errors });
+    values.phone = values.phone.replace(regex, "$1$2$3$4");
+    const body = {
+      ...values,
+      role: selectedRole.value,
+    };
+
+    const config = {
+      method: "POST",
+      body: JSON.stringify(body),
+    };
+
+    addStaffMutation.mutate(config);
   };
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">
@@ -41,33 +76,33 @@ const AddStaffModal = ({ isOpen, onClose }) => {
             <p className="fs-7">Quyidagi maydonlarni to’ldirib chiqing</p>
           </div>
           <div className="form-group">
-            <Label htmlFor="name_fullName " className="form-label fs-6">
+            <Label htmlFor="fullName " className="form-label fs-6">
               Ismi va familiyasi
             </Label>
             <div className="form-control-wrap">
               <input
                 className={`form-control form-control-lg ${
-                  errors.name_fullName  && "error"
+                  errors.fullName && "error"
                 }`}
                 type="text"
-                id="name_fullName "
-                {...register("name_fullName ", {
+                id="fullName "
+                {...register("fullName", {
                   required: "Ismi yoki familiyani kiriting",
                 })}
               />
-              {errors.name_fullName  && (
-                <span className="invalid">{errors.name_fullName .message}</span>
+              {errors.fullName && (
+                <span className="invalid">{errors.fullName.message}</span>
               )}
             </div>
           </div>
           <div className="form-group">
-            <Label htmlFor="phone_number" className="form-label fs-6">
+            <Label htmlFor="phone" className="form-label fs-6">
               Telefon raqami
             </Label>
             <div className="form-control-wrap">
               <InputMask
-                id="phone_number"
-                {...register("phone_number", {
+                id="phone"
+                {...register("phone", {
                   required: "Telefon raqamni kiriting",
                 })}
                 className={`form-control-lg form-control  ${
@@ -76,8 +111,8 @@ const AddStaffModal = ({ isOpen, onClose }) => {
                 mask="(99) 999-99-99"
                 placeholder="(99) 999-99-99"
               />
-              {errors.phone_number && (
-                <span className="invalid">{errors.phone_number.message}</span>
+              {errors.phone && (
+                <span className="invalid">{errors.phone.message}</span>
               )}
             </div>
           </div>
@@ -110,7 +145,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
                   required: "Parolni kiriting",
                 })}
                 className={`form-control-lg form-control ${
-                  errors.first_name && "error"
+                  errors.password && "error"
                 } ${isPasswordVisible ? "is-hidden" : "is-shown"}`}
               />
               {errors.password && (
@@ -121,9 +156,9 @@ const AddStaffModal = ({ isOpen, onClose }) => {
           <div className="form-group  ">
             <label className="form-label">Rol</label>
             <RSelect
-              options={rolesMock}
+              options={roles}
               value={selectedRole}
-              onChange={handleChangeCity}
+              onChange={setSelectedRole}
             />
           </div>
           <Col
@@ -137,6 +172,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
               className="btn-block w-20 mb-4"
               type="submit"
               color="primary"
+              isLoading={addStaffMutation.isLoading}
             >
               Saqlash
             </Button>

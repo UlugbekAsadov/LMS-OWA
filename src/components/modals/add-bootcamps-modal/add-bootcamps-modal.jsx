@@ -45,18 +45,6 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   const [isSelectedCityEmpty, setIsSelectedCityEmpty] = useState(false);
   const bank_code = watch("bank_code");
 
-  const handleChangeProvince = (value) => {
-    setValue("region_id", value.value);
-    setSelectedProvince(value);
-    setIsSelectedCityEmpty(false);
-  };
-
-  const handleChangeCity = (value) => {
-    setValue("district_id", value.value);
-    setSelectedCity(value);
-    setIsSelectedCityEmpty(false);
-  };
-
   const bankQuery = useQuery({
     queryKey: "bank_info",
     queryFn: () => getBankQuery(bank_code),
@@ -69,6 +57,12 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
 
       setValue("bank_name", data.data.bank_name);
     },
+  });
+
+  const { refetch } = useQuery({
+    queryKey: ["all-bootcamps"],
+    queryFn: () => getAllBootcampsQueryFn(),
+    enabled: false,
   });
 
   useQuery({
@@ -98,12 +92,6 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
       setCities(cities);
     },
     enabled: Boolean(selectedProvince),
-  });
-
-  const { refetch } = useQuery({
-    queryKey: ["all-bootcamps"],
-    queryFn: () => getAllBootcampsQueryFn(),
-    enabled: false,
   });
 
   const editBootcampMutation = useMutation({
@@ -151,13 +139,6 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     return false;
   };
 
-  useEffect(() => {
-    setInvalidBank(false);
-    if (bank_code?.length === 5) {
-      bankQuery.refetch();
-    }
-  }, [bank_code]);
-
   const handleSubmitForm = (values) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
     values.phone = values.phone.replace(regex, "$1$2$3$4");
@@ -174,16 +155,35 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     }
 
     const config = {
-      method: !initialValue ? "PUT" : "POST",
+      method: initialValue ? "PUT" : "POST",
       body: JSON.stringify(values),
     };
 
-    if (!initialValue) {
+    if (initialValue) {
       editBootcampMutation.mutate(config);
     } else {
       addBootcampMutation.mutate(config);
     }
   };
+
+  const handleChangeProvince = (value) => {
+    setValue("region_id", value.value);
+    setSelectedProvince(value);
+    setIsSelectedCityEmpty(false);
+  };
+
+  const handleChangeCity = (value) => {
+    setValue("district_id", value.value);
+    setSelectedCity(value);
+    setIsSelectedCityEmpty(false);
+  };
+
+  useEffect(() => {
+    setInvalidBank(false);
+    if (bank_code?.length === 5) {
+      bankQuery.refetch();
+    }
+  }, [bank_code]);
 
   return (
     <Modal isOpen={isOpen} toggle={onClose} size="lg">

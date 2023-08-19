@@ -1,21 +1,41 @@
-import { ERROR_MESSAGES } from "../utils/enums";
+import { ERROR_MESSAGE_TRANSLATIONS, ERROR_MESSAGES } from "../utils/enums";
+import { toast } from "react-toastify";
+import { defaultToastConfig } from "../utils/config/index.js";
 
 export const api = async (url, config) => {
-  const data = await fetch(`${import.meta.env.VITE_CONFIG_BASE_API}${url}`, {
-    ...config,
-    headers: {
-      "Content-Type": "Application/json",
-      Authorization: `Bearer ${localStorage.getItem("u_at")}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => data);
-
-  if (data.error?.message === ERROR_MESSAGES.JWT_ERROR) {
-    return window.location.replace(
-      `/auth-login?callbackUri=${window.location.href}`
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_CONFIG_BASE_API}${url}`,
+      {
+        ...config,
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${localStorage.getItem("u_at")}`,
+        },
+      }
     );
-  }
 
-  return data;
+    const { error, ...data } = await response.json();
+
+    if (error) {
+      switch (error.message) {
+        case ERROR_MESSAGES.JWT_ERROR:
+          window.location.replace(
+            `/auth-login?callbackUri=${window.location.href}`
+          );
+          return;
+        default:
+          toast.error(
+            ERROR_MESSAGE_TRANSLATIONS[error.message],
+            defaultToastConfig
+          );
+          return;
+      }
+    }
+
+    return data;
+  } catch (error) {
+    toast.error(ERROR_MESSAGE_TRANSLATIONS["SERVER_ERROR"], defaultToastConfig);
+    return;
+  }
 };

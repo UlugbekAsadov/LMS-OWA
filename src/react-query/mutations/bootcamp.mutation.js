@@ -5,3 +5,6 @@ export const addBootcampMutationFn = (config) =>
 
 export const deleteBootcampMutationFn = (bootcampId) =>
   api(`/companies/delete/${bootcampId}`, { method: "DELETE" });
+
+export const editBootcampMutationFn = (bootcampId, config) =>
+  api(`/companies/update/${bootcampId}`, config);

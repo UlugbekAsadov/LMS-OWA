@@ -4,7 +4,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Router } from "./router/router.jsx";
 import { BasicContractsProvider } from "./context/basic-contract.context.jsx";
+import { ToastContainer } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/scss/dashlite.scss";
 import "./styles/scss/style-email.scss";
 
@@ -18,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <BasicContractsProvider>
         <Router />
         <ReactQueryDevtools initialIsOpen={false} />
+        <ToastContainer />
       </BasicContractsProvider>
     </QueryClientProvider>
   </React.StrictMode>

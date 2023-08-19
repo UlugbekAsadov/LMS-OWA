@@ -24,4 +24,9 @@
   color: #e85347;
   font-size: 11px;
   font-style: italic;
+
+}
+
+.Toastify__toast{
+  width: auto !important;
 }

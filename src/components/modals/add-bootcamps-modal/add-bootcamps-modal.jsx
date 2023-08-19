@@ -154,6 +154,24 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
       return setIsSelectedCityEmpty(true);
     }
 
+    if (initialValue) {
+      Object.keys(values).forEach((key) => {
+        if (
+          [
+            "city",
+            "createdAt",
+            "district",
+            "province",
+            "region",
+            "users",
+            "id",
+          ].includes(key)
+        ) {
+          delete values[key];
+        }
+      });
+    }
+
     const config = {
       method: initialValue ? "PUT" : "POST",
       body: JSON.stringify(values),

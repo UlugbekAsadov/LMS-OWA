@@ -5,6 +5,5 @@ export const defaultToastConfig = {
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
-  progress: undefined,
   theme: "light",
 };

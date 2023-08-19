@@ -23,19 +23,20 @@ export const api = async (url, config) => {
           window.location.replace(
             `/auth-login?callbackUri=${window.location.href}`
           );
-          return;
+          break;
         default:
           toast.error(
             ERROR_MESSAGE_TRANSLATIONS[error.message],
             defaultToastConfig
           );
-          return;
       }
     }
-
-    return data;
+    return { error, ...data };
   } catch (error) {
-    toast.error(ERROR_MESSAGE_TRANSLATIONS["SERVER_ERROR"], defaultToastConfig);
+    toast.error(
+      ERROR_MESSAGE_TRANSLATIONS["INTERNAL_SERVER_ERROR"],
+      defaultToastConfig
+    );
     return;
   }
 };

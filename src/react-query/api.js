@@ -23,7 +23,7 @@ export const api = async (url, config) => {
           window.location.replace(
             `/auth-login?callbackUri=${window.location.href}`
           );
-          break;
+          return;
         default:
           toast.error(
             ERROR_MESSAGE_TRANSLATIONS[error.message],

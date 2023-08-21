@@ -1,7 +1,7 @@
 import { Col, Label, Modal, ModalBody } from "reactstrap";
 import { Icon } from "../../icon/icon.jsx";
 import RSelect from "../../react-select/react-select.jsx";
-import Button from "../../button/button.jsx";
+import { Button } from "../../button/button.jsx";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import { useState } from "react";

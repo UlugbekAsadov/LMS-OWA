@@ -56,6 +56,10 @@ export const Router = () => {
           >
             <Route index element={<ContractsTypeList />} />
             <Route path="add-contract" element={<CreateContract />} />
+            <Route
+              path="edit-contract/:contractId"
+              element={<CreateContract />}
+            />
           </Route>
           <Route
             path="contracts/:contractId"

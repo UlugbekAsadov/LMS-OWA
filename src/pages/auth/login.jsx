@@ -11,9 +11,9 @@ import {
   BlockHead,
   BlockTitle,
   Icon,
+  Button,
   PreviewCard,
 } from "../../components";
-import Button from "../../components/button/button";
 import AuthFooter from "../../pages/components/auth-footer.jsx";
 import { useMutation } from "react-query";
 import { loginMutationFn } from "../../react-query/mutations";

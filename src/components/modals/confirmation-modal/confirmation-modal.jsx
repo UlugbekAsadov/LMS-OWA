@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Col, Modal, ModalBody } from "reactstrap";
 import { Icon } from "../../icon/icon.jsx";
-import Button from "../../button/button.jsx";
+import { Button } from "../../button/button.jsx";
 
 export const ConfirmationModal = ({
   title,

@@ -7,3 +7,6 @@ export const deleteContractMutationFn = (contractId) =>
   api(`/contractType/delete/${contractId}`, {
     method: "DELETE",
   });
+
+export const editContractMutationFn = (config, editContractId) =>
+  api(`/contractType/update/${editContractId}`, config);

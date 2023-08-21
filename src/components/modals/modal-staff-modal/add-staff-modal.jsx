@@ -4,7 +4,7 @@ import { Icon } from "../../icon/icon.jsx";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import RSelect from "../../react-select/react-select.jsx";
-import Button from "../../button/button.jsx";
+import { Button } from "../../button/button.jsx";
 import { rolesMock } from "../../../utils/mocks/index.js";
 import { InputMask } from "primereact/inputmask";
 
@@ -47,7 +47,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
             <div className="form-control-wrap">
               <input
                 className={`form-control form-control-lg ${
-                  errors.name_fullName  && "error"
+                  errors.name_fullName && "error"
                 }`}
                 type="text"
                 id="name_fullName "
@@ -55,8 +55,8 @@ const AddStaffModal = ({ isOpen, onClose }) => {
                   required: "Ismi yoki familiyani kiriting",
                 })}
               />
-              {errors.name_fullName  && (
-                <span className="invalid">{errors.name_fullName .message}</span>
+              {errors.name_fullName && (
+                <span className="invalid">{errors.name_fullName.message}</span>
               )}
             </div>
           </div>

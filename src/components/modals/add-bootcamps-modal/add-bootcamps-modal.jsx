@@ -4,7 +4,7 @@ import { Icon } from "../../icon/icon.jsx";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import RSelect from "../../react-select/react-select.jsx";
-import Button from "../../button/button.jsx";
+import { Button } from "../../button/button.jsx";
 import { InputMask } from "primereact/inputmask";
 import { useMutation, useQuery } from "react-query";
 import {

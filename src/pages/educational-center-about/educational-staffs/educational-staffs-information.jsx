@@ -6,15 +6,26 @@ import { Badge, Button } from "reactstrap";
 import { TablePagination } from "../../../components/pagination/pagination.jsx";
 import { useState } from "react";
 import { contractsMock } from "../../../utils/mocks/index.js";
+import { useQuery } from "react-query";
+import { getEducationalInformationQueryFn } from "../../../react-query/queries/educational.query.js";
 
 const EducationalStaffsInformation = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
+  const { data, isLoading } = useQuery({
+    queryKey: ["educational-information"],
+    queryFn: () => getEducationalInformationQueryFn(),
+  });
+
+  if (isLoading) {
+    return;
+  }
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = contractsMock?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.users?.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -43,7 +54,7 @@ const EducationalStaffsInformation = () => {
               {currentPage * 20 + index + 1 - 20}
             </Link>
           </span>
-          <span className="tb-odr-date">{item.name}</span>
+          <span className="tb-odr-date">{item.fullName}</span>
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">
@@ -51,7 +62,7 @@ const EducationalStaffsInformation = () => {
           </span>
           <span className="tb-odr-status">
             <Badge color={"success"} className="badge-dot">
-              {item.status}
+              {item.role}
             </Badge>
           </span>
         </td>
@@ -73,6 +84,7 @@ const EducationalStaffsInformation = () => {
       </tr>
     );
   });
+
   return (
     <Content title="Xodimlar">
       <PageHeader

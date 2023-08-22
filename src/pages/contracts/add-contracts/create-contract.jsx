@@ -16,7 +16,9 @@ const CreateContract = () => {
     queryFn: () => getContractTypeByIdQueryFn(contractId),
     enabled: Boolean(contractId),
   });
-
+  if (contractType.isLoading) {
+    return <Loader />;
+  }
   return (
     <Content title="Shartnomalar turi">
       <PageHeader
@@ -25,14 +27,8 @@ const CreateContract = () => {
         isButtonVisible={false}
       />
       <Row className={"py-3 gy-2"}>
-        {contractType.isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            <LeftPage initialValue={contractId ? contractType.data : null} />
-            <RightPage />
-          </>
-        )}
+        <LeftPage initialValue={contractId ? contractType.data : null} />
+        <RightPage />
       </Row>
     </Content>
   );

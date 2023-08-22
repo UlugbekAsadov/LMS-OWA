@@ -27,7 +27,7 @@ const PageHeader = ({
         {isButtonVisible && (
           <BlockHeadContent>
             <Button color={`primary`} onClick={onClickButton}>
-              <Icon name={btnIcon}></Icon>
+              {btnIcon && <Icon name={btnIcon}></Icon>}
               <span>{btnTitle}</span>
             </Button>
           </BlockHeadContent>

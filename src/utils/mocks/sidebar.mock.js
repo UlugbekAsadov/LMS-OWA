@@ -22,4 +22,21 @@ export const menuMock = [
     active: false,
     access: [USER_ROLES.COMPANY_OWNER],
   },
+  {
+    icon: "template",
+    text: "O’quv markaz",
+    link: "/contracts-tdsype-list",
+    active: false,
+    access: [USER_ROLES.COMPANY_OWNER],
+    subMenu: [
+      {
+        text: "Ma’lumot",
+        link: "/educational-information",
+      },
+      {
+        text: "Xodimlar",
+        link: "/educational-staff-information",
+      },
+    ],
+  },
 ];

@@ -13,6 +13,8 @@ import CreateContract from "../pages/contracts/add-contracts/create-contract.jsx
 import Error403Classic from "../pages/error/403-classic.jsx";
 import Error500Classic from "../pages/error/500-classic.jsx";
 import Error404Classic from "../pages/error/404-classic.jsx";
+import EducationalInformation from "../pages/educational-center-about/education-information/educational-information.jsx";
+import EducationalStaffsInformation from "../pages/educational-center-about/educational-staffs/educational-staffs-information.jsx";
 
 export const Router = () => {
   return (
@@ -47,6 +49,22 @@ export const Router = () => {
             }
           />
           <Route
+            path="educational-information"
+            element={
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_OWNER]}>
+                <EducationalInformation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="educational-staff-information"
+            element={
+              <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_OWNER]}>
+                <EducationalStaffsInformation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="contracts-type-list/"
             element={
               <ProtectedRoute hasAccessRoles={[USER_ROLES.COMPANY_OWNER]}>
@@ -61,6 +79,7 @@ export const Router = () => {
               element={<CreateContract />}
             />
           </Route>
+
           <Route
             path="contracts/:contractId"
             element={

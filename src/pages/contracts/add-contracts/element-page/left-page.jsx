@@ -1,9 +1,4 @@
-import {
-  BlockHeadContent,
-  Icon,
-  Loader,
-  PreviewCard,
-} from "../../../../components/index.js";
+import { Icon, Loader, PreviewCard } from "../../../../components/index.js";
 import { Editor } from "@tinymce/tinymce-react";
 import { Button, Col } from "reactstrap";
 import { useRef } from "react";
@@ -12,6 +7,10 @@ import { useForm } from "react-hook-form";
 import { addContactQuery } from "../../../../react-query/mutations/index.js";
 import { getAllContractTypes } from "../../../../react-query/queries/index.js";
 import { useNavigate } from "react-router-dom";
+import {
+  ERROR_MESSAGE_TRANSLATIONS,
+  ERROR_MESSAGES,
+} from "../../../../utils/enums/index.js";
 
 const LeftPage = () => {
   const editorRef = useRef(null);
@@ -19,9 +18,11 @@ const LeftPage = () => {
     register,
     handleSubmit,
     setValue,
+    setError,
+    reset,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const contractTypes = useQuery({
     queryKey: "contracts-types",
@@ -32,8 +33,20 @@ const LeftPage = () => {
   const addContract = useMutation({
     mutationKey: ["add-contract"],
     mutationFn: (config) => addContactQuery(config),
+    onSuccess: (data) => {
+      if (
+        data?.error?.message === ERROR_MESSAGES.CONTRACT_TYPE_ALREADY_EXISTS
+      ) {
+        return setError("name", {
+          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+        });
+      } else if (data.success) {
+        reset();
+        contractTypes.refetch();
+        navigate("/contracts-type-list");
+      }
+    },
   });
-
   const handleSubmitForm = async (formData) => {
     const body = {
       ...formData,
@@ -45,9 +58,6 @@ const LeftPage = () => {
     };
 
     await addContract.mutateAsync(config);
-
-    await contractTypes.refetch();
-    navigate("/contracts-type-list")
   };
 
   return (

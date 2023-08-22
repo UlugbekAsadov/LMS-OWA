@@ -55,9 +55,9 @@ const EducationalCentersPage = () => {
     setIsOpenModal(true);
   };
 
-  const handleOpenModal = () => {
-    setSelectedBootcamp(null);
+  const handleClickOpenModalButton = () => {
     setIsOpenModal(true);
+    setSelectedBootcamp(null);
   };
 
   if (isLoading) {
@@ -136,7 +136,7 @@ const EducationalCentersPage = () => {
         btnTitle={"O’quv markaz qoshish"}
         btnIcon={"plus"}
         isButtonVisible
-        onClickButton={handleOpenModal}
+        onClickButton={handleClickOpenModalButton}
       />
 
       <Table

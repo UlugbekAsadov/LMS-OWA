@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "react-query";
 import { getBootcampStaffs } from "../../../react-query/queries/index.js";
 import { rolesMock } from "../../../utils/mocks/index.js";
 import { ConfirmationModal } from "../../../components/modals/confirmation-modal/confirmation-modal.jsx";
+import { deleteStaffBySuperAdminMutation } from "../../../react-query/mutations/index.js";
 
 const StaffsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +27,8 @@ const StaffsPage = () => {
 
   const deleteStaffMutation = useMutation({
     mutationKey: ["delete-staff"],
-    mutationFn: () => {},
+    mutationFn: () =>
+      deleteStaffBySuperAdminMutation(bootcampId, selectedStaff.id),
   });
 
   const handleClickEditButton = (staff) => {
@@ -40,6 +42,7 @@ const StaffsPage = () => {
 
   const handleClickDeleteButton = (staff) => {
     setSelectedStaff(staff);
+    setIsDeleteModalOpen(true);
   };
 
   const handleClickAddButton = () => {
@@ -47,8 +50,8 @@ const StaffsPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeleteStaff = () => {
-    deleteStaffMutation.mutate();
+  const handleDeleteStaff = async () => {
+    await deleteStaffMutation.mutateAsync();
     refetch();
     setIsDeleteModalOpen(false);
   };
@@ -61,7 +64,7 @@ const StaffsPage = () => {
 
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.records.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -104,12 +107,9 @@ const StaffsPage = () => {
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
             <Icon
               name="pen"
-              className={"cursor-pointer"}
+              className={"cursor-pointer mx-2"}
               onClick={handleClickEditButton.bind(null, item)}
             />
-            <span className="p-2">
-              <Icon name="file-text" className={"cursor-pointer"} />
-            </span>
             <Icon
               className={"cursor-pointer"}
               name="trash"
@@ -139,7 +139,7 @@ const StaffsPage = () => {
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={data.length}
+            totalItems={data.records.length}
             paginate={paginate}
             currentPage={currentPage}
           />

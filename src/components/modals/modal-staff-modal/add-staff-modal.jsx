@@ -10,7 +10,7 @@ import { InputMask } from "primereact/inputmask";
 import { useMutation, useQuery } from "react-query";
 import {
   addStaffToCompanySuperAdminMutationFn,
-  editStaffMutationFn,
+  editStaffBySuperAdminMutationFn,
 } from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
 import {
@@ -28,7 +28,6 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
   } = useForm({
     defaultValues: initialValue,
   });
-
   const roles = rolesMock.slice(1, rolesMock.length);
   const { bootcampId } = useParams();
   const [selectedRole, setSelectedRole] = useState(
@@ -59,7 +58,8 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
 
   const editStaffMutation = useMutation({
     mutationKey: ["edit-staff"],
-    mutationFn: (config) => editStaffMutationFn(initialValue.id, config),
+    mutationFn: (config) =>
+      editStaffBySuperAdminMutationFn(bootcampId, initialValue.id, config),
     onSuccess: (data) => {
       if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
         return setError("phone", {
@@ -145,43 +145,45 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
               )}
             </div>
           </div>
-          <div className="form-group">
-            <Label htmlFor="password" className="form-label fs-6">
-              Parol
-            </Label>
-            <div className="form-control-wrap">
-              <span
-                onClick={() => setIsPasswordVisible((prevVal) => !prevVal)}
-                className={`form-icon lg form-icon-right passcode-switch  cursor-pointer ${
-                  isPasswordVisible ? "is-hidden" : "is-shown"
-                }`}
-              >
-                <Icon
-                  name="eye"
-                  className="passcode-icon icon-show fs-4"
-                ></Icon>
+          {initialValue ? null : (
+            <div className="form-group">
+              <Label htmlFor="password" className="form-label fs-6">
+                Parol
+              </Label>
+              <div className="form-control-wrap">
+                <span
+                  onClick={() => setIsPasswordVisible((prevVal) => !prevVal)}
+                  className={`form-icon lg form-icon-right passcode-switch  cursor-pointer ${
+                    isPasswordVisible ? "is-hidden" : "is-shown"
+                  }`}
+                >
+                  <Icon
+                    name="eye"
+                    className="passcode-icon icon-show fs-4"
+                  ></Icon>
 
-                <Icon
-                  name="eye-off"
-                  className="passcode-icon icon-hide fs-4"
-                ></Icon>
-              </span>
-              <input
-                autoComplete="new-password"
-                type={isPasswordVisible ? "text" : "password"}
-                id="password"
-                {...register("password", {
-                  required: "Parolni kiriting",
-                })}
-                className={`form-control-lg form-control ${
-                  errors.password && "error"
-                } ${isPasswordVisible ? "is-hidden" : "is-shown"}`}
-              />
-              {errors.password && (
-                <span className="invalid">{errors.password.message}</span>
-              )}
+                  <Icon
+                    name="eye-off"
+                    className="passcode-icon icon-hide fs-4"
+                  ></Icon>
+                </span>
+                <input
+                  autoComplete="new-password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  id="password"
+                  {...register("password", {
+                    required: "Parolni kiriting",
+                  })}
+                  className={`form-control-lg form-control ${
+                    errors.password && "error"
+                  } ${isPasswordVisible ? "is-hidden" : "is-shown"}`}
+                />
+                {errors.password && (
+                  <span className="invalid">{errors.password.message}</span>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="form-group  ">
             <label className="form-label">Rol</label>
             <RSelect

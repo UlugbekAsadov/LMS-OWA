@@ -20,7 +20,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleChangeCity = (value) => {
-    setValue("rol", value.value);
+    setValue("role", value.value);
     setSelectedRole(value);
   };
 

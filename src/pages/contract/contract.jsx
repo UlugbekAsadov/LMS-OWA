@@ -29,7 +29,7 @@ const Contract = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.contracts?.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -99,12 +99,11 @@ const Contract = () => {
         isButtonVisible
         onClickButton={setIsModalOpen.bind(null, true)}
       />
-
       <Table
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={data?.length}
+            totalItems={data.contracts?.length}
             paginate={paginate}
             currentPage={currentPage}
           />

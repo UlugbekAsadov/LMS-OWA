@@ -1,12 +1,12 @@
 import { Row } from "reactstrap";
 import { useQuery } from "react-query";
-import { getEducationalInformationQueryFn } from "../../../../react-query/queries/educational.query.js";
+import { getMyStsffsQueryFn } from "../../../../react-query/queries/educational.query.js";
 import { Loader } from "../../../../components/index.js";
 
 const EducationInformationList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["educational-information"],
-    queryFn: () => getEducationalInformationQueryFn(),
+    queryFn: () => getMyStsffsQueryFn(),
   });
   const parseDate = (date) => {
     let dateObject = new Date(date);

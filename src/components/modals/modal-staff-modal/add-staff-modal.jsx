@@ -65,20 +65,25 @@ const AddStaffModal = ({ isOpen, onClose }) => {
               Telefon raqami
             </Label>
             <div className="form-control-wrap">
-              <InputMask
-                id="phone_number"
-                {...register("phone_number", {
-                  required: "Telefon raqamni kiriting",
-                })}
-                className={`form-control-lg form-control  ${
-                  errors.first_name && "error"
-                }`}
-                mask="(99) 999-99-99"
-                placeholder="(99) 999-99-99"
-              />
-              {errors.phone_number && (
-                <span className="invalid">{errors.phone_number.message}</span>
-              )}
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">+998</span>
+                </div>
+                <InputMask
+                  id="phone_number"
+                  {...register("phone_number", {
+                    required: "Telefon raqamni kiriting",
+                  })}
+                  className={`form-control-lg form-control  ${
+                    errors.first_name && "error"
+                  }`}
+                  mask="(99) 999-99-99"
+                  placeholder="(99) 127-99-11"
+                />
+                {errors.phone_number && (
+                  <span className="invalid">{errors.phone_number.message}</span>
+                )}
+              </div>
             </div>
           </div>
           <div className="form-group">

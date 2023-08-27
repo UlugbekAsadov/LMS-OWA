@@ -1,4 +1,4 @@
 import { api } from "../api.js";
 
-export const getMyStsffsQueryFn = () =>
+export const getMyStaffsQueryFn = () =>
   api("/companies/get").then((data) => data.data);

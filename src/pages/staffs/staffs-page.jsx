@@ -47,7 +47,7 @@ const StaffsPage = ({ isLoading, data }) => {
               {currentPage * 20 + index + 1 - 20}
             </Link>
           </span>
-          <span className="tb-odr-date">{item.fullName}</span>
+          <span className="tb-odr-date">{item.full_name}</span>
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">

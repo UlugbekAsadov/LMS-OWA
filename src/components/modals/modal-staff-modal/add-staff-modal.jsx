@@ -46,7 +46,6 @@ const AddStaffModal = ({ isOpen, onClose }) => {
         });
       }
       reset();
-      userData.refetch();
       onClose();
     },
   });
@@ -61,11 +60,9 @@ const AddStaffModal = ({ isOpen, onClose }) => {
         });
       }
       reset();
-      userData.refetch();
       onClose();
     },
   });
-  console.log(createCompaniesStaff.isLoading);
   const handleChangeCity = (value) => {
     setValue("role", value.value);
     setSelectedRole(value);

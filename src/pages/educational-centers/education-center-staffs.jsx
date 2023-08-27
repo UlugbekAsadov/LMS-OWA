@@ -11,7 +11,7 @@ const EducationCenterStaffs = () => {
     queryKey: ["user"],
   });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [`bootcamp-staffs-${bootcampId}`],
     queryFn: () => getBootcampStaffs(bootcampId),
     enabled: userData.data.role === USER_ROLES.SUPER_ADMIN,
@@ -20,6 +20,13 @@ const EducationCenterStaffs = () => {
   if (isLoading) {
     return null;
   }
-  return <StaffsPage isLoading={isLoading} data={data.records} />;
+  return (
+    <StaffsPage
+      isLoading={isLoading}
+      data={data.records}
+      bootcampId={bootcampId}
+      refetch={refetch}
+    />
+  );
 };
 export default EducationCenterStaffs;

@@ -46,6 +46,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
         });
       }
       reset();
+      userData.refetch();
       onClose();
     },
   });
@@ -60,6 +61,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
         });
       }
       reset();
+      userData.refetch();
       onClose();
     },
   });

@@ -1,14 +1,18 @@
 import { Col, Label, Modal, ModalBody } from "reactstrap";
 import PropTypes from "prop-types";
 import { Icon } from "../../icon/icon.jsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import RSelect from "../../react-select/react-select.jsx";
 import { Button } from "../../button/button.jsx";
 import { rolesMock } from "../../../utils/mocks/index.js";
 import { InputMask } from "primereact/inputmask";
 import { useMutation, useQuery } from "react-query";
-import { USER_ROLES } from "../../../utils/enums/index.js";
+import {
+  ERROR_MESSAGE_TRANSLATIONS,
+  ERROR_MESSAGES,
+  USER_ROLES,
+} from "../../../utils/enums/index.js";
 import {
   createCompaniesStaffMutationFn,
   createUsersStaffMutationFn,
@@ -20,6 +24,8 @@ const AddStaffModal = ({ isOpen, onClose }) => {
     register,
     handleSubmit,
     setValue,
+    reset,
+    setError,
     formState: { errors },
   } = useForm();
   const [selectedRole, setSelectedRole] = useState(null);
@@ -33,11 +39,29 @@ const AddStaffModal = ({ isOpen, onClose }) => {
   const createUserStaff = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createUsersStaffMutationFn(config),
+    onSuccess: (data) => {
+      if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("name", {
+          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+        });
+      }
+      reset();
+      onClose();
+    },
   });
 
   const createCompaniesStaff = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createCompaniesStaffMutationFn(config, bootcampId),
+    onSuccess: (data) => {
+      if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("name", {
+          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+        });
+      }
+      reset();
+      onClose();
+    },
   });
   console.log(createCompaniesStaff.isLoading);
   const handleChangeCity = (value) => {

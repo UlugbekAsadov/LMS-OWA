@@ -14,11 +14,13 @@ import {
   deleteUserStaffMutationFn,
 } from "../../react-query/mutations/index.js";
 import { USER_ROLES } from "../../utils/enums/index.js";
+import { userRolesMock } from "../../utils/mocks/index.js";
 
 const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
   const [isDeleteModal, setDeleteModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deletingUserId, setDeletingUserId] = useState(null);
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
 
@@ -43,17 +45,31 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
     },
   });
 
-  const handleDeleteCompaniesStaff = async () => {
-    await deleteCompaniesStaff.mutateAsync(deletingUserId);
-    setDeleteModal(false);
+  const handleClickEditStaff = (staff) => {
+    const staffValues = {
+      ...staff,
+      role: { value: staff.role, label: userRolesMock[staff.role] },
+    };
+    setEditingUser(staffValues);
+    setIsModalOpen(true);
   };
+
   const handleDeleteUser = async () => {
-    await deleteUserStaff.mutateAsync(deletingUserId);
+    if (userData.data.role === USER_ROLES.COMPANY_OWNER) {
+      await deleteUserStaff.mutateAsync(deleteUserId);
+    } else {
+      await deleteCompaniesStaff.mutateAsync(deleteUserId);
+    }
     setDeleteModal(false);
   };
   const handleClickDeleteButton = (userId) => {
     setDeleteModal(true);
-    setDeletingUserId(userId);
+    setDeleteUserId(userId);
+  };
+
+  const handleClickAddStaffButton = () => {
+    setEditingUser(null);
+    setIsModalOpen(true);
   };
 
   if (isLoading) {
@@ -92,7 +108,12 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">
-            <span className="amount">{item.phone}</span>
+            <span className="amount">
+              {item.phone.replace(
+                /^(\d{2})(\d{3})(\d{2})(\d{2})$/,
+                "+998 $1 $2 $3 $4"
+              )}
+            </span>
           </span>
           <span className="tb-odr-status">
             <Badge color={"success"} className="badge-dot">
@@ -102,7 +123,9 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Icon name="pen" className={"cursor-pointer"} />
+            <span onClick={handleClickEditStaff.bind(null, item)}>
+              <Icon name="pen" className={"cursor-pointer"} />
+            </span>
             <span
               className="p-2"
               onClick={handleClickDeleteButton.bind(null, item.id)}
@@ -119,6 +142,7 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
       </tr>
     );
   });
+
   return (
     <Content title="Xodimlar">
       <PageHeader
@@ -126,7 +150,7 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
         btnTitle={"Xodim qoshish"}
         btnIcon={"plus"}
         isButtonVisible={true}
-        onClickButton={setIsModalOpen.bind(null, true)}
+        onClickButton={handleClickAddStaffButton}
       />
 
       <Table
@@ -141,16 +165,15 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
         tableBody={currentItems.length ? tableBody : null}
         tableHeader={tableHeader}
       />
-      <AddStaffModal
-        isOpen={isModalOpen}
-        onClose={setIsModalOpen.bind(null, false)}
-      />
+      {isModalOpen && (
+        <AddStaffModal
+          isOpen={isModalOpen}
+          initialValue={editingUser}
+          onClose={setIsModalOpen.bind(null, false)}
+        />
+      )}
       <ConfirmationModal
-        confirmButtonFn={
-          userData.data.role === USER_ROLES.COMPANY_OWNER
-            ? handleDeleteUser
-            : handleDeleteCompaniesStaff
-        }
+        confirmButtonFn={handleDeleteUser}
         isOpen={isDeleteModal}
         onClose={setDeleteModal.bind(null, false)}
         title={"Xodimni o'chirishni hoxlaysizmi?"}

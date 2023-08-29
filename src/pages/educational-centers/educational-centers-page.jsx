@@ -23,7 +23,6 @@ const EducationalCentersPage = () => {
     queryKey: ["all-bootcamps"],
     queryFn: () => getAllBootcampsQueryFn(),
   });
-  console.log(data);
   const deleteBootcampMutation = useMutation({
     mutationKey: ["delete-bootcamp"],
     mutationFn: () => deleteBootcampMutationFn(selectedBootcamp.id),

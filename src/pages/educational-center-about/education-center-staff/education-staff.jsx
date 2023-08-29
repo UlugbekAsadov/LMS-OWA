@@ -13,17 +13,11 @@ const EducationStaff = () => {
     queryFn: () => getMyStaffsQueryFn(),
     enabled: userData.data.role === USER_ROLES.COMPANY_OWNER,
   });
-  console.log(data);
   if (isLoading) {
     return null;
   }
   return (
-    <StaffsPage
-      isLoading={isLoading}
-      data={data.users}
-      bootcampId={null}
-      refetch={refetch}
-    />
+    <StaffsPage isLoading={isLoading} data={data.users} refetch={refetch} />
   );
 };
 export default EducationStaff;

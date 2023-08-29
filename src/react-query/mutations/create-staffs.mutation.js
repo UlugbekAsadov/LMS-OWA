@@ -3,6 +3,8 @@ import { api } from "../api.js";
 export const createUsersStaffMutationFn = (config) =>
   api("/users/create", config);
 
+export const editStaffMutationFn = (config, userId) =>
+  api(`/users/update/staff/${userId}`, config);
 export const deleteUserStaffMutationFn = (userId) =>
   api(`/users/delete/staff/${userId}`, { method: "DELETE" });
 

@@ -16,10 +16,12 @@ import {
 import {
   createCompaniesStaffMutationFn,
   createUsersStaffMutationFn,
+  editStaffMutationFn,
 } from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const AddStaffModal = ({ isOpen, onClose }) => {
+const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
   const {
     register,
     handleSubmit,
@@ -27,15 +29,35 @@ const AddStaffModal = ({ isOpen, onClose }) => {
     reset,
     setError,
     formState: { errors },
-  } = useForm();
-  const [selectedRole, setSelectedRole] = useState(null);
+  } = useForm({
+    defaultValues: initialValue,
+  });
+  const [selectedRole, setSelectedRole] = useState(
+    initialValue ? initialValue.role : null
+  );
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { bootcampId } = useParams();
 
+  const { bootcampId } = useParams();
   const userData = useQuery({
     queryKey: ["user"],
   });
-
+  const [roles] = useState(
+    userData.data.role === USER_ROLES.SUPER_ADMIN
+      ? rolesMock
+      : rolesMock.slice(1, rolesMock.length)
+  );
+  const editStaff = useMutation({
+    mutationKey: ["edit-staff"],
+    mutationFn: (config) => editStaffMutationFn(config, initialValue.id),
+    onSuccess: (res) => {
+      if (!res?.errors) {
+        reset();
+        setSelectedRole(null);
+        onClose();
+        toast.success("Tahrirlandi");
+      }
+    },
+  });
   const createUserStaff = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createUsersStaffMutationFn(config),
@@ -47,6 +69,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
       }
       reset();
       onClose();
+      setSelectedRole(null);
     },
   });
 
@@ -61,6 +84,7 @@ const AddStaffModal = ({ isOpen, onClose }) => {
       }
       reset();
       onClose();
+      setSelectedRole(null);
     },
   });
   const handleChangeCity = (value) => {
@@ -72,17 +96,34 @@ const AddStaffModal = ({ isOpen, onClose }) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
     values.phone = values.phone.replace(regex, "$1$2$3$4");
 
-    const config = {
-      method: "POST",
-      body: JSON.stringify(values),
+    const body = {
+      ...values,
+      role: initialValue ? selectedRole.value : values.role,
     };
+
+    const config = {
+      method: initialValue ? "PUT" : "POST",
+      body: JSON.stringify(body),
+    };
+
+    console.log(body);
+
     if (userData.data.role === USER_ROLES.COMPANY_OWNER) {
-      await createUserStaff.mutateAsync(config);
+      if (initialValue) {
+        await editStaff.mutateAsync(config);
+      } else {
+        await createUserStaff.mutateAsync(config);
+      }
+      return;
     }
+
     if (userData.data.role === USER_ROLES.SUPER_ADMIN) {
-      await createCompaniesStaff.mutateAsync(config);
+      if (initialValue) {
+        // edit
+      } else {
+        await createCompaniesStaff.mutateAsync(config);
+      }
     }
-    console.log({ values, errors });
   };
 
   return (
@@ -142,47 +183,49 @@ const AddStaffModal = ({ isOpen, onClose }) => {
               </div>
             </div>
           </div>
-          <div className="form-group">
-            <Label htmlFor="password" className="form-label fs-6">
-              Parol
-            </Label>
-            <div className="form-control-wrap">
-              <span
-                onClick={() => setIsPasswordVisible((prevVal) => !prevVal)}
-                className={`form-icon lg form-icon-right passcode-switch  cursor-pointer ${
-                  isPasswordVisible ? "is-hidden" : "is-shown"
-                }`}
-              >
-                <Icon
-                  name="eye"
-                  className="passcode-icon icon-show fs-4"
-                ></Icon>
+          {!initialValue && (
+            <div className={`form-group  `}>
+              <Label htmlFor="password" className="form-label fs-6">
+                Parol
+              </Label>
+              <div className="form-control-wrap">
+                <span
+                  onClick={() => setIsPasswordVisible((prevVal) => !prevVal)}
+                  className={`form-icon lg form-icon-right passcode-switch  cursor-pointer ${
+                    isPasswordVisible ? "is-hidden" : "is-shown"
+                  }`}
+                >
+                  <Icon
+                    name="eye"
+                    className="passcode-icon icon-show fs-4"
+                  ></Icon>
 
-                <Icon
-                  name="eye-off"
-                  className="passcode-icon icon-hide fs-4"
-                ></Icon>
-              </span>
-              <input
-                autoComplete="new-password"
-                type={isPasswordVisible ? "text" : "password"}
-                id="password"
-                {...register("password", {
-                  required: "Parolni kiriting",
-                })}
-                className={`form-control-lg form-control ${
-                  errors.first_name && "error"
-                } ${isPasswordVisible ? "is-hidden" : "is-shown"}`}
-              />
-              {errors.password && (
-                <span className="invalid">{errors.password.message}</span>
-              )}
+                  <Icon
+                    name="eye-off"
+                    className="passcode-icon icon-hide fs-4"
+                  ></Icon>
+                </span>
+                <input
+                  autoComplete="new-password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  id="password"
+                  {...register("password", {
+                    required: "Parolni kiriting",
+                  })}
+                  className={`form-control-lg form-control ${
+                    errors.first_name && "error"
+                  } ${isPasswordVisible ? "is-hidden" : "is-shown"}`}
+                />
+                {errors.password && (
+                  <span className="invalid">{errors.password.message}</span>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="form-group  ">
             <label className="form-label">Rol</label>
             <RSelect
-              options={rolesMock}
+              options={roles}
               value={selectedRole}
               onChange={handleChangeCity}
             />
@@ -211,5 +254,6 @@ const AddStaffModal = ({ isOpen, onClose }) => {
 AddStaffModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
+  initialValue: PropTypes.object,
 };
 export default AddStaffModal;

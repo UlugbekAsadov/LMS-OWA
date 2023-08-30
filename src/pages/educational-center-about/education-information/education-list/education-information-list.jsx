@@ -2,7 +2,8 @@ import { Row } from "reactstrap";
 import { useQuery } from "react-query";
 import { Loader } from "../../../../components/index.js";
 import { getMyStaffsQueryFn } from "../../../../react-query/queries/index.js";
-import moment from "moment";
+import dayjs from "dayjs";
+import { convertDateV2 } from "../../../../utils/functions/index.js";
 
 const EducationInformationList = () => {
   const { data, isLoading } = useQuery({
@@ -61,7 +62,7 @@ const EducationInformationList = () => {
           <tr>
             <td>Qo’shimcha ma’lumot</td>
             <td>
-              <p>{moment(data.createdAt).format("lll")}</p>
+              <p>{convertDateV2(data.created_at)}</p>
             </td>
           </tr>
         </tbody>

@@ -1,19 +1,8 @@
 import { Row } from "reactstrap";
-import { useQuery } from "react-query";
-import { Loader } from "../../../../components/index.js";
-import { getMyStaffsQueryFn } from "../../../../react-query/queries/index.js";
 import { convertDateV2 } from "../../../../utils/functions/index.js";
+import PropTypes from "prop-types";
 
-const EducationInformationList = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["educational-information"],
-    queryFn: () => getMyStaffsQueryFn(),
-  });
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
+const EducationInformationList = ({ data }) => {
   return (
     <Row className={"py-3 gy-5"}>
       <table className="table table-lg preview-reference">
@@ -93,7 +82,7 @@ const EducationInformationList = () => {
             <tr>
               <td>Hisob raqami</td>
               <td>
-                <p className={""}>{data.bank_account}</p>
+                <p>{data.bank_account}</p>
               </td>
             </tr>
           </tbody>
@@ -103,3 +92,7 @@ const EducationInformationList = () => {
   );
 };
 export default EducationInformationList;
+
+EducationInformationList.propTypes = {
+  data: PropTypes.object,
+};

@@ -1,1 +1,1 @@
-export * from "./useSidebarMenu.hook"
+export * from "./useSidebarMenu.hook";

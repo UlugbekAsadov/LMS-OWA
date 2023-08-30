@@ -15,6 +15,7 @@ import { getBankQuery } from "../../../react-query/queries/index.js";
 import {
   ERROR_MESSAGES,
   ERROR_MESSAGE_TRANSLATIONS,
+  USER_ROLES,
 } from "../../../utils/enums/index.js";
 import {
   addBootcampMutationFn,
@@ -23,6 +24,19 @@ import {
 import { getAllBootcampsQueryFn } from "../../../react-query/queries/index.js";
 
 const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
+  initialValue = {
+    ...initialValue,
+    province: {
+      value: initialValue.region.id,
+      id: initialValue.region.region_id,
+      label: initialValue.region.name_lt,
+    },
+    city: {
+      value: initialValue.district.district_id,
+      label: initialValue.district.name_lt,
+    },
+  };
+
   const {
     register,
     handleSubmit,
@@ -44,6 +58,10 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   const [isSelectedProvinceEmpty, setIsSelectedProvinceEmpty] = useState(false);
   const [isSelectedCityEmpty, setIsSelectedCityEmpty] = useState(false);
   const bank_code = watch("bank_code");
+
+  const { data: userData } = useQuery({
+    queryKey: ["user"],
+  });
 
   const bankQuery = useQuery({
     queryKey: "bank_info",
@@ -99,7 +117,9 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     mutationFn: (config) => editBootcampMutationFn(initialValue.id, config),
     onSuccess: (data) => {
       if (!handleErrorOnRequest(data)) {
-        refetch();
+        if (userData.role === USER_ROLES.SUPER_ADMIN) {
+          refetch();
+        }
         onClose();
       }
     },
@@ -110,7 +130,9 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     mutationFn: (config) => addBootcampMutationFn(config),
     onSuccess: (data) => {
       if (!handleErrorOnRequest(data)) {
-        refetch();
+        if (userData.role === USER_ROLES.SUPER_ADMIN) {
+          refetch();
+        }
         onClose();
       }
     },

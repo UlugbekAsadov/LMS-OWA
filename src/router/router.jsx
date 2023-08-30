@@ -20,7 +20,7 @@ import EducationStaff from "../pages/educational-center-about/education-center-s
 import EducationCenterStaffs from "../pages/educational-centers/education-center-staffs.jsx";
 
 export const Router = () => {
-  const { data: companyData, isLoading } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["company-info"],
     queryFn: () => getBootcampInfo(),
   });

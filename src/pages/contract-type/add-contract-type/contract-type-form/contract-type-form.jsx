@@ -54,7 +54,7 @@ const ContractTypeForm = ({ initialValue }) => {
         reset();
         contractTypes.refetch();
         toast.success("Shartnoma turi qo'shildi");
-        navigate("/contract-type-type-list");
+        navigate("/contracts-type-list");
       }
     },
   });
@@ -64,7 +64,7 @@ const ContractTypeForm = ({ initialValue }) => {
     mutationFn: (config) => editContractMutationFn(config, initialValue.id),
     onSuccess: (data) => {
       if (!data?.error) {
-        navigate("/contract-type-type-list");
+        navigate("/contracts-type-list");
       }
     },
   });

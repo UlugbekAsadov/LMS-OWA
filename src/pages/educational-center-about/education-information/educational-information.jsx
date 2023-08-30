@@ -3,9 +3,22 @@ import PageHeader from "../../../components/page-header/page-header.jsx";
 import EducationInformationList from "./education-list/education-information-list.jsx";
 import { useState } from "react";
 import AddBootcampsModal from "../../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
+import { useQuery } from "react-query";
+import { getMyStaffsQueryFn } from "../../../react-query/queries/index.js";
+import { Loader } from "../../../components/index.js";
 
 const EducationalInformation = () => {
   const [isModalOpen, setIsOpenModal] = useState(false);
+
+  const { data: companyData, isLoading } = useQuery({
+    queryKey: ["educational-information"],
+    queryFn: () => getMyStaffsQueryFn(),
+  });
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <Content title="Ma’lumot">
       <PageHeader
@@ -14,10 +27,12 @@ const EducationalInformation = () => {
         isButtonVisible
         onClickButton={setIsOpenModal.bind(null, true)}
       />
-      <EducationInformationList />
+
+      <EducationInformationList data={companyData} />
 
       {isModalOpen && (
         <AddBootcampsModal
+          initialValue={companyData}
           isOpen={isModalOpen}
           onClose={setIsOpenModal.bind(null, false)}
         />

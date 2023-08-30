@@ -20,7 +20,7 @@ const ContractsTypeList = () => {
     queryFn: () => getAllContractTypes(),
     queryKey: ["contract-type"],
   });
-  const deleteContract = useMutation({
+  const deleteContractMutation = useMutation({
     mutationKey: "delete-contract",
     mutationFn: (contractId) => deleteContractMutationFn(contractId),
   });
@@ -34,7 +34,7 @@ const ContractsTypeList = () => {
     navigate(`add-contract`);
   };
   const handleDeleteContractType = async () => {
-    await deleteContract.mutateAsync(deleteContractId);
+    await deleteContractMutation.mutateAsync(deleteContractId);
     setDeleteModal(false);
     await refetch();
   };
@@ -132,6 +132,7 @@ const ContractsTypeList = () => {
         confirmButtonFn={handleDeleteContractType}
         confirmButtonTitle={"Tasdiqlash"}
         cancelButtonTitle={"Bekor qilish"}
+        isLoading={deleteContractMutation.isLoading}
       />
     </Content>
   );

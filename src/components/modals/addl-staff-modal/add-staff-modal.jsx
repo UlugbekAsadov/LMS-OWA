@@ -33,10 +33,12 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
   } = useForm({
     defaultValues: initialValue,
   });
+
   const [roles] = useState(rolesMock.slice(1, rolesMock.length));
   const [selectedRole, setSelectedRole] = useState(
     initialValue ? initialValue.role : roles[0]
   );
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { bootcampId } = useParams();
@@ -49,20 +51,27 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
     mutationKey: ["edit-staff"],
     mutationFn: (config) => editStaffMutationFn(config, initialValue.id),
     onSuccess: (res) => {
-      if (!res?.errors) {
-        reset();
-        setSelectedRole(null);
-        onClose();
-        refetch();
-        toast.success("Tahrirlandi");
+      setIsLoading(false);
+      if (res?.error?.message === ERROR_MESSAGES.PHONE_ALREADY_EXISTS) {
+        setIsLoading(false);
+        return setError("phone", {
+          message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
+        });
       }
+      reset();
+      setSelectedRole(null);
+      onClose();
+      refetch();
+      toast.success("Tahrirlandi");
     },
   });
+
   const editCompanyStaff = useMutation({
     mutationKey: ["edit-compaies-staff"],
     mutationFn: (config) =>
       editByCompanyStaffMutationFn(config, bootcampId, initialValue.id),
     onSuccess: (res) => {
+      setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
         return setError("phone", {
           message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
@@ -75,10 +84,11 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
     },
   });
 
-  const createStaffByOwner = useMutation({
+  const createStaffByOwnerMutation = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createUsersStaffMutationFn(config),
     onSuccess: (res) => {
+      setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
         return setError("phone", {
           message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
@@ -90,10 +100,12 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
       refetch();
     },
   });
+
   const createCompaniesStaff = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createCompaniesStaffMutationFn(config, bootcampId),
     onSuccess: (res) => {
+      setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
         return setError("phone", {
           message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
@@ -105,6 +117,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
       refetch();
     },
   });
+
   const handleChangeRole = (value) => {
     setValue("role", value.value);
     setSelectedRole(value);
@@ -117,7 +130,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
     setIsLoading(true);
     const body = {
       ...values,
-      role: initialValue ? selectedRole.value : values.role,
+      role: selectedRole.value,
     };
 
     const config = {
@@ -129,7 +142,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
       if (initialValue) {
         await editStaff.mutateAsync(config);
       } else {
-        await createStaffByOwner.mutateAsync(config);
+        await createStaffByOwnerMutation.mutateAsync(config);
       }
       return;
     }
@@ -141,8 +154,6 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
         await createCompaniesStaff.mutateAsync(config);
       }
     }
-
-    setIsLoading(false);
   };
 
   return (

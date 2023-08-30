@@ -16,5 +16,11 @@ export const deleteCompaniesStaffMutationFn = (companiesId, userId) =>
 export const createCompaniesStaffMutationFn = (config, userId) =>
   api(`/companies/${userId}/users/add`, config);
 
-export const updatePasswordBySuperAdmin = (companyId, userId, config) =>
-  api(`/companies/${companyId}/users/${userId}/change_password`, config);
+export const updatePasswordBySuperAdminMutationFn = (
+  companyId,
+  userId,
+  config
+) => api(`/companies/${companyId}/users/${userId}/change_password`, config);
+
+export const updatePasswordByOwnerMutationFn = (userId, config) =>
+  api(`/users/change_password/staff/${userId}`, config);

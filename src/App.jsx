@@ -17,8 +17,11 @@ function App() {
   );
 
   useEffect(() => {
-    navigate(firstAccessibleLink[0].link);
-  }, [firstAccessibleLink, navigate]);
+    const isUserOnHomePage = window.location.pathname === "/";
+    if (isUserOnHomePage) {
+      navigate(firstAccessibleLink[0].link);
+    }
+  }, []);
 
   return (
     <ThemeProvider>

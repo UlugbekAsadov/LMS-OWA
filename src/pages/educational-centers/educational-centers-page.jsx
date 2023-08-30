@@ -37,19 +37,7 @@ const EducationalCentersPage = () => {
   };
 
   const handleClickEditButton = (bootcamp) => {
-    const editingBootcampData = {
-      ...bootcamp,
-      province: {
-        value: bootcamp.region.id,
-        id: bootcamp.region.region_id,
-        label: bootcamp.region.name_lt,
-      },
-      city: {
-        value: bootcamp.district.district_id,
-        label: bootcamp.district.name_lt,
-      },
-    };
-    setSelectedBootcamp(editingBootcampData);
+    setSelectedBootcamp(bootcamp);
     setIsOpenModal(true);
   };
 

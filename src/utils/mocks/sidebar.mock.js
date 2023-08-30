@@ -18,7 +18,7 @@ export const menuMock = [
   {
     icon: "panel",
     text: "Shartnomalar turi",
-    link: "/contract-type-type-list",
+    link: "/contracts-type-list",
     active: false,
     access: [USER_ROLES.COMPANY_OWNER],
   },

@@ -14,4 +14,6 @@ export const getContractWordList = () =>
   api("/contractType/values").then((data) => data.data);
 
 export const getContractsByIdQueryFn = (contractId) =>
-  api(`/contractType/get/byId/${contractId}`).then((data) => data.data);
+  api(`/contract/all/${contractId}`).then((data) => data.data);
+
+// contract/all/contractId

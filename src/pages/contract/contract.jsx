@@ -3,9 +3,9 @@ import { Content } from "../../layout/page-layout/page-layout";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
-import { Icon } from "../../components/icon/icon";
+import { Icon } from "../../components/index.js";
 import { TablePagination } from "../../components/pagination/pagination";
-import { Table } from "../../components/table/table";
+import { Table } from "../../components/index.js";
 import BasicContractModal from "../../components/modals/basic-conract-modal/basic-contract-modal";
 import { useQuery } from "react-query";
 import { getContractsByIdQueryFn } from "../../react-query/queries/index.js";
@@ -29,7 +29,7 @@ const Contract = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data.contracts?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data?.Contracts.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -99,11 +99,12 @@ const Contract = () => {
         isButtonVisible
         onClickButton={setIsModalOpen.bind(null, true)}
       />
+
       <Table
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={data.contracts?.length}
+            totalItems={data?.length}
             paginate={paginate}
             currentPage={currentPage}
           />

@@ -27,7 +27,7 @@ const StaffsPage = () => {
 
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.records.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -53,7 +53,7 @@ const StaffsPage = () => {
               {currentPage * 20 + index + 1 - 20}
             </Link>
           </span>
-          <span className="tb-odr-date">{item.name}</span>
+          <span className="tb-odr-date">{item.full_name}</span>
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">
@@ -61,7 +61,7 @@ const StaffsPage = () => {
           </span>
           <span className="tb-odr-status">
             <Badge color={"success"} className="badge-dot">
-              {item.status}
+              {item.role}
             </Badge>
           </span>
         </td>
@@ -96,7 +96,7 @@ const StaffsPage = () => {
         pagination={
           <TablePagination
             itemPerPage={itemPerPage}
-            totalItems={data.length}
+            totalItems={data.records.length}
             paginate={paginate}
             currentPage={currentPage}
           />

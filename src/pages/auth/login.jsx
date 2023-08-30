@@ -15,7 +15,7 @@ import {
 } from "../../components";
 import Button from "../../components/button/button";
 import AuthFooter from "../../pages/components/auth-footer.jsx";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { loginMutationFn } from "../../react-query/mutations";
 import { ERROR_MESSAGE_TRANSLATIONS } from "../../utils/enums/error-messages.enum";
 import { Head } from "../../layout/head/head.layout";
@@ -23,6 +23,10 @@ import { Head } from "../../layout/head/head.layout";
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [errorValidation, setErrorValidation] = useState(null);
+
+  const { data: companyData } = useQuery({
+    queryKey: ["company-info"],
+  });
 
   const loginMutation = useMutation({
     mutationKey: ["user"],
@@ -71,7 +75,11 @@ const Login = () => {
         <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
           <BlockHead>
             <BlockContent>
+              <BlockTitle tag="h4" className="text-center">
+                {companyData.name}
+              </BlockTitle>
               <BlockTitle tag="h4">Kirish</BlockTitle>
+
               <BlockDes>
                 <p>
                   Shartnoma tizimiga faqat ro’yxatdan o’tgan foydalanuvchilar

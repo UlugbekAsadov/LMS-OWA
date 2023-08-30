@@ -13,8 +13,20 @@ import CreateContract from "../pages/contracts/add-contracts/create-contract.jsx
 import Error403Classic from "../pages/error/403-classic.jsx";
 import Error500Classic from "../pages/error/500-classic.jsx";
 import Error404Classic from "../pages/error/404-classic.jsx";
+import { useQuery } from "react-query";
+import { getBootcampInfo } from "../react-query/queries/index.js";
+import { GlobalLoader } from "../pages/global-loader/global-loader.jsx";
 
 export const Router = () => {
+  const { data: companyData, isLoading } = useQuery({
+    queryKey: ["company-info"],
+    queryFn: () => getBootcampInfo(),
+  });
+
+  if (isLoading) {
+    return <GlobalLoader />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>

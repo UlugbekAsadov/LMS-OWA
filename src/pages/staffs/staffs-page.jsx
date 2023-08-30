@@ -15,14 +15,16 @@ import {
 } from "../../react-query/mutations/index.js";
 import { USER_ROLES } from "../../utils/enums/index.js";
 import { userRolesMock } from "../../utils/mocks/index.js";
+import { ChangePasswordModal } from "../../components/modals/change-password-modal/change-password-modal.jsx";
 
 const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
-  const [isDeleteModal, setDeleteModal] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [deletingUserId, setDeletingUserId] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const userData = useQuery({
@@ -56,20 +58,25 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
 
   const handleDeleteUser = async () => {
     if (userData.data.role === USER_ROLES.COMPANY_OWNER) {
-      await deleteUserStaff.mutateAsync(deleteUserId);
+      await deleteUserStaff.mutateAsync(deletingUserId);
     } else {
-      await deleteCompaniesStaff.mutateAsync(deleteUserId);
+      await deleteCompaniesStaff.mutateAsync(deletingUserId);
     }
-    setDeleteModal(false);
+    setDeleteModalOpen(false);
   };
   const handleClickDeleteButton = (userId) => {
-    setDeleteModal(true);
-    setDeleteUserId(userId);
+    setDeleteModalOpen(true);
+    setDeletingUserId(userId);
   };
 
   const handleClickAddStaffButton = () => {
     setEditingUser(null);
     setIsModalOpen(true);
+  };
+
+  const handleClickChangePassStaff = (userId) => {
+    setIsPasswordModalOpen(true);
+    setEditingUser(userId);
   };
 
   if (isLoading) {
@@ -95,6 +102,7 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
       </tr>
     </thead>
   );
+
   const tableBody = currentItems.map((item, index) => {
     return (
       <tr className="tb-odr-item" key={item.id}>
@@ -127,9 +135,12 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
               <Icon name="pen" className={"cursor-pointer"} />
             </span>
             <span
-              className="p-2"
-              onClick={handleClickDeleteButton.bind(null, item.id)}
+              className="px-2"
+              onClick={handleClickChangePassStaff.bind(null, item)}
             >
+              <Icon name="shield" className={"cursor-pointer"} />
+            </span>
+            <span onClick={handleClickDeleteButton.bind(null, item.id)}>
               <Icon className={"cursor-pointer"} name="trash" />
             </span>
           </div>
@@ -170,16 +181,29 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
           isOpen={isModalOpen}
           initialValue={editingUser}
           onClose={setIsModalOpen.bind(null, false)}
+          refetch={refetch}
         />
       )}
-      <ConfirmationModal
-        confirmButtonFn={handleDeleteUser}
-        isOpen={isDeleteModal}
-        onClose={setDeleteModal.bind(null, false)}
-        title={"Xodimni o'chirishni hoxlaysizmi?"}
-        confirmButtonTitle={"O'chirish"}
-        cancelButtonTitle={"Bekor qilish"}
-      />
+      {isDeleteModalOpen && (
+        <ConfirmationModal
+          confirmButtonFn={handleDeleteUser}
+          isOpen={isDeleteModalOpen}
+          isLoading={
+            deleteUserStaff.isLoading || deleteCompaniesStaff.isLoading
+          }
+          onClose={setDeleteModalOpen.bind(null, false)}
+          title={"Xodimni o'chirishni hoxlaysizmi?"}
+          confirmButtonTitle={"O'chirish"}
+          cancelButtonTitle={"Bekor qilish"}
+        />
+      )}
+      {isPasswordModalOpen && (
+        <ChangePasswordModal
+          userId={editingUser.id}
+          isOpen={isPasswordModalOpen}
+          onClose={setIsPasswordModalOpen.bind(null, false)}
+        />
+      )}
     </Content>
   );
 };

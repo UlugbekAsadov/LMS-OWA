@@ -16,13 +16,13 @@ import {
 import {
   createCompaniesStaffMutationFn,
   createUsersStaffMutationFn,
-  editByCompaniesStaffMutationFn,
+  editByCompanyStaffMutationFn,
   editStaffMutationFn,
 } from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
+const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
   const {
     register,
     handleSubmit,
@@ -33,17 +33,18 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
   } = useForm({
     defaultValues: initialValue,
   });
+  const [roles] = useState(rolesMock.slice(1, rolesMock.length));
   const [selectedRole, setSelectedRole] = useState(
-    initialValue ? initialValue.role : null
+    initialValue ? initialValue.role : roles[0]
   );
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { bootcampId } = useParams();
 
   const userData = useQuery({
     queryKey: ["user"],
   });
-  const [roles] = useState(rolesMock.slice(1, rolesMock.length));
+
   const editStaff = useMutation({
     mutationKey: ["edit-staff"],
     mutationFn: (config) => editStaffMutationFn(config, initialValue.id),
@@ -52,20 +53,25 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
         reset();
         setSelectedRole(null);
         onClose();
+        refetch();
         toast.success("Tahrirlandi");
       }
     },
   });
-  const editCompaniesStaff = useMutation({
+  const editCompanyStaff = useMutation({
     mutationKey: ["edit-compaies-staff"],
     mutationFn: (config) =>
-      editByCompaniesStaffMutationFn(config, bootcampId, initialValue.id),
+      editByCompanyStaffMutationFn(config, bootcampId, initialValue.id),
     onSuccess: (res) => {
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
         return setError("phone", {
           message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
         });
       }
+      reset();
+      onClose();
+      refetch();
+      setSelectedRole(null);
     },
   });
 
@@ -81,6 +87,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       reset();
       onClose();
       setSelectedRole(null);
+      refetch();
     },
   });
   const createCompaniesStaff = useMutation({
@@ -95,6 +102,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       reset();
       onClose();
       setSelectedRole(null);
+      refetch();
     },
   });
   const handleChangeRole = (value) => {
@@ -106,6 +114,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
     const regex = /\((\d{2})\) (\d{3})-(\d{2})-(\d{2})/;
     values.phone = values.phone.replace(regex, "$1$2$3$4");
 
+    setIsLoading(true);
     const body = {
       ...values,
       role: initialValue ? selectedRole.value : values.role,
@@ -127,11 +136,13 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
 
     if (userData.data.role === USER_ROLES.SUPER_ADMIN) {
       if (initialValue) {
-        await editCompaniesStaff.mutateAsync(config);
+        await editCompanyStaff.mutateAsync(config);
       } else {
         await createCompaniesStaff.mutateAsync(config);
       }
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -142,7 +153,10 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
             <Icon name="cross-sm"></Icon>
           </span>
           <div className="py-4 w-100 d-flex flex-column align-items-center justify-content-center form-group">
-            <h2 className="fw-bold  fs-3">O’quv markaz uchun xodim qo’shish</h2>
+            <h2 className="fw-bold  fs-3">
+              O’quv markaz uchun xodim{" "}
+              {initialValue ? "tahrirlash" : "qo’shish"}
+            </h2>
             <p className="fs-7">Quyidagi maydonlarni to’ldirib chiqing</p>
           </div>
           <div className="form-group">
@@ -230,7 +244,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
               </div>
             </div>
           )}
-          <div className="form-group  ">
+          <div className="form-group  form-control-wrap">
             <label className="form-label">Rol</label>
             <RSelect
               options={roles}
@@ -249,6 +263,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
               className="btn-block w-20 mb-4"
               type="submit"
               color="primary"
+              isLoading={isLoading}
             >
               Saqlash
             </Button>
@@ -263,5 +278,6 @@ AddStaffModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   initialValue: PropTypes.object,
+  refetch: PropTypes.func,
 };
 export default AddStaffModal;

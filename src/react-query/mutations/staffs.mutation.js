@@ -6,7 +6,7 @@ export const createUsersStaffMutationFn = (config) =>
 export const editStaffMutationFn = (config, userId) =>
   api(`/users/update/staff/${userId}`, config);
 
-export const editByCompaniesStaffMutationFn = (config, companyId, userId) =>
+export const editByCompanyStaffMutationFn = (config, companyId, userId) =>
   api(`/companies/${companyId}/users/${userId}/edit`, config);
 
 export const deleteUserStaffMutationFn = (userId) =>
@@ -15,3 +15,6 @@ export const deleteCompaniesStaffMutationFn = (companiesId, userId) =>
   api(`/companies/${companiesId}/users/${userId}/delete`, { method: "DELETE" });
 export const createCompaniesStaffMutationFn = (config, userId) =>
   api(`/companies/${userId}/users/add`, config);
+
+export const updatePasswordBySuperAdmin = (companyId, userId, config) =>
+  api(`/companies/${companyId}/users/${userId}/change_password`, config);

@@ -18,8 +18,25 @@ export const menuMock = [
   {
     icon: "panel",
     text: "Shartnomalar turi",
-    link: "/contracts-type-list",
+    link: "/contract-type-type-list",
     active: false,
     access: [USER_ROLES.COMPANY_OWNER],
+  },
+  {
+    icon: "template",
+    text: "O’quv markaz",
+    link: "/contract-type-tdsype-list",
+    active: false,
+    access: [USER_ROLES.COMPANY_OWNER],
+    subMenu: [
+      {
+        text: "Ma’lumot",
+        link: "/educational-information",
+      },
+      {
+        text: "Xodimlar",
+        link: "/educational-staff-information",
+      },
+    ],
   },
 ];

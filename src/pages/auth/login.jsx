@@ -11,9 +11,9 @@ import {
   BlockHead,
   BlockTitle,
   Icon,
+  Button,
   PreviewCard,
 } from "../../components";
-import Button from "../../components/button/button";
 import AuthFooter from "../../pages/components/auth-footer.jsx";
 import { useMutation, useQuery } from "react-query";
 import { loginMutationFn } from "../../react-query/mutations";
@@ -23,7 +23,6 @@ import { Head } from "../../layout/head/head.layout";
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [errorValidation, setErrorValidation] = useState(null);
-
   const { data: companyData } = useQuery({
     queryKey: ["company-info"],
   });

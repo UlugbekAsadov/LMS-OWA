@@ -5,11 +5,14 @@ import { defaultToastConfig } from "../utils/config/index.js";
 export const api = async (url, config) => {
   const subdomain = window.location.host.split(".")[0];
 
-  // let apiUrl = `https://${import.meta.env.VITE_CONFIG_API}${url}`;
-
   let apiUrl = `https://${subdomain}.${
     import.meta.env.VITE_CONFIG_BASE_API
   }${url}`;
+
+  // eslint-disable-next-line no-undef
+  if (process.env.NODE_ENV === "production") {
+    apiUrl = `${window.location.hostname}/api${url}`;
+  }
 
   try {
     const response = await fetch(apiUrl, {

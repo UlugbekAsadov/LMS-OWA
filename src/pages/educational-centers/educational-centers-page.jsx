@@ -23,7 +23,6 @@ const EducationalCentersPage = () => {
     queryKey: ["all-bootcamps"],
     queryFn: () => getAllBootcampsQueryFn(),
   });
-
   const deleteBootcampMutation = useMutation({
     mutationKey: ["delete-bootcamp"],
     mutationFn: () => deleteBootcampMutationFn(selectedBootcamp.id),
@@ -32,7 +31,6 @@ const EducationalCentersPage = () => {
       setIsDeleteModal(false);
     },
   });
-
   const handleDeleteBootcamp = (bootcamp) => {
     setSelectedBootcamp(bootcamp);
     setIsDeleteModal(true);

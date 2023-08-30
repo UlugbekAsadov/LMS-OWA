@@ -7,11 +7,11 @@ import { useState } from "react";
 export const useSidebarMenu = () => {
   const [contractTypes, setContractTypes] = useState([]);
   const userData = useQuery({
-    queryKey: "user"
-  })
+    queryKey: "user",
+  });
 
   const { isLoading } = useQuery({
-    queryKey: ["contracts-types"],
+    queryKey: ["contract-type-types"],
     queryFn: () => getContractTypesQuery(),
     onSuccess: (data) => {
       const newArr = data.map((c) => {
@@ -20,7 +20,7 @@ export const useSidebarMenu = () => {
 
       setContractTypes(newArr);
     },
-    enabled: userData.data.role !== USER_ROLES.SUPER_ADMIN
+    enabled: userData.data.role !== USER_ROLES.SUPER_ADMIN,
   });
 
   return {
@@ -30,7 +30,7 @@ export const useSidebarMenu = () => {
       {
         icon: "file-docs",
         text: "Shartnomalar",
-        link: "/contracts",
+        link: "/contract-type",
         active: false,
         access: [USER_ROLES.COMPANY_STAFF, USER_ROLES.COMPANY_OWNER],
         subMenu: contractTypes,

@@ -6,6 +6,10 @@ export const getAllContractTypes = () =>
 export const getContractTypesQuery = () =>
   api("/contractType/get/all").then((data) => data.data);
 
+export const getContractTypeByIdQueryFn = (contractTypeId) =>
+  api(`/contractType/get/byId/${contractTypeId}`).then((data) => data.data);
+
+// CONTRACTS
 export const getContractWordList = () =>
   api("/contractType/values").then((data) => data.data);
 

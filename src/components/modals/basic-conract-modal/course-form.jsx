@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Label } from "reactstrap";
-import Button from "../../button/button";
+import { Button } from "../../button/button";
 import { Col, Row } from "../../grid/grid";
 import RSelect from "../../react-select/react-select";
 import { useQuery } from "react-query";

@@ -1,31 +1,41 @@
-import { Icon, Loader, PreviewCard } from "../../../../components/index.js";
+import { Icon, PreviewCard, Button } from "../../../../components/index.js";
 import { Editor } from "@tinymce/tinymce-react";
-import { Button, Col } from "reactstrap";
-import { useRef } from "react";
+import { Col } from "reactstrap";
+import { useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
-import { addContactQuery } from "../../../../react-query/mutations/index.js";
+import {
+  addContactQuery,
+  editContractMutationFn,
+} from "../../../../react-query/mutations/index.js";
 import { getAllContractTypes } from "../../../../react-query/queries/index.js";
 import { useNavigate } from "react-router-dom";
 import {
   ERROR_MESSAGE_TRANSLATIONS,
   ERROR_MESSAGES,
 } from "../../../../utils/enums/index.js";
+import PropTypes from "prop-types";
+import decode from "query-string";
+import { toast } from "react-toastify";
 
-const LeftPage = () => {
+const ContractTypeForm = ({ initialValue }) => {
+  const [isPrefix, setIsPrefix] = useState(
+    initialValue ? initialValue?.is_prefix : true
+  );
+
   const editorRef = useRef(null);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    setValue,
     setError,
     reset,
     formState: { errors },
-  } = useForm();
-  const navigate = useNavigate();
-
+  } = useForm({
+    defaultValues: initialValue,
+  });
   const contractTypes = useQuery({
-    queryKey: "contracts-types",
+    queryKey: "contract-type-types",
     queryFn: () => getAllContractTypes(),
     enabled: false,
   });
@@ -43,23 +53,47 @@ const LeftPage = () => {
       } else if (data.success) {
         reset();
         contractTypes.refetch();
-        navigate("/contracts-type-list");
+        toast.success("Shartnoma turi qo'shildi");
+        navigate("/contract-type-type-list");
       }
     },
   });
+
+  const editContract = useMutation({
+    mutationKey: "edit-contract",
+    mutationFn: (config) => editContractMutationFn(config, initialValue.id),
+    onSuccess: (data) => {
+      if (!data?.error) {
+        navigate("/contract-type-type-list");
+      }
+    },
+  });
+
   const handleSubmitForm = async (formData) => {
+    let html = editorRef.current.getContent();
+    const qs = new URLSearchParams({ html });
+
     const body = {
       ...formData,
-      is_prefix: Boolean(formData.is_prefix === "on"),
+      is_prefix: isPrefix,
+      template: qs.toString(),
     };
+
     const config = {
-      method: "POST",
+      method: initialValue ? "PUT" : "POST",
       body: JSON.stringify(body),
     };
 
-    await addContract.mutateAsync(config);
+    if (initialValue) {
+      await editContract.mutateAsync(config);
+    } else {
+      await addContract.mutateAsync(config);
+    }
   };
 
+  if (contractTypes.isLoading) {
+    return;
+  }
   return (
     <Col md={"8"}>
       <PreviewCard>
@@ -111,11 +145,11 @@ const LeftPage = () => {
               <div className="custom-control custom-radio">
                 <input
                   type="radio"
-                  defaultChecked={true}
-                  defaultValue={"on"}
+                  checked={isPrefix}
+                  onClick={setIsPrefix.bind(null, true)}
                   className="custom-control-input"
                   id="reg-enable"
-                  {...register("is_prefix")}
+                  readOnly
                 />
                 <label className="custom-control-label" htmlFor="reg-enable">
                   Prefix
@@ -127,9 +161,10 @@ const LeftPage = () => {
                 <input
                   type="radio"
                   className="custom-control-input"
-                  defaultValue={"off"}
+                  checked={!isPrefix}
+                  onClick={setIsPrefix.bind(null, false)}
                   id="reg-disable"
-                  {...register("is_prefix")}
+                  readOnly
                 />
                 <label className="custom-control-label" htmlFor="reg-disable">
                   Postfix
@@ -141,7 +176,9 @@ const LeftPage = () => {
             <Editor
               apiKey={import.meta.env.VITE_CONFIG_TINYMCI_TOKEN}
               onInit={(evt, editor) => (editorRef.current = editor)}
-              initialValue={"Hello world"}
+              initialValue={
+                initialValue ? decode.parse(initialValue?.template).html : null
+              }
               init={{
                 menubar: "file edit view format",
                 plugins: [
@@ -173,26 +210,24 @@ const LeftPage = () => {
               </label>
             </div>
           </div>
-          {!addContract.isLoading ? (
-            <div
-              className={"mb-4"}
-              onClick={() => {
-                let html = editorRef.current.getContent();
-                const qs = new URLSearchParams({ html });
-                setValue("template", `${qs.toString()}`);
-              }}
+          <div>
+            <Button
+              color={`primary`}
+              isLoading={
+                initialValue ? editContract.isLoading : addContract.isLoading
+              }
             >
-              <Button color={`primary`}>
-                <Icon name={"plus"}></Icon>
-                <span>Saqlash</span>
-              </Button>
-            </div>
-          ) : (
-            <Loader />
-          )}
+              <Icon name={"plus"}></Icon>
+              <span>Saqlash</span>
+            </Button>
+          </div>
         </form>
       </PreviewCard>
     </Col>
   );
 };
-export default LeftPage;
+export default ContractTypeForm;
+
+ContractTypeForm.propTypes = {
+  initialValue: PropTypes.object,
+};

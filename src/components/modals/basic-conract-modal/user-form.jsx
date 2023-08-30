@@ -72,11 +72,10 @@ const UserForm = ({ isAutomatic, data }) => {
       setProvinces(provinces);
     },
 
-    enabled: pinflValue.length === 14
+    enabled: pinflValue.length === 14,
   });
 
-
- useQuery({
+  useQuery({
     queryKey: [`cities-${selectedProvince?.id}`],
     queryFn: () => getCitiesQuery(selectedProvince?.id),
     onSuccess: (data) => {
@@ -86,7 +85,7 @@ const UserForm = ({ isAutomatic, data }) => {
 
       setCities(cities);
     },
-    enabled: !!selectedProvince
+    enabled: !!selectedProvince,
   });
 
   const handleChangeProvince = (value) => {
@@ -104,7 +103,6 @@ const UserForm = ({ isAutomatic, data }) => {
       setIsFetchingPINFL(true);
     }
   }, [pinflValue]);
-
 
   useEffect(() => {
     setValue("birthday", convertDate(bornDate));

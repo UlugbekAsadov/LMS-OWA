@@ -33,7 +33,6 @@ const ContractsTypeList = () => {
   const handleClickHeaderButton = () => {
     navigate(`add-contract`);
   };
-
   const handleDeleteContractType = async () => {
     await deleteContract.mutateAsync(deleteContractId);
     setDeleteModal(false);
@@ -85,7 +84,9 @@ const ContractsTypeList = () => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Icon className={"cursor-pointer"} name="pen" />
+            <Link to={`edit-contract/${item.id}`}>
+              <Icon className={"cursor-pointer"} name="pen" />
+            </Link>
             <span className="p-2" onClick={onClickDelete.bind(null, item.id)}>
               <Icon className={"cursor-pointer"} name="trash" />
             </span>

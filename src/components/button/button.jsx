@@ -26,7 +26,7 @@ const Button = ({
     </button>
   );
 };
-export default Button;
+export { Button };
 
 Button.propTypes = {
   color: PropTypes.string,

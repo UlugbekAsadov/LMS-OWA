@@ -4,3 +4,4 @@ export * from "./user.query";
 export * from "./contract-types.query.js";
 export * from "./bank.query";
 export * from "./bootcamps.query";
+export * from "./educational.query.js";

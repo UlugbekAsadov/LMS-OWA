@@ -67,10 +67,8 @@ const StaffsPage = () => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Icon name="pen" className={"cursor-pointer"} />
-            <span className="p-2">
-              <Icon name="file-text" className={"cursor-pointer"} />
-            </span>
+            <Icon name="pen" className={"cursor-pointer mx-2"} />
+
             <Icon className={"cursor-pointer"} name="trash" />
           </div>
           <Link to={`/invoice-details/${item.id}`}>

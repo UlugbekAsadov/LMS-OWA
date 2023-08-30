@@ -16,6 +16,7 @@ import {
 import {
   createCompaniesStaffMutationFn,
   createUsersStaffMutationFn,
+  editByCompaniesStaffMutationFn,
   editStaffMutationFn,
 } from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
@@ -38,14 +39,11 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const { bootcampId } = useParams();
+
   const userData = useQuery({
     queryKey: ["user"],
   });
-  const [roles] = useState(
-    userData.data.role === USER_ROLES.SUPER_ADMIN
-      ? rolesMock
-      : rolesMock.slice(1, rolesMock.length)
-  );
+  const [roles] = useState(rolesMock.slice(1, rolesMock.length));
   const editStaff = useMutation({
     mutationKey: ["edit-staff"],
     mutationFn: (config) => editStaffMutationFn(config, initialValue.id),
@@ -58,13 +56,26 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       }
     },
   });
+  const editCompaniesStaff = useMutation({
+    mutationKey: ["edit-compaies-staff"],
+    mutationFn: (config) =>
+      editByCompaniesStaffMutationFn(config, bootcampId, initialValue.id),
+    onSuccess: (res) => {
+      if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("phone", {
+          message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
+        });
+      }
+    },
+  });
+
   const createStaffByOwner = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createUsersStaffMutationFn(config),
-    onSuccess: (data) => {
-      if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
-        return setError("name", {
-          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+    onSuccess: (res) => {
+      if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("phone", {
+          message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
         });
       }
       reset();
@@ -72,14 +83,13 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       setSelectedRole(null);
     },
   });
-
   const createCompaniesStaff = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createCompaniesStaffMutationFn(config, bootcampId),
-    onSuccess: (data) => {
-      if (data?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
-        return setError("name", {
-          message: ERROR_MESSAGE_TRANSLATIONS[data.error.message],
+    onSuccess: (res) => {
+      if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
+        return setError("phone", {
+          message: ERROR_MESSAGE_TRANSLATIONS[res.error.message],
         });
       }
       reset();
@@ -117,7 +127,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
 
     if (userData.data.role === USER_ROLES.SUPER_ADMIN) {
       if (initialValue) {
-        // edit
+        await editCompaniesStaff.mutateAsync(config);
       } else {
         await createCompaniesStaff.mutateAsync(config);
       }
@@ -159,26 +169,26 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
             <Label htmlFor="phone" className="form-label fs-6">
               Telefon raqami
             </Label>
-            <div className="form-control-wrap">
+            <div className="form-control-wrap ">
               <div className="input-group">
                 <div className="input-group-prepend">
-                  <span className="input-group-text">+998</span>
+                  <span className="input-group-text ">+998</span>
                 </div>
                 <InputMask
                   id="phone"
                   {...register("phone", {
                     required: "Telefon raqamni kiriting",
                   })}
-                  className={`form-control-lg form-control  ${
-                    errors.first_name && "error"
+                  className={`form-control-lg form-control ${
+                    errors.phone && "error"
                   }`}
                   mask="(99) 999-99-99"
                   placeholder="(99) 127-99-11"
                 />
-                {errors.phone && (
-                  <span className="invalid">{errors.phone.message}</span>
-                )}
               </div>
+              {errors.phone && (
+                <span className="invalid">{errors.phone.message}</span>
+              )}
             </div>
           </div>
           {!initialValue && (

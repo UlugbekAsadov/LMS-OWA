@@ -54,15 +54,15 @@ const Contract = () => {
           <span className="tb-odr-id">
             <Link to={`/invoice-details/${item.id}`}>#{item.orderId}</Link>
           </span>
-          <span className="tb-odr-date">{item.name}</span>
+          <span className="tb-odr-date">{item.first_name}</span>
         </td>
         <td className="tb-odr-amount">
           <span className="tb-odr-total">
-            <span className="amount">{item.phone}</span>
+            <span className="amount">{item.document_number}</span>
           </span>
           <span className="tb-odr-status">
             <Badge color={"success"} className="badge-dot">
-              {item.status}
+              {item.document_serial}
             </Badge>
           </span>
         </td>

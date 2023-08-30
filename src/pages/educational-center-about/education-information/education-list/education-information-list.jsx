@@ -2,7 +2,6 @@ import { Row } from "reactstrap";
 import { useQuery } from "react-query";
 import { Loader } from "../../../../components/index.js";
 import { getMyStaffsQueryFn } from "../../../../react-query/queries/index.js";
-import dayjs from "dayjs";
 import { convertDateV2 } from "../../../../utils/functions/index.js";
 
 const EducationInformationList = () => {

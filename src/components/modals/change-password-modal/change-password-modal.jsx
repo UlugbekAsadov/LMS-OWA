@@ -187,7 +187,11 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
               className="btn-block w-20 mb-4"
               type="submit"
               color="primary"
-              isLoading={changeStaffPasswordByAdminMutation.isLoading}
+              isLoading={
+                userData.role === USER_ROLES.COMPANY_OWNER
+                  ? changeStaffPasswordByOwnerMutation.isLoading
+                  : changeStaffPasswordByAdminMutation.isLoading
+              }
             >
               Saqlash
             </Button>

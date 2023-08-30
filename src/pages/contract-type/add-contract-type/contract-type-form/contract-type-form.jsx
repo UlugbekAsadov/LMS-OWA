@@ -140,7 +140,25 @@ const ContractTypeForm = ({ initialValue }) => {
               )}
             </div>
           </div>
-
+          <div className="form-group">
+            <label className="form-label" htmlFor="name">
+              pad_length
+            </label>
+            <div className="form-control-wrap">
+              <input
+                className={`form-control ${errors.pad_length && "error"}`}
+                type="number"
+                id="pad_length"
+                {...register("pad_length", {
+                  required: "Nomlanishni kiriting",
+                  min: 1,
+                })}
+              />
+              {errors.pad_length && (
+                <span className="invalid">{errors.pad_length.message}</span>
+              )}
+            </div>
+          </div>
           <ul className="gx-3 align-center flex-wrap form-group">
             <li>
               <div className="custom-control custom-radio">

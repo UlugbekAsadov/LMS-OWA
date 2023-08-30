@@ -20,24 +20,24 @@ const EducationalCentersPage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["all-bootcamps"],
+    queryKey: ["all-companies"],
     queryFn: () => getAllCompaniesQueryFn(),
   });
   const deleteBootcampMutation = useMutation({
-    mutationKey: ["delete-bootcamp"],
+    mutationKey: ["delete-company"],
     mutationFn: () => deleteCompanyMutationFn(selectedBootcamp.id),
     onSuccess: () => {
       refetch();
       setIsDeleteModal(false);
     },
   });
-  const handleDeleteBootcamp = (bootcamp) => {
-    setSelectedBootcamp(bootcamp);
+  const handleDeleteBootcamp = (company) => {
+    setSelectedBootcamp(company);
     setIsDeleteModal(true);
   };
 
-  const handleClickEditButton = (bootcamp) => {
-    setSelectedBootcamp(bootcamp);
+  const handleClickEditButton = (company) => {
+    setSelectedBootcamp(company);
     setIsOpenModal(true);
   };
 

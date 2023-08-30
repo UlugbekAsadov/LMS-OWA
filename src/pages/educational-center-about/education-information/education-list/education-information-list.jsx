@@ -9,7 +9,7 @@ const EducationInformationList = ({ data }) => {
         <thead className="table-light"></thead>
         <tbody>
           <tr>
-            <td>Oq’uv markazi nomi (brend)</td>
+            <td>O’quv markazi nomi (brend)</td>
             <td>{data.name_brand}</td>
           </tr>
           <tr>

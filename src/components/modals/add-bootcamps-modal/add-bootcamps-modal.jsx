@@ -1,4 +1,4 @@
-import { Col, Label, Modal, ModalBody, Row, Spinner } from "reactstrap";
+import { Col, Label, Modal, ModalBody, Row } from "reactstrap";
 import PropTypes from "prop-types";
 import { Icon } from "../../icon/icon.jsx";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { InputMask } from "primereact/inputmask";
 import { useMutation, useQuery } from "react-query";
 import {
   getCitiesQueryFn,
+  getMyCompanyQueryFn,
   getRegionsQueryFn,
 } from "../../../react-query/queries/index.js";
 import { getBankQueryFn } from "../../../react-query/queries/index.js";
@@ -24,7 +25,7 @@ import {
 import { getAllCompaniesQueryFn } from "../../../react-query/queries/index.js";
 
 const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
-  initialValue = {
+  initialValue = initialValue && {
     ...initialValue,
     province: {
       value: initialValue.region.id,
@@ -63,7 +64,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     queryKey: ["user"],
   });
 
-  const bankQuery = useQuery({
+  const getBankQuery = useQuery({
     queryKey: "bank_info",
     queryFn: () => getBankQueryFn(bank_code),
     enabled: false,
@@ -80,6 +81,12 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   const { refetch } = useQuery({
     queryKey: ["all-bootcamps"],
     queryFn: () => getAllCompaniesQueryFn(),
+    enabled: false,
+  });
+
+  const companyData = useQuery({
+    queryKey: ["educational-information"],
+    queryFn: () => getMyCompanyQueryFn(),
     enabled: false,
   });
 
@@ -112,26 +119,30 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     enabled: Boolean(selectedProvince),
   });
 
-  const editBootcampMutation = useMutation({
+  const editCompanyMutation = useMutation({
     mutationKey: ["edit-bootcamp-mutation"],
     mutationFn: (config) => editCompanyMutationFn(initialValue.id, config),
     onSuccess: (data) => {
       if (!handleErrorOnRequest(data)) {
         if (userData.role === USER_ROLES.SUPER_ADMIN) {
           refetch();
+        } else {
+          companyData.refetch();
         }
         onClose();
       }
     },
   });
 
-  const addBootcampMutation = useMutation({
+  const addCompanyMutation = useMutation({
     mutationKey: "add-bootcamp-mutation",
     mutationFn: (config) => addCompanyMutationFn(config),
     onSuccess: (data) => {
       if (!handleErrorOnRequest(data)) {
         if (userData.role === USER_ROLES.SUPER_ADMIN) {
           refetch();
+        } else {
+          companyData.refetch();
         }
         onClose();
       }
@@ -200,15 +211,16 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
     };
 
     if (initialValue) {
-      editBootcampMutation.mutate(config);
+      editCompanyMutation.mutate(config);
     } else {
-      addBootcampMutation.mutate(config);
+      addCompanyMutation.mutate(config);
     }
   };
 
   const handleChangeProvince = (value) => {
     setValue("region_id", value.value);
     setSelectedProvince(value);
+    setSelectedCity(null);
     setIsSelectedCityEmpty(false);
   };
 
@@ -221,7 +233,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   useEffect(() => {
     setInvalidBank(false);
     if (bank_code?.length === 5) {
-      bankQuery.refetch();
+      getBankQuery.refetch();
     }
   }, [bank_code]);
 
@@ -304,6 +316,26 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
               )}
             </div>
           </div>
+          <div className="form-group">
+            <Label htmlFor="subdomain" className="form-label fs-6">
+              Subdomain nomi
+            </Label>
+            <div className="form-control-wrap">
+              <input
+                className={`form-control form-control-lg ${
+                  errors.subdomain && "error"
+                }`}
+                type="text"
+                id="subdomain"
+                {...register("subdomain", {
+                  required: "Subdomain nomini kiriting",
+                })}
+              />
+              {errors.subdomain && (
+                <span className="invalid">{errors.name_legal.message}</span>
+              )}
+            </div>
+          </div>
           <Row className="form-group">
             <Col>
               <div className="form-group">
@@ -347,7 +379,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
                   type="text"
                   disabled
                   placeholder={
-                    bankQuery.isLoading ? "Yuklanmoqda" : "Bank nomi"
+                    getBankQuery.isLoading ? "Yuklanmoqda" : "Bank nomi"
                   }
                   {...register("bank_name", { required: "Bank nomi majburiy" })}
                 />
@@ -521,12 +553,13 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
               className="btn-block w-20 mb-4"
               type="submit"
               color="primary"
+              isLoading={
+                initialValue
+                  ? editCompanyMutation.isLoading
+                  : addCompanyMutation.isLoading
+              }
             >
-              {addBootcampMutation.isLoading ? (
-                <Spinner size="sm" color="light" />
-              ) : (
-                "Saqlash"
-              )}
+              Saqlash
             </Button>
           </Col>
         </form>

@@ -2,34 +2,13 @@ import { Row } from "reactstrap";
 import { useQuery } from "react-query";
 import { Loader } from "../../../../components/index.js";
 import { getMyStaffsQueryFn } from "../../../../react-query/queries/index.js";
+import moment from "moment";
 
 const EducationInformationList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["educational-information"],
     queryFn: () => getMyStaffsQueryFn(),
   });
-  const parseDate = (date) => {
-    let dateObject = new Date(date);
-    let months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return `
-    ${dateObject.getUTCDate()} ${months[dateObject.getUTCMonth()]},
-     ${dateObject.getUTCFullYear()} ${dateObject.getUTCHours()}:${dateObject.getUTCMinutes()} ${
-       dateObject.getUTCHours() >= 12 ? "PM" : "AM"
-     }`;
-  };
 
   if (isLoading) {
     return <Loader />;
@@ -82,7 +61,7 @@ const EducationInformationList = () => {
           <tr>
             <td>Qo’shimcha ma’lumot</td>
             <td>
-              <p>{parseDate(data.createdAt)}</p>
+              <p>{moment(data.createdAt).format("lll")}</p>
             </td>
           </tr>
         </tbody>

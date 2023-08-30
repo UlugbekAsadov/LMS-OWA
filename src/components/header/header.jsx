@@ -1,23 +1,22 @@
-import classNames from 'classnames';
-import { ReactComponent as BrandLogo } from '../../assets/icons/logo.svg';
-// import Logo from "../logo/Logo";
-// import User from "./dropdown/user/User";
+import classNames from "classnames";
+import { ReactComponent as BrandLogo } from "../../assets/icons/logo.svg";
 
-import Toggle from '../sidebar/toggle';
-import PropTypes from 'prop-types';
-import { useTheme, useThemeUpdate } from '../../context';
-import { User } from '../user/user';
-import { Link } from 'react-router-dom';
+import Toggle from "../sidebar/toggle";
+import PropTypes from "prop-types";
+import { useTheme, useThemeUpdate } from "../../context";
+import { User } from "../user/user";
+import { Link } from "react-router-dom";
 
 export const Header = ({ fixed, className }) => {
   const theme = useTheme();
   const themeUpdate = useThemeUpdate();
 
   const headerClass = classNames({
-    'nk-header': true,
-    'nk-header-fixed': fixed,
-    [`is-light`]: theme.header === 'white',
-    [`is-${theme.header}`]: theme.header !== 'white' && theme.header !== 'light',
+    "nk-header": true,
+    "nk-header-fixed": fixed,
+    [`is-light`]: theme.header === "white",
+    [`is-${theme.header}`]:
+      theme.header !== "white" && theme.header !== "light",
     [`${className}`]: className,
   });
 
@@ -33,7 +32,7 @@ export const Header = ({ fixed, className }) => {
             />
           </div>
           <div className="nk-header-brand d-xl-none">
-            <Link to={'/'}>
+            <Link to={"/"}>
               <BrandLogo />
             </Link>
           </div>

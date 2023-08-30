@@ -8,3 +8,5 @@ export const getAllBootcampsQueryFn = () =>
 
 export const getBootcampStaffs = (bootcampId) =>
   api(`/companies/${bootcampId}/users`).then((data) => data.data);
+
+export const getBootcampInfo = () => api("/companies/get-info");

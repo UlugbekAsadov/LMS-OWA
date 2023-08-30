@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "../icon/icon";
 import { LinkList } from "../links/links";
 import { useQuery } from "react-query";
-import { rolesMock } from "../../utils/mocks/index.js";
 import { USER_ROLES } from "../../utils/enums/index.js";
 
 export const User = () => {
@@ -38,8 +37,8 @@ export const User = () => {
           </div>
           <div className="user-info d-none d-md-block">
             <div className="user-name dropdown-indicator">
-              {user?.data?.fullName} {" "}
-              ({USER_ROLES[user?.data?.role.toLocaleUpperCase()]})
+              {user?.data?.full_name} (
+              {USER_ROLES[user?.data?.role.toLocaleUpperCase()]})
             </div>
           </div>
         </div>

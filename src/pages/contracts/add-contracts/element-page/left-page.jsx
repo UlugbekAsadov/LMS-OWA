@@ -1,7 +1,7 @@
 import { Icon, PreviewCard, Button } from "../../../../components/index.js";
 import { Editor } from "@tinymce/tinymce-react";
 import { Col } from "reactstrap";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import {
@@ -33,7 +33,6 @@ const LeftPage = ({ initialValue }) => {
   } = useForm({
     defaultValues: initialValue,
   });
-
   const contractTypes = useQuery({
     queryKey: "contracts-types",
     queryFn: () => getAllContractTypes(),
@@ -199,7 +198,7 @@ const LeftPage = ({ initialValue }) => {
             </span>
             <div className="custom-control custom-checkbox">
               <input
-                {...register("is_kelajak_kasblari")}
+                {...register("is_kk")}
                 type="checkbox"
                 className="custom-control-input"
                 id="customCheck1"

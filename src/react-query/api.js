@@ -3,17 +3,25 @@ import { toast } from "react-toastify";
 import { defaultToastConfig } from "../utils/config/index.js";
 
 export const api = async (url, config) => {
+  const subdomain = window.location.host.split(".")[0];
+
+  let apiUrl = `https://${subdomain}.${
+    import.meta.env.VITE_CONFIG_BASE_API
+  }${url}`;
+
+  // eslint-disable-next-line no-undef
+  if (process.env.NODE_ENV === "production") {
+    apiUrl = `${window.location.hostname}/api${url}`;
+  }
+
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_CONFIG_BASE_API}${url}`,
-      {
-        ...config,
-        headers: {
-          "Content-Type": "Application/json",
-          Authorization: `Bearer ${localStorage.getItem("u_at")}`,
-        },
-      }
-    );
+    const response = await fetch(apiUrl, {
+      ...config,
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${localStorage.getItem("u_at")}`,
+      },
+    });
 
     const { error, ...data } = await response.json();
 

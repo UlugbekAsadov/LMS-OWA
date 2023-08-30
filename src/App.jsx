@@ -1,7 +1,7 @@
-import { Outlet } from 'react-router-dom';
-import ThemeProvider from './context/theme.context';
-import { HomepageLayout } from './layout/homepage-layout/homepage-layout';
-import './styles/css/global.css';
+import { Outlet } from "react-router-dom";
+import ThemeProvider from "./context/theme.context";
+import { HomepageLayout } from "./layout/homepage-layout/homepage-layout";
+import "./styles/css/global.css";
 
 function App() {
   return (

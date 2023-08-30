@@ -5,7 +5,7 @@ import { Icon, Table } from "../../components/index.js";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
 import PageHeader from "../../components/page-header/page-header.jsx";
 import { TablePagination } from "../../components/pagination/pagination.jsx";
-import AddStaffModal from "../../components/modals/modal-staff-modal/add-staff-modal.jsx";
+import AddStaffModal from "../../components/modals/addl-staff-modal/add-staff-modal.jsx";
 import PropTypes from "prop-types";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 import { useMutation, useQuery } from "react-query";

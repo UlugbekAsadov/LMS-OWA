@@ -16,8 +16,9 @@ import {
 } from "../../../../utils/enums/index.js";
 import PropTypes from "prop-types";
 import decode from "query-string";
+import { toast } from "react-toastify";
 
-const LeftPage = ({ initialValue }) => {
+const ContractTypeForm = ({ initialValue }) => {
   const [isPrefix, setIsPrefix] = useState(
     initialValue ? initialValue?.is_prefix : true
   );
@@ -34,7 +35,7 @@ const LeftPage = ({ initialValue }) => {
     defaultValues: initialValue,
   });
   const contractTypes = useQuery({
-    queryKey: "contracts-types",
+    queryKey: "contract-type-types",
     queryFn: () => getAllContractTypes(),
     enabled: false,
   });
@@ -52,7 +53,8 @@ const LeftPage = ({ initialValue }) => {
       } else if (data.success) {
         reset();
         contractTypes.refetch();
-        navigate("/contracts-type-list");
+        toast.success("Shartnoma turi qo'shildi");
+        navigate("/contract-type-type-list");
       }
     },
   });
@@ -62,7 +64,7 @@ const LeftPage = ({ initialValue }) => {
     mutationFn: (config) => editContractMutationFn(config, initialValue.id),
     onSuccess: (data) => {
       if (!data?.error) {
-        navigate("/contracts-type-list");
+        navigate("/contract-type-type-list");
       }
     },
   });
@@ -224,8 +226,8 @@ const LeftPage = ({ initialValue }) => {
     </Col>
   );
 };
-export default LeftPage;
+export default ContractTypeForm;
 
-LeftPage.propTypes = {
+ContractTypeForm.propTypes = {
   initialValue: PropTypes.object,
 };

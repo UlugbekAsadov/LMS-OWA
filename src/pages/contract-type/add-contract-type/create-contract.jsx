@@ -1,8 +1,8 @@
 import { Content } from "../../../layout/page-layout/page-layout.jsx";
 import PageHeader from "../../../components/page-header/page-header.jsx";
 import { Row } from "reactstrap";
-import LeftPage from "./element-page/left-page.jsx";
-import RightPage from "./element-page/right-page.jsx";
+import ContractTypeForm from "./contract-type-form/contract-type-form.jsx";
+import ContractTypeWordList from "./contract-type-form/contract-type-word-list.jsx";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getContractTypeByIdQueryFn } from "../../../react-query/queries/index.js";
@@ -11,12 +11,12 @@ import { Loader } from "../../../components/index.js";
 const CreateContract = () => {
   const { contractId } = useParams();
 
-  const contractType = useQuery({
+  const contractTypes = useQuery({
     queryKey: [`contract-type-${contractId}`],
     queryFn: () => getContractTypeByIdQueryFn(contractId),
     enabled: Boolean(contractId),
   });
-  if (contractType.isLoading) {
+  if (contractTypes.isLoading) {
     return <Loader />;
   }
   return (
@@ -27,8 +27,10 @@ const CreateContract = () => {
         isButtonVisible={false}
       />
       <Row className={"py-3 gy-2"}>
-        <LeftPage initialValue={contractId ? contractType.data : null} />
-        <RightPage />
+        <ContractTypeForm
+          initialValue={contractId ? contractTypes.data : null}
+        />
+        <ContractTypeWordList />
       </Row>
     </Content>
   );

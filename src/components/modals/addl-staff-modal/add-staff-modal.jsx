@@ -58,7 +58,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       }
     },
   });
-  const createUserStaff = useMutation({
+  const createStaffByOwner = useMutation({
     mutationKey: ["create-user-staff"],
     mutationFn: (config) => createUsersStaffMutationFn(config),
     onSuccess: (data) => {
@@ -87,7 +87,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       setSelectedRole(null);
     },
   });
-  const handleChangeCity = (value) => {
+  const handleChangeRole = (value) => {
     setValue("role", value.value);
     setSelectedRole(value);
   };
@@ -106,13 +106,11 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
       body: JSON.stringify(body),
     };
 
-    console.log(body);
-
     if (userData.data.role === USER_ROLES.COMPANY_OWNER) {
       if (initialValue) {
         await editStaff.mutateAsync(config);
       } else {
-        await createUserStaff.mutateAsync(config);
+        await createStaffByOwner.mutateAsync(config);
       }
       return;
     }
@@ -227,7 +225,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue }) => {
             <RSelect
               options={roles}
               value={selectedRole}
-              onChange={handleChangeCity}
+              onChange={handleChangeRole}
             />
           </div>
           <Col

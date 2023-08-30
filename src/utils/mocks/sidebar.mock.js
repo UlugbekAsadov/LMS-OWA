@@ -18,14 +18,14 @@ export const menuMock = [
   {
     icon: "panel",
     text: "Shartnomalar turi",
-    link: "/contracts-type-list",
+    link: "/contract-type-type-list",
     active: false,
     access: [USER_ROLES.COMPANY_OWNER],
   },
   {
     icon: "template",
     text: "O’quv markaz",
-    link: "/contracts-tdsype-list",
+    link: "/contract-type-tdsype-list",
     active: false,
     access: [USER_ROLES.COMPANY_OWNER],
     subMenu: [

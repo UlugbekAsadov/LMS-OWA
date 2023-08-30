@@ -10,7 +10,7 @@ import {
   createCourseMutationFn,
   editCourseMutationFn,
 } from "../../../react-query/mutations/index.js";
-import { getCoursesQuery } from "../../../react-query/queries/index.js";
+import { getCoursesQueryFn } from "../../../react-query/queries/index.js";
 import {
   ERROR_MESSAGE_TRANSLATIONS,
   ERROR_MESSAGES,
@@ -42,7 +42,7 @@ const AddCourseModal = ({ isOpen, onClose, initialValue }) => {
   );
 
   const { refetch } = useQuery({
-    queryFn: () => getCoursesQuery(),
+    queryFn: () => getCoursesQueryFn(),
     queryKey: ["all-courses-list"],
     enabled: false,
   });

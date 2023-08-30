@@ -8,20 +8,20 @@ import { Button } from "../../button/button.jsx";
 import { InputMask } from "primereact/inputmask";
 import { useMutation, useQuery } from "react-query";
 import {
-  getCitiesQuery,
-  getRegionsQuery,
+  getCitiesQueryFn,
+  getRegionsQueryFn,
 } from "../../../react-query/queries/index.js";
-import { getBankQuery } from "../../../react-query/queries/index.js";
+import { getBankQueryFn } from "../../../react-query/queries/index.js";
 import {
   ERROR_MESSAGES,
   ERROR_MESSAGE_TRANSLATIONS,
   USER_ROLES,
 } from "../../../utils/enums/index.js";
 import {
-  addBootcampMutationFn,
-  editBootcampMutationFn,
+  addCompanyMutationFn,
+  editCompanyMutationFn,
 } from "../../../react-query/mutations/index.js";
-import { getAllBootcampsQueryFn } from "../../../react-query/queries/index.js";
+import { getAllCompaniesQueryFn } from "../../../react-query/queries/index.js";
 
 const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   initialValue = {
@@ -65,7 +65,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
 
   const bankQuery = useQuery({
     queryKey: "bank_info",
-    queryFn: () => getBankQuery(bank_code),
+    queryFn: () => getBankQueryFn(bank_code),
     enabled: false,
     onSuccess: (data) => {
       if (data?.error?.message === ERROR_MESSAGES.BANK_NOT_FOUND) {
@@ -79,13 +79,13 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
 
   const { refetch } = useQuery({
     queryKey: ["all-bootcamps"],
-    queryFn: () => getAllBootcampsQueryFn(),
+    queryFn: () => getAllCompaniesQueryFn(),
     enabled: false,
   });
 
   useQuery({
     queryKey: "regions",
-    queryFn: () => getRegionsQuery(),
+    queryFn: () => getRegionsQueryFn(),
     onSuccess: (data) => {
       const provinces = data.map((region) => {
         return {
@@ -101,7 +101,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
 
   useQuery({
     queryKey: [`cities-${selectedProvince?.id}`],
-    queryFn: () => getCitiesQuery(selectedProvince?.id),
+    queryFn: () => getCitiesQueryFn(selectedProvince?.id),
     onSuccess: (data) => {
       const cities = data.map((cities) => {
         return { value: cities.id, id: cities.id, label: cities.name_lt };
@@ -114,7 +114,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
 
   const editBootcampMutation = useMutation({
     mutationKey: ["edit-bootcamp-mutation"],
-    mutationFn: (config) => editBootcampMutationFn(initialValue.id, config),
+    mutationFn: (config) => editCompanyMutationFn(initialValue.id, config),
     onSuccess: (data) => {
       if (!handleErrorOnRequest(data)) {
         if (userData.role === USER_ROLES.SUPER_ADMIN) {
@@ -127,7 +127,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
 
   const addBootcampMutation = useMutation({
     mutationKey: "add-bootcamp-mutation",
-    mutationFn: (config) => addBootcampMutationFn(config),
+    mutationFn: (config) => addCompanyMutationFn(config),
     onSuccess: (data) => {
       if (!handleErrorOnRequest(data)) {
         if (userData.role === USER_ROLES.SUPER_ADMIN) {

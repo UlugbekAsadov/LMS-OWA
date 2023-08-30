@@ -6,9 +6,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useMutation, useQuery } from "react-query";
-import { getAllContractTypes } from "../../react-query/queries/index.js";
+import { getAllContractTemplatesQueryFn } from "../../react-query/queries/index.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
-import { deleteContractMutationFn } from "../../react-query/mutations/index.js";
+import { deleteContractTemplateMutationFn } from "../../react-query/mutations/index.js";
 
 const ContractsTypeList = () => {
   const [isDeleteModal, setDeleteModal] = useState(false);
@@ -17,12 +17,12 @@ const ContractsTypeList = () => {
   const [itemPerPage] = useState(20);
   const navigate = useNavigate();
   const { isLoading, data, refetch } = useQuery({
-    queryFn: () => getAllContractTypes(),
+    queryFn: () => getAllContractTemplatesQueryFn(),
     queryKey: ["contract-type"],
   });
   const deleteContractMutation = useMutation({
     mutationKey: "delete-contract",
-    mutationFn: (contractId) => deleteContractMutationFn(contractId),
+    mutationFn: (contractId) => deleteContractTemplateMutationFn(contractId),
   });
 
   const onClickDelete = (id) => {

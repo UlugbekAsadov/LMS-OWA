@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getContractTypesQuery } from "../../react-query/queries";
+import { getAllContractTemplatesQueryFn } from "../../react-query/queries";
 import { menuMock } from "../mocks";
 import { USER_ROLES } from "../enums";
 import { useState } from "react";
@@ -12,7 +12,7 @@ export const useSidebarMenu = () => {
 
   const { isLoading } = useQuery({
     queryKey: ["contract-type-types"],
-    queryFn: () => getContractTypesQuery(),
+    queryFn: () => getAllContractTemplatesQueryFn(),
     onSuccess: (data) => {
       const newArr = data.map((c) => {
         return { text: c.name, link: `/contracts/${c.id}` };

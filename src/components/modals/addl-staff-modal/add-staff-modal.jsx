@@ -14,10 +14,10 @@ import {
   USER_ROLES,
 } from "../../../utils/enums/index.js";
 import {
-  createCompaniesStaffMutationFn,
-  createUsersStaffMutationFn,
-  editByCompanyStaffMutationFn,
-  editStaffMutationFn,
+  createUserByAdminMutationFn,
+  createUserByOwnerMutationFn,
+  editUserByAdminMutationFn,
+  editUserByOwnerMutationFn,
 } from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -41,7 +41,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { bootcampId } = useParams();
+  const { companyId } = useParams();
 
   const userData = useQuery({
     queryKey: ["user"],
@@ -49,7 +49,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
 
   const editStaff = useMutation({
     mutationKey: ["edit-staff"],
-    mutationFn: (config) => editStaffMutationFn(config, initialValue.id),
+    mutationFn: (config) => editUserByOwnerMutationFn(config, initialValue.id),
     onSuccess: (res) => {
       setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.PHONE_ALREADY_EXISTS) {
@@ -69,7 +69,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
   const editCompanyStaff = useMutation({
     mutationKey: ["edit-compaies-staff"],
     mutationFn: (config) =>
-      editByCompanyStaffMutationFn(config, bootcampId, initialValue.id),
+      editUserByAdminMutationFn(config, companyId, initialValue.id),
     onSuccess: (res) => {
       setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
@@ -84,9 +84,9 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
     },
   });
 
-  const createStaffByOwnerMutation = useMutation({
+  const createUserByOwnerMutation = useMutation({
     mutationKey: ["create-user-staff"],
-    mutationFn: (config) => createUsersStaffMutationFn(config),
+    mutationFn: (config) => createUserByOwnerMutationFn(config),
     onSuccess: (res) => {
       setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
@@ -103,7 +103,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
 
   const createCompaniesStaff = useMutation({
     mutationKey: ["create-user-staff"],
-    mutationFn: (config) => createCompaniesStaffMutationFn(config, bootcampId),
+    mutationFn: (config) => createUserByAdminMutationFn(config, companyId),
     onSuccess: (res) => {
       setIsLoading(false);
       if (res?.error?.message === ERROR_MESSAGES.ACCOUNT_ALREADY_EXISTS) {
@@ -142,7 +142,7 @@ const AddStaffModal = ({ isOpen, onClose, initialValue, refetch }) => {
       if (initialValue) {
         await editStaff.mutateAsync(config);
       } else {
-        await createStaffByOwnerMutation.mutateAsync(config);
+        await createUserByOwnerMutation.mutateAsync(config);
       }
       return;
     }

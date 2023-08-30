@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../../button/button.jsx";
 import {
   updatePasswordByOwnerMutationFn,
-  updatePasswordBySuperAdminMutationFn,
+  updatePasswordByAdminMutationFn,
 } from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -24,7 +24,7 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
     newPassword: false,
     confirmPassword: false,
   });
-  const { bootcampId } = useParams();
+  const { companyId } = useParams();
   const [isPasswordsMatched, setIsPasswordsMatches] = useState(false);
   const newPasswordValue = watch("new_password");
   const confirmPasswordValue = watch("confirm_password");
@@ -36,7 +36,7 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
   const changeStaffPasswordByAdminMutation = useMutation({
     mutationKey: ["change-staff-password"],
     mutationFn: (config) =>
-      updatePasswordBySuperAdminMutationFn(bootcampId, userId, config),
+      updatePasswordByAdminMutationFn(companyId, userId, config),
     onSuccess: (res) => {
       if (!res?.error) {
         toast.success("Parol o'zgartirildi");

@@ -4,7 +4,7 @@ import EducationInformationList from "./education-list/education-information-lis
 import { useState } from "react";
 import AddBootcampsModal from "../../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
 import { useQuery } from "react-query";
-import { getMyStaffsQueryFn } from "../../../react-query/queries/index.js";
+import { getMyCompanyQueryFn } from "../../../react-query/queries/index.js";
 import { Loader } from "../../../components/index.js";
 
 const EducationalInformation = () => {
@@ -12,7 +12,7 @@ const EducationalInformation = () => {
 
   const { data: companyData, isLoading } = useQuery({
     queryKey: ["educational-information"],
-    queryFn: () => getMyStaffsQueryFn(),
+    queryFn: () => getMyCompanyQueryFn(),
   });
 
   if (isLoading) {

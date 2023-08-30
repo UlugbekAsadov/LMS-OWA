@@ -8,7 +8,7 @@ import { TablePagination } from "../../components/pagination/pagination";
 import { Table } from "../../components/index.js";
 import BasicContractModal from "../../components/modals/basic-conract-modal/basic-contract-modal";
 import { useQuery } from "react-query";
-import { getContractsByIdQueryFn } from "../../react-query/queries/index.js";
+import { getContractByIdQueryFn } from "../../react-query/queries/index.js";
 
 const Contract = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +19,7 @@ const Contract = () => {
 
   const { data = [], isLoading } = useQuery({
     queryKey: [`contract-data-${contractId}`],
-    queryFn: () => getContractsByIdQueryFn(contractId),
+    queryFn: () => getContractByIdQueryFn(contractId),
   });
 
   if (isLoading) {

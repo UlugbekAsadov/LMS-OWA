@@ -1,4 +1,4 @@
 import { api } from "../api";
 
-export const getBankQuery = (bankCode) =>
+export const getBankQueryFn = (bankCode) =>
   api(`/bank/${bankCode}`).then((data) => data);

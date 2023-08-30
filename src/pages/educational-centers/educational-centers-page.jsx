@@ -7,9 +7,9 @@ import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
 import AddBootcampsModal from "../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
 import { useMutation, useQuery } from "react-query";
-import { getAllBootcampsQueryFn } from "../../react-query/queries/index.js";
+import { getAllCompaniesQueryFn } from "../../react-query/queries/index.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
-import { deleteBootcampMutationFn } from "../../react-query/mutations/index.js";
+import { deleteCompanyMutationFn } from "../../react-query/mutations/index.js";
 
 const EducationalCentersPage = () => {
   const [isModalOpen, setIsOpenModal] = useState(false);
@@ -21,11 +21,11 @@ const EducationalCentersPage = () => {
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["all-bootcamps"],
-    queryFn: () => getAllBootcampsQueryFn(),
+    queryFn: () => getAllCompaniesQueryFn(),
   });
   const deleteBootcampMutation = useMutation({
     mutationKey: ["delete-bootcamp"],
-    mutationFn: () => deleteBootcampMutationFn(selectedBootcamp.id),
+    mutationFn: () => deleteCompanyMutationFn(selectedBootcamp.id),
     onSuccess: () => {
       refetch();
       setIsDeleteModal(false);

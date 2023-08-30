@@ -5,7 +5,7 @@ import ContractTypeForm from "./contract-type-form/contract-type-form.jsx";
 import ContractTypeWordList from "./contract-type-form/contract-type-word-list.jsx";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getContractTypeByIdQueryFn } from "../../../react-query/queries/index.js";
+import { getContractTemplateByIdQueryFn } from "../../../react-query/queries/index.js";
 import { Loader } from "../../../components/index.js";
 
 const CreateContract = () => {
@@ -13,7 +13,7 @@ const CreateContract = () => {
 
   const contractTypes = useQuery({
     queryKey: [`contract-type-${contractId}`],
-    queryFn: () => getContractTypeByIdQueryFn(contractId),
+    queryFn: () => getContractTemplateByIdQueryFn(contractId),
     enabled: Boolean(contractId),
   });
   if (contractTypes.isLoading) {

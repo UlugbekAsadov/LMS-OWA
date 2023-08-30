@@ -4,7 +4,7 @@ import { Button } from "../../button/button";
 import { Col, Row } from "../../grid/grid";
 import RSelect from "../../react-select/react-select";
 import { useQuery } from "react-query";
-import { getCoursesQuery } from "../../../react-query/queries/courses.query";
+import { getCoursesQueryFn } from "../../../react-query/queries/courses.query";
 import { useBasicContracts } from "../../../context";
 
 const CourseForm = () => {
@@ -13,7 +13,7 @@ const CourseForm = () => {
   const { setValue } = useBasicContracts();
   useQuery({
     queryKey: "courses",
-    queryFn: () => getCoursesQuery(),
+    queryFn: () => getCoursesQueryFn(),
     onSuccess: (data) => {
       const courses = data.map((course) => {
         return {

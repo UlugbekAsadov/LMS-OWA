@@ -5,10 +5,10 @@ import { useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import {
-  addContactQuery,
-  editContractMutationFn,
+  addContactTemplateQueryFn,
+  editContractTemplateMutationFn,
 } from "../../../../react-query/mutations/index.js";
-import { getAllContractTypes } from "../../../../react-query/queries/index.js";
+import { getAllContractTemplatesQueryFn } from "../../../../react-query/queries/index.js";
 import { useNavigate } from "react-router-dom";
 import {
   ERROR_MESSAGE_TRANSLATIONS,
@@ -36,13 +36,13 @@ const ContractTypeForm = ({ initialValue }) => {
   });
   const contractTypes = useQuery({
     queryKey: "contract-type-types",
-    queryFn: () => getAllContractTypes(),
+    queryFn: () => getAllContractTemplatesQueryFn(),
     enabled: false,
   });
 
   const addContract = useMutation({
     mutationKey: ["add-contract"],
-    mutationFn: (config) => addContactQuery(config),
+    mutationFn: (config) => addContactTemplateQueryFn(config),
     onSuccess: (data) => {
       if (
         data?.error?.message === ERROR_MESSAGES.CONTRACT_TYPE_ALREADY_EXISTS
@@ -61,7 +61,8 @@ const ContractTypeForm = ({ initialValue }) => {
 
   const editContract = useMutation({
     mutationKey: "edit-contract",
-    mutationFn: (config) => editContractMutationFn(config, initialValue.id),
+    mutationFn: (config) =>
+      editContractTemplateMutationFn(config, initialValue.id),
     onSuccess: (data) => {
       if (!data?.error) {
         navigate("/contracts-type-list");

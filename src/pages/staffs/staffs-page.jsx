@@ -10,14 +10,14 @@ import PropTypes from "prop-types";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 import { useMutation, useQuery } from "react-query";
 import {
-  deleteCompaniesStaffMutationFn,
-  deleteUserStaffMutationFn,
+  deleteUserByAdminMutationFn,
+  deleteUserByOwnerMutationFn,
 } from "../../react-query/mutations/index.js";
 import { USER_ROLES } from "../../utils/enums/index.js";
 import { userRolesMock } from "../../utils/mocks/index.js";
 import { ChangePasswordModal } from "../../components/modals/change-password-modal/change-password-modal.jsx";
 
-const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
+const StaffsPage = ({ isLoading, data, companyId = null, refetch }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState(null);
@@ -33,7 +33,7 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
 
   const deleteUserStaff = useMutation({
     mutationKey: ["delete-user-staff"],
-    mutationFn: (userId) => deleteUserStaffMutationFn(userId),
+    mutationFn: (userId) => deleteUserByOwnerMutationFn(userId),
     onSuccess: () => {
       refetch();
     },
@@ -41,7 +41,7 @@ const StaffsPage = ({ isLoading, data, bootcampId = null, refetch }) => {
 
   const deleteCompaniesStaff = useMutation({
     mutationKey: ["delete-companies-staff"],
-    mutationFn: (userId) => deleteCompaniesStaffMutationFn(bootcampId, userId),
+    mutationFn: (userId) => deleteUserByAdminMutationFn(companyId, userId),
     onSuccess: () => {
       refetch();
     },
@@ -212,6 +212,6 @@ export default StaffsPage;
 StaffsPage.propTypes = {
   isLoading: PropTypes.bool,
   data: PropTypes.array,
-  bootcampId: PropTypes.string,
+  companyId: PropTypes.string,
   refetch: PropTypes.func,
 };

@@ -1,4 +1,4 @@
 import { api } from "../api";
 
-export const getUserQuery = () =>
+export const getUserQueryFn = () =>
   api(`/users/get/me`).then((data) => data.data);

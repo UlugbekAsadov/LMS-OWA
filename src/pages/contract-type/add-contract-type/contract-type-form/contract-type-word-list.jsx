@@ -1,13 +1,13 @@
 import { PreviewCard } from "../../../../components/index.js";
 import { Col } from "reactstrap";
 import { useQuery } from "react-query";
-import { getContractWordList } from "../../../../react-query/queries/index.js";
+import { getContractWordListsQueryFn } from "../../../../react-query/queries/index.js";
 import uuid4 from "uuid4";
 
 const ContractTypeWordList = () => {
   const { data } = useQuery({
     queryKey: ["contract-world-list"],
-    queryFn: () => getContractWordList(),
+    queryFn: () => getContractWordListsQueryFn(),
   });
 
   return (

@@ -1,13 +1,17 @@
 import PropTypes from "prop-types";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { Col, Label, Modal, ModalBody } from "reactstrap";
 import { Icon } from "../../icon/icon.jsx";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Button } from "../../button/button.jsx";
-import { updatePasswordBySuperAdmin } from "../../../react-query/mutations/index.js";
+import {
+  updatePasswordByOwnerMutationFn,
+  updatePasswordByAdminMutationFn,
+} from "../../../react-query/mutations/index.js";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { USER_ROLES } from "../../../utils/enums/index.js";
 
 export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
   const {
@@ -20,13 +24,19 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
     newPassword: false,
     confirmPassword: false,
   });
-  const { bootcampId } = useParams();
+  const { companyId } = useParams();
   const [isPasswordsMatched, setIsPasswordsMatches] = useState(false);
+  const newPasswordValue = watch("new_password");
+  const confirmPasswordValue = watch("confirm_password");
 
-  const changeStaffPasswordByAdmin = useMutation({
+  const { data: userData } = useQuery({
+    queryKey: ["user"],
+  });
+
+  const changeStaffPasswordByAdminMutation = useMutation({
     mutationKey: ["change-staff-password"],
     mutationFn: (config) =>
-      updatePasswordBySuperAdmin(bootcampId, userId, config),
+      updatePasswordByAdminMutationFn(companyId, userId, config),
     onSuccess: (res) => {
       if (!res?.error) {
         toast.success("Parol o'zgartirildi");
@@ -35,8 +45,15 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
     },
   });
 
-  const newPasswordValue = watch("new_password");
-  const confirmPasswordValue = watch("confirm_password");
+  const changeStaffPasswordByOwnerMutation = useMutation({
+    mutationFn: (config) => updatePasswordByOwnerMutationFn(userId, config),
+    onSuccess: (res) => {
+      if (!res?.error) {
+        toast.success("Parol o'zgartirildi");
+        onClose();
+      }
+    },
+  });
 
   const handleSubmitForm = (values) => {
     if (values.new_password !== values.confirm_password) {
@@ -47,7 +64,12 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
       method: "PATCH",
       body: JSON.stringify(values),
     };
-    changeStaffPasswordByAdmin.mutate(config);
+
+    if (userData.role === USER_ROLES.COMPANY_OWNER) {
+      changeStaffPasswordByOwnerMutation.mutate(config);
+    } else {
+      changeStaffPasswordByAdminMutation.mutate(config);
+    }
   };
 
   const handleClickEyeIcon = (name) => {
@@ -165,7 +187,11 @@ export const ChangePasswordModal = ({ isOpen, onClose, userId }) => {
               className="btn-block w-20 mb-4"
               type="submit"
               color="primary"
-              isLoading={changeStaffPasswordByAdmin.isLoading}
+              isLoading={
+                userData.role === USER_ROLES.COMPANY_OWNER
+                  ? changeStaffPasswordByOwnerMutation.isLoading
+                  : changeStaffPasswordByAdminMutation.isLoading
+              }
             >
               Saqlash
             </Button>

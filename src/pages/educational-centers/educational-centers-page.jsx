@@ -7,9 +7,9 @@ import { TablePagination } from "../../components/pagination/pagination.jsx";
 import { Content } from "../../layout/page-layout/page-layout.jsx";
 import AddBootcampsModal from "../../components/modals/add-bootcamps-modal/add-bootcamps-modal.jsx";
 import { useMutation, useQuery } from "react-query";
-import { getAllBootcampsQueryFn } from "../../react-query/queries/index.js";
+import { getAllCompaniesQueryFn } from "../../react-query/queries/index.js";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
-import { deleteBootcampMutationFn } from "../../react-query/mutations/index.js";
+import { deleteCompanyMutationFn } from "../../react-query/mutations/index.js";
 
 const EducationalCentersPage = () => {
   const [isModalOpen, setIsOpenModal] = useState(false);
@@ -20,36 +20,24 @@ const EducationalCentersPage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["all-bootcamps"],
-    queryFn: () => getAllBootcampsQueryFn(),
+    queryKey: ["all-companies"],
+    queryFn: () => getAllCompaniesQueryFn(),
   });
   const deleteBootcampMutation = useMutation({
-    mutationKey: ["delete-bootcamp"],
-    mutationFn: () => deleteBootcampMutationFn(selectedBootcamp.id),
+    mutationKey: ["delete-company"],
+    mutationFn: () => deleteCompanyMutationFn(selectedBootcamp.id),
     onSuccess: () => {
       refetch();
       setIsDeleteModal(false);
     },
   });
-  const handleDeleteBootcamp = (bootcamp) => {
-    setSelectedBootcamp(bootcamp);
+  const handleDeleteBootcamp = (company) => {
+    setSelectedBootcamp(company);
     setIsDeleteModal(true);
   };
 
-  const handleClickEditButton = (bootcamp) => {
-    const editingBootcampData = {
-      ...bootcamp,
-      province: {
-        value: bootcamp.region.id,
-        id: bootcamp.region.region_id,
-        label: bootcamp.region.name_lt,
-      },
-      city: {
-        value: bootcamp.district.district_id,
-        label: bootcamp.district.name_lt,
-      },
-    };
-    setSelectedBootcamp(editingBootcampData);
+  const handleClickEditButton = (company) => {
+    setSelectedBootcamp(company);
     setIsOpenModal(true);
   };
 

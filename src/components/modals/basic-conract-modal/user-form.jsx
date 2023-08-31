@@ -7,10 +7,10 @@ import RSelect from "../../react-select/react-select";
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
 import {
-  getCitiesQuery,
-  getPINFLQuery,
-  // getPINFLQuery,
-  getRegionsQuery,
+  getCitiesQueryFn,
+  getPINFLQueryFn,
+  // getPINFLQueryFn,
+  getRegionsQueryFn,
 } from "../../../react-query/queries";
 import { useBasicContracts } from "../../../context";
 import { convertDate } from "../../../utils/functions";
@@ -52,14 +52,14 @@ const UserForm = ({ isAutomatic, data }) => {
 
   useQuery({
     queryKey: ["PINFL"],
-    queryFn: () => getPINFLQuery(pinflValue),
+    queryFn: () => getPINFLQueryFn(pinflValue),
     enabled: false,
     onSuccess: () => setIsFetchingPINFL(false),
   });
 
   useQuery({
     queryKey: "regions",
-    queryFn: () => getRegionsQuery(),
+    queryFn: () => getRegionsQueryFn(),
     onSuccess: (data) => {
       const provinces = data.map((region) => {
         return {
@@ -77,7 +77,7 @@ const UserForm = ({ isAutomatic, data }) => {
 
   useQuery({
     queryKey: [`cities-${selectedProvince?.id}`],
-    queryFn: () => getCitiesQuery(selectedProvince?.id),
+    queryFn: () => getCitiesQueryFn(selectedProvince?.id),
     onSuccess: (data) => {
       const cities = data.map((cities) => {
         return { value: cities.name_lt, id: cities.id, label: cities.name_lt };

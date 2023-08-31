@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import { useMutation, useQuery } from "react-query";
-import { getCoursesQuery } from "../../react-query/queries/index.js";
+import { getCoursesQueryFn } from "../../react-query/queries/index.js";
 import AddCourseModal from "../../components/modals/courses-modal/add-course-modal.jsx";
 import { ConfirmationModal } from "../../components/modals/confirmation-modal/confirmation-modal.jsx";
 import { deleteCourseMutationFn } from "../../react-query/mutations/index.js";
@@ -19,7 +19,7 @@ const CoursesList = () => {
   const [itemPerPage] = useState(20);
   const [editingCourse, setEditingCourse] = useState(null);
   const { isLoading, data, refetch } = useQuery({
-    queryFn: () => getCoursesQuery(),
+    queryFn: () => getCoursesQueryFn(),
     queryKey: ["all-courses-list"],
   });
 

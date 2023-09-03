@@ -7,4 +7,4 @@ export const getMyCompanyUsersQueryFn = (companyId) =>
   api(`/companies/${companyId}/users`).then((data) => data.data);
 
 export const getMyCompanyQueryFn = () =>
-  api("/companies/get").then((data) => data.data);
+  api("/companies/get-info").then((data) => data.data);

@@ -28,10 +28,10 @@ export const api = async (url, config) => {
     if (error) {
       switch (error.message) {
         case ERROR_MESSAGES.JWT_ERROR:
-          window.location.replace(
+          return window.location.replace(
             `/auth-login?callbackUri=${window.location.href}`
           );
-          return;
+
         default:
           toast.error(
             ERROR_MESSAGE_TRANSLATIONS[error.message],

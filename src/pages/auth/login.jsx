@@ -75,7 +75,7 @@ const Login = () => {
           <BlockHead>
             <BlockContent>
               <BlockTitle tag="h4" className="text-center">
-                {companyData.name}
+                {companyData?.name}
               </BlockTitle>
               <BlockTitle tag="h4">Kirish</BlockTitle>
 

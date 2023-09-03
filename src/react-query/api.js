@@ -11,7 +11,7 @@ export const api = async (url, config) => {
 
   // eslint-disable-next-line no-undef
   if (process.env.NODE_ENV === "production") {
-    apiUrl = `${window.location.hostname}/api${url}`;
+    apiUrl = `/api${url}`;
   }
 
   try {

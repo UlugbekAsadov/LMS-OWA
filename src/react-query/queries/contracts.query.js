@@ -10,3 +10,6 @@ export const getPINFLQueryFn = (pinfl) =>
   api(`/contract/additional/${pinfl}`).then((data) => data.data);
 export const getContractByIdQueryFn = (contractId) =>
   api(`/contract/all/${contractId}`).then((data) => data.data);
+
+export const getContractPdfQueryId = (contractId) =>
+  api(`/contracts/${contractId}.pdf`).then((data) => data);

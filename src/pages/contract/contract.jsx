@@ -8,11 +8,15 @@ import { TablePagination } from "../../components/pagination/pagination";
 import { Table } from "../../components/index.js";
 import BasicContractModal from "../../components/modals/basic-conract-modal/basic-contract-modal";
 import { useQuery } from "react-query";
-import { getContractByIdQueryFn } from "../../react-query/queries/index.js";
+import {
+  getContractByIdQueryFn,
+  getContractPdfQueryId,
+} from "../../react-query/queries/index.js";
 
 const Contract = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { contractId } = useParams();
+  const [selectedContract, setSelectedContract] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(20);
@@ -21,6 +25,11 @@ const Contract = () => {
     queryKey: [`contract-data-${contractId}`],
     queryFn: () => getContractByIdQueryFn(contractId),
   });
+
+  const handleDownloadPdf = (templateId) => {
+    const data = getContractPdfQueryId(templateId);
+    console.log(data);
+  };
 
   if (isLoading) {
     return null;
@@ -68,10 +77,18 @@ const Contract = () => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Button color="primary" className="btn-icon btn-white btn-dim">
+            <Button
+              onClick={handleDownloadPdf.bind(null, item.id)}
+              color="primary"
+              className="btn-icon btn-white btn-dim"
+            >
               <Icon name="printer-fill" />
             </Button>
-            <Button color="primary" className="btn-icon btn-white btn-dim">
+            <Button
+              onClick={setSelectedContract.bind(null, item)}
+              color="primary"
+              className="btn-icon btn-white btn-dim"
+            >
               <Icon className={"ps-1"} name="pen" />
             </Button>
           </div>

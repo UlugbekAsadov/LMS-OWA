@@ -29,7 +29,7 @@ const Contract = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data?.Contracts.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data?.contracts.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">
@@ -68,22 +68,16 @@ const Contract = () => {
         </td>
         <td className="tb-odr-action">
           <div className="tb-odr-btns d-none d-sm-inline fs-20px">
-            <Link to={`/invoice-print/${item.id}`} target="_blank">
-              <Button color="primary" className="btn-icon btn-white btn-dim">
-                <Icon name="printer-fill" />
-              </Button>
-            </Link>
-            <Link to={`/invoice-details/${item.id}`}>
-              <Button color="primary" className="btn-icon btn-white btn-dim">
-                <Icon className={"ps-1"} name="pen" />
-              </Button>
-            </Link>
-          </div>
-          <Link to={`/invoice-details/${item.id}`}>
-            <Button className="btn-pd-auto d-sm-none">
-              <Icon name="chevron-right" />
+            <Button color="primary" className="btn-icon btn-white btn-dim">
+              <Icon name="printer-fill" />
             </Button>
-          </Link>
+            <Button color="primary" className="btn-icon btn-white btn-dim">
+              <Icon className={"ps-1"} name="pen" />
+            </Button>
+          </div>
+          <Button className="btn-pd-auto d-sm-none">
+            <Icon name="chevron-right" />
+          </Button>
         </td>
       </tr>
     );

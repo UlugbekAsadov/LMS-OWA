@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import { getMyCompanyQueryFn } from "../../../react-query/queries/index.js";
 import { Loader } from "../../../components/index.js";
 
-const EducationalInformation = () => {
+const CompanyData = () => {
   const [isModalOpen, setIsOpenModal] = useState(false);
 
   const { data: companyData, isLoading } = useQuery({
@@ -40,4 +40,4 @@ const EducationalInformation = () => {
     </Content>
   );
 };
-export default EducationalInformation;
+export default CompanyData;

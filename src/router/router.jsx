@@ -13,16 +13,16 @@ import Error403Classic from "../pages/error/403-classic.jsx";
 import Error500Classic from "../pages/error/500-classic.jsx";
 import Error404Classic from "../pages/error/404-classic.jsx";
 import { useQuery } from "react-query";
-import { getMyCompanyQueryFn } from "../react-query/queries/index.js";
+import { getCompanyInfo } from "../react-query/queries/index.js";
 import { GlobalLoader } from "../pages/global-loader/global-loader.jsx";
-import EducationalInformation from "../pages/educational-center-about/education-information/educational-information.jsx";
+import EducationalInformation from "../pages/educational-center-about/education-information/company-data.jsx";
 import EducationStaff from "../pages/educational-center-about/education-center-staff/education-staff.jsx";
 import EducationCenterStaffs from "../pages/educational-centers/education-center-staffs.jsx";
 
 export const Router = () => {
   const { isLoading } = useQuery({
     queryKey: ["company-info"],
-    queryFn: () => getMyCompanyQueryFn(),
+    queryFn: () => getCompanyInfo(),
   });
 
   if (isLoading) {

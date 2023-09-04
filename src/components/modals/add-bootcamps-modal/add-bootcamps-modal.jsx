@@ -79,7 +79,7 @@ const AddBootcampsModal = ({ isOpen, onClose, initialValue }) => {
   });
 
   const { refetch } = useQuery({
-    queryKey: ["all-bootcamps"],
+    queryKey: ["all-companies"],
     queryFn: () => getAllCompaniesQueryFn(),
     enabled: false,
   });

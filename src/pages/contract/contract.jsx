@@ -29,7 +29,7 @@ const Contract = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = data?.Contracts.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data?.contracts.slice(indexOfFirstItem, indexOfLastItem);
 
   const tableHeader = (
     <thead className="tb-odr-head">

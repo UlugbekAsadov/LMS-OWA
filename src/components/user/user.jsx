@@ -63,7 +63,7 @@ export const User = () => {
           <LinkList>
             <div className="cursor-pointer" onClick={handleLogOut}>
               <Icon name="signout"></Icon>
-              <span>Log out</span>
+              <span>Chiqish</span>
             </div>
           </LinkList>
         </div>

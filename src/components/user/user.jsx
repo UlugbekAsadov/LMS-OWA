@@ -36,19 +36,34 @@ export const User = () => {
             </span>
           </div>
           <div className="user-info d-none d-md-block">
+            <div className="user-status">
+              {USER_ROLES[user?.data?.role.toLocaleUpperCase()]}
+            </div>
             <div className="user-name dropdown-indicator">
-              {user?.data?.full_name} (
-              {USER_ROLES[user?.data?.role.toLocaleUpperCase()]})
+              {user?.data?.full_name}
             </div>
           </div>
         </div>
       </DropdownToggle>
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
+        <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+          <div className="user-card sm">
+            <div className="user-avatar">
+              <Icon name="user-alt"></Icon>
+            </div>
+            <div className="user-info">
+              <span className="lead-text">{user?.data?.full_name}</span>
+              <span className="sub-text">
+                {USER_ROLES[user?.data?.role.toLocaleUpperCase()]}
+              </span>
+            </div>
+          </div>
+        </div>
         <div className="dropdown-inner">
           <LinkList>
             <div className="cursor-pointer" onClick={handleLogOut}>
               <Icon name="signout"></Icon>
-              <span>Sign Out</span>
+              <span>Chiqish</span>
             </div>
           </LinkList>
         </div>
